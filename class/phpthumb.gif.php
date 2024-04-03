@@ -178,7 +178,7 @@ class CGIFLZW
     ///////////////////////////////////////////////////////////////////////////
 
     // CONSTRUCTOR
-    public function CGIFLZW()
+    public function __construct()
     {
         $this->MAX_LZW_BITS = 12;
         unset($this->Next);

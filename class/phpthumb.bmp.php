@@ -21,9 +21,8 @@
 
 class phpthumb_bmp
 {
-    public function phpthumb_bmp()
+    public function __construct()
     {
-        return true;
     }
 
     public function phpthumb_bmp2gd(&$BMPdata, $truecolor=true)

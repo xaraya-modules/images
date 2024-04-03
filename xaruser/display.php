@@ -55,7 +55,7 @@ function images_user_display($args)
 
     if (isset($width) && !empty($width)) {
         $width = urldecode($width);
-        preg_match('/([0-9]+)(px|%)?/i', $width, $parts);
+        preg_match('/([0-9]+)(px|%|)/i', $width, $parts);
         $type = ($parts[2] == '%') ? _IMAGES_UNIT_TYPE_PERCENT : _IMAGES_UNIT_TYPE_PIXELS;
         switch ($type) {
             case _IMAGES_UNIT_TYPE_PERCENT:
@@ -73,7 +73,7 @@ function images_user_display($args)
 
     if (isset($height) && !empty($height)) {
         $height = urldecode($height);
-        preg_match('/([0-9]+)(px|%)?/i', $height, $parts);
+        preg_match('/([0-9]+)(px|%|)/i', $height, $parts);
         $type = ($parts[2] == '%') ? _IMAGES_UNIT_TYPE_PERCENT : _IMAGES_UNIT_TYPE_PIXELS;
         switch ($type) {
             case _IMAGES_UNIT_TYPE_PERCENT:

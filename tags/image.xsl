@@ -10,7 +10,7 @@
 
   <xsl:template match="xar:image-resize">
     <xsl:processing-instruction name="php">
-      <xsl:text>echo xarMod::apiFunc('image','user','handle_image_tag',</xsl:text>
+      <xsl:text>echo xarMod::apiFunc('images','user','resize',</xsl:text>
         <xsl:call-template name="atts2args">
           <xsl:with-param name="nodeset" select="@*"/>
         </xsl:call-template>

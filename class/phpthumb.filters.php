@@ -13,9 +13,8 @@ class phpthumb_filters
 {
     public $phpThumbObject = null;
 
-    public function phpthumb_filters()
+    public function __construct()
     {
-        return true;
     }
 
     public function ApplyMask(&$gdimg_mask, &$gdimg_image)

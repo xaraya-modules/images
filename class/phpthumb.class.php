@@ -211,7 +211,7 @@ class phpthumb
     //////////////////////////////////////////////////////////////////////
 
     // public: constructor
-    public function phpThumb()
+    public function __construct()
     {
         $this->DebugTimingMessage('phpThumb() constructor', __FILE__, __LINE__);
         $this->DebugMessage('phpThumb() v'.$this->phpthumb_version, __FILE__, __LINE__);

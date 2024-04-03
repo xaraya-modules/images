@@ -213,7 +213,7 @@
             <xar:foreach in="$images" value="$image">
             <tr>
                 <td>
-                    <xar:if condition="!empty($image['isWritable'])">
+                    <xar:if condition="!empty($image['isWritable']) or !empty($thumbsonly)">
                         <xar:if condition="!empty($selected) and in_array($image['fileId'],$selected)">
                             <input type="checkbox" name="fid[#$image['fileId']#]" id="fid_#$image['fileId']#" value="1" checked="checked" />
                         <xar:else/>
@@ -264,11 +264,8 @@
                     <xar:if condition="!empty($pager)">
                         #$pager#
                     </xar:if>
-<script type="text/javascript"><![CDATA[
-    document.write("[ <a href=\"javascript:xar_base_checkall(document.forms['viewimages'],true)\"><xar:mlstring>Check All</xar:mlstring></a> | ");
-    document.write("<a href=\"javascript:xar_base_checkall(document.forms['viewimages'],false)\"><xar:mlstring>Uncheck All</xar:mlstring></a> ]");
-]]>
-</script>
+                    [ <a href="javascript:xar_base_checkall(document.forms['viewimages'],true)"><xar:mlstring>Check All</xar:mlstring></a> | 
+                    <a href="javascript:xar_base_checkall(document.forms['viewimages'],false)"><xar:mlstring>Uncheck All</xar:mlstring></a> ]
                 </td>
             </tr>
             <xar:if condition="empty($action)">
@@ -288,8 +285,13 @@
                     <label for="saveas"><xar:mlstring>Save As</xar:mlstring></label>
                     <select name="saveas" id="saveas">
                         <option value="0"><xar:mlstring>derivative</xar:mlstring></option>
-                        <option value="1"><xar:mlstring>[image]_new.[ext]</xar:mlstring></option>
-                        <option value="2"><xar:mlstring>replace</xar:mlstring></option>
+                        <xar:if condition="!empty($thumbsonly)">
+                            <option value="1" disabled="disabled"><xar:mlstring>[image]_new.[ext]</xar:mlstring></option>
+                            <option value="2" disabled="disabled"><xar:mlstring>replace</xar:mlstring></option>
+                        <xar:else/>
+                            <option value="1"><xar:mlstring>[image]_new.[ext]</xar:mlstring></option>
+                            <option value="2"><xar:mlstring>replace</xar:mlstring></option>
+                        </xar:if>
                     </select>
                     <input type="submit" name="processlist" value="#xarML('Process')#" />
                 </td>

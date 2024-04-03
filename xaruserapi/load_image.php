@@ -11,13 +11,16 @@
  * @link http://xaraya.com/index.php/release/152.html
  * @author Images Module Development Team
  */
+
+use Xaraya\Modules\Images\Image_GD;
+
 /**
  * Load an image object for further manipulation
  *
  * @param   integer $fileId        The (uploads) file id of the image to load, or
  * @param   string  $fileLocation  The file location of the image to load
  * @param   string  $thumbsdir     (optional) The directory where derivative images are stored
- * @return object Image_GD (or other) object
+ * @return object|null Image_GD (or other) object
  */
 function images_userapi_load_image($args)
 {
@@ -89,24 +92,25 @@ function images_userapi_load_image($args)
         $thumbsdir = xarModVars::get('images', 'path.derivative-store');
     }
 
-    sys::import('modules.images.xarclass.image_properties');
+    sys::import('modules.images.class.image_properties');
 
     switch (xarModVars::get('images', 'type.graphics-library')) {
+        /**
         case _IMAGES_LIBRARY_IMAGEMAGICK:
-            sys::import('modules.images.xarclass.image_ImageMagick');
+            sys::import('modules.images.class.image_ImageMagick');
             $newImage = new Image_ImageMagick($location, $thumbsdir);
             return $newImage;
             break;
         case _IMAGES_LIBRARY_NETPBM:
-            sys::import('modules.images.xarclass.image_NetPBM');
+            sys::import('modules.images.class.image_NetPBM');
             $newImage = new Image_NetPBM($location, $thumbsdir);
             return $newImage;
             break;
+         */
         default:
         case _IMAGES_LIBRARY_GD:
-            sys::import('modules.images.xarclass.image_gd');
+            sys::import('modules.images.class.image_gd');
             $newImage = new Image_GD($location, $thumbsdir);
             return $newImage;
-            break;
     }
 }

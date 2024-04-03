@@ -11,6 +11,11 @@
  * @link http://xaraya.com/index.php/release/152.html
  * @author Images Module Development Team
  */
+
+namespace Xaraya\Modules\Images;
+
+use xarMod;
+
 /**
  * Class Image properties
  */
@@ -28,14 +33,13 @@ class Image_Properties
     public $_tmpFile;
     public $_fileId;
 
-    public function __constructor($fileInfo, $thumbsdir = null)
+    public function __construct($fileInfo, $thumbsdir = null)
     {
         if (empty($thumbsdir)) {
             $this->_thumbsdir = './';
         } else {
             $this->_thumbsdir = $thumbsdir;
         }
-
         if (is_array($fileInfo)) {
             $this->fileLocation = $fileInfo['fileLocation'];
             $this->fileName = $fileInfo['fileName'];
@@ -56,7 +60,6 @@ class Image_Properties
             trigger_error("File [$this->fileLocation] does not exist.");
             return null;
         }
-
         if (!empty($imageInfo) && is_array($imageInfo)) {
             $this->_owidth  = $this->width  = $imageInfo[0];
             $this->_oheight = $this->height = $imageInfo[1];
@@ -67,11 +70,6 @@ class Image_Properties
             trigger_error("File [$this->fileLocation] is not an image.");
             return null;
         }
-    }
-
-    public function Image_Properties($fileLocation, $thumbsdir = null)
-    {
-        return $this->__constructor($fileLocation, $thumbsdir);
     }
 
     public function _getMimeType($mimeType)

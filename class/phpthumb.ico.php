@@ -12,9 +12,8 @@
 
 class phpthumb_ico
 {
-    public function phpthumb_ico()
+    public function __construct()
     {
-        return true;
     }
 
 

@@ -1,17 +1,16 @@
 <?php
 
-sys::import('modules.images.xarclass.image_properties');
+namespace Xaraya\Modules\Images;
+
+use xarMod;
+use sys;
+sys::import('modules.images.class.image_properties');
 
 class Image_GD extends Image_Properties
 {
-    public function __constructor($fileLocation, $thumbsdir = null)
+    public function __construct($fileLocation, $thumbsdir = null)
     {
-        parent::__constructor($fileLocation, $thumbsdir);
-    }
-
-    public function Image_GD($fileLocation, $thumbsdir = null)
-    {
-        return $this->__constructor($fileLocation, $thumbsdir);
+        parent::__construct($fileLocation, $thumbsdir);
     }
 
     /**
@@ -34,9 +33,9 @@ class Image_GD extends Image_Properties
             return true;
         }
 
-        $origImage = $this->_open();
+        $origImage =& $this->_open();
 
-        if (is_resource($origImage)) {
+        if (is_resource($origImage) || is_object($origImage)) {
             if (is_dir($this->_thumbsdir) && is_writable($this->_thumbsdir)) {
                 $this->_tmpFile = tempnam($this->_thumbsdir, 'xarimage-');
             } else {
@@ -53,7 +52,7 @@ class Image_GD extends Image_Properties
         return true;
     }
 
-    public function _open()
+    public function &_open()
     {
         $origImage = null;
 
@@ -67,7 +66,6 @@ class Image_GD extends Image_Properties
             }
             return $origImage;
         }
-
         switch ($this->mime['text']) {
             case 'image/gif':
                 // this will fail for GIF Read Support !

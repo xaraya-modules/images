@@ -11,7 +11,7 @@
  * @link http://xaraya.com/index.php/release/152.html
  * @author Images Module Development Team
  */
-function uploads_admin_importpictures($args)
+function images_admin_importpictures($args)
 {
     //global $dd_26;
     //$dd_26 = 'http://epicsaga.com/what_do_you_know?';
@@ -38,15 +38,16 @@ function uploads_admin_importpictures($args)
     }
 
     // Get files to import
-    $FilesInDir = getFileList($image_import_dir);
+    $FilesInDir = images_admin_getFileList($image_import_dir);
 
     // Prune out dupes, and ones already in the system
-    $prunedFiles = pruneFiles($FilesInDir, $image_import_dir);
+    $prunedFiles = images_admin_pruneFiles($FilesInDir, $image_import_dir);
 
 
     // Setup Article Defaults
     $title   = '';
     $summary = '';
+    $body    = '';
     $notes   = '';
     $pubdate = time();
     $status  = 2;        //Default to approved
@@ -113,7 +114,7 @@ function uploads_admin_importpictures($args)
 
 
 
-function getFileList($import_directory)
+function images_admin_getFileList($import_directory)
 {
     // Recurse through import directories, getting files
     $DirectoriesToScan = [$import_directory];
@@ -143,7 +144,7 @@ function getFileList($import_directory)
     return $FilesInDir;
 }
 
-function pruneFiles($FilesInDir, $image_import_dir)
+function images_admin_pruneFiles($FilesInDir, $image_import_dir)
 {
     // Now check to see if any of those files are already in the system
     if (isset($FilesInDir)) {
@@ -167,7 +168,7 @@ function pruneFiles($FilesInDir, $image_import_dir)
                             xar_ulapp
                     FROM $uploadstable
                     WHERE xar_ulfile = '$filename' OR xar_ulhash = '$filename' OR xar_ulhash = '$image_import_dir$filename';";
-            $result = $dbconn->Execute($query);
+            $result = $dbconn->Execute($sql);
             if (!$result) {
                 return;
             }

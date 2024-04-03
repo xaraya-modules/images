@@ -488,6 +488,12 @@ function images_admin_browse()
         }
     }
 
+    $data['thumbsonly'] = false;
+    $data['thumbsdir'] = xarModVars::get('images', 'path.derivative-store');
+    if (is_writable($data['thumbsdir']) && !is_writable($data['basedir'])) {
+        $data['thumbsonly'] = true;
+    }
+
     // Return the template variables defined in this function
     return $data;
 }
