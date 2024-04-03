@@ -593,8 +593,7 @@ Perhaps we could provide a separate (javascript-based) page to fill in those fie
 </div>
     <div>
         <p><i>
-            <xar:set name="ref">'<a href="http://phpthumb.sourceforge.net/">phpThumb()</a>'</xar:set>
-            <xar:ml><xar:mlstring>Based on #(1) by James Heinrich</xar:mlstring><xar:mlvar>#$ref#</xar:mlvar></xar:ml>
+            Based on <a href="https://github.com/JamesHeinrich/phpThumb">phpThumb()</a> by James Heinrich
         </i></p>
     </div>
 

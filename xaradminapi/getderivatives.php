@@ -22,7 +22,7 @@
  * @param   string  $filematch (optional) Specific file match for derivative images
  * @param   integer $cacheExpire (optional) Cache the result for a number of seconds
  * @param   boolean $cacheRefresh (optional) Force refresh of the cache
- * @return array containing the list of derivatives
+ * @return array|null containing the list of derivatives
  */
 function images_adminapi_getderivatives($args)
 {
@@ -225,10 +225,15 @@ function images_adminapi_getderivatives($args)
             break;
     }
     if (!empty($numsort)) {
-        $sortfunc = create_function('$a,$b', 'if ($a["' . $numsort . '"] == $b["' . $numsort . '"]) return 0; return ($a["' . $numsort . '"] > $b["' . $numsort . '"]) ? -1 : 1;');
+        $sortfunc = function ($a, $b) use ($numsort) {
+            if ($a[$numsort] == $b[$numsort]) return 0;
+            return ($a[$numsort] > $b[$numsort]) ? -1 : 1;
+        };
         usort($imagelist, $sortfunc);
     } elseif (!empty($strsort)) {
-        $sortfunc = create_function('$a,$b', 'return strcmp($a["' . $strsort . '"], $b["' . $strsort . '"]);');
+        $sortfunc = function ($a, $b) use ($strsort) {
+            return strcmp($a[$strsort], $b[$strsort]);
+        };
         usort($imagelist, $sortfunc);
     }
 

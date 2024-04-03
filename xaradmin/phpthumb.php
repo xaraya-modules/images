@@ -10,6 +10,8 @@
 //                                                         ///
 //////////////////////////////////////////////////////////////
 
+use Xaraya\Modules\Images\phpThumb\phpthumb;
+
 function images_admin_phpthumb($args)
 {
     // Security check
@@ -248,7 +250,7 @@ function images_admin_phpthumb($args)
         }
 
         sys::import('modules.images.class.phpthumb.class');
-        $phpThumb = new phpThumb();
+        $phpThumb = new phpthumb();
 
         $imagemagick = xarModVars::get('images', 'file.imagemagick');
         if (!empty($imagemagick) && file_exists($imagemagick)) {

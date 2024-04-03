@@ -49,7 +49,7 @@ class Image_Properties
                 $this->_oheight = $this->height = $fileInfo['imageHeight'];
                 $this->setPercent(100);
                 $this->setMime($this->_getMimeType($fileInfo['imageType']));
-                return $this;
+                return;
             }
             $imageInfo = xarMod::apiFunc('images', 'user', 'getimagesize', $fileInfo);
         } elseif (file_exists($fileInfo)) {
@@ -58,17 +58,17 @@ class Image_Properties
             $imageInfo = @getimagesize($fileInfo);
         } else {
             trigger_error("File [$this->fileLocation] does not exist.");
-            return null;
+            return;
         }
         if (!empty($imageInfo) && is_array($imageInfo)) {
             $this->_owidth  = $this->width  = $imageInfo[0];
             $this->_oheight = $this->height = $imageInfo[1];
             $this->setPercent(100);
             $this->setMime($this->_getMimeType($imageInfo[2]));
-            return $this;
+            return;
         } else {
             trigger_error("File [$this->fileLocation] is not an image.");
-            return null;
+            return;
         }
     }
 
