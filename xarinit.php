@@ -44,8 +44,7 @@ function images_init()
 
     if (!xarModHooks::register('item', 'transform', 'API', 'images', 'user', 'transformhook')) {
         $msg = xarML('Could not register hook.');
-        xarErrorSet(XAR_USER_EXCEPTION, 'MISSING_DATA', new DefaultUserException($msg));
-        return;
+        throw new BadParameterException(null, $msg);
     }
     /*
     // Register the tag

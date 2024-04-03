@@ -49,7 +49,7 @@ function images_admin_updateconfig()
         foreach ($libtype as $varname => $value) {
             // check to make sure that the value passed in is
             // a real images module variable
-            if (null !== xarModVars::get('images', 'type.'.$varname)) {
+            if (null !== xarModVars::get('images', 'type.' . $varname)) {
                 xarModVars::set('images', 'type.' . $varname, $value);
             }
         }
@@ -58,7 +58,7 @@ function images_admin_updateconfig()
         foreach ($file as $varname => $value) {
             // check to make sure that the value passed in is
             // a real images module variable
-            if (null !== xarModVars::get('images', 'file.'.$varname)) {
+            if (null !== xarModVars::get('images', 'file.' . $varname)) {
                 xarModVars::set('images', 'file.' . $varname, $value);
             }
         }
@@ -71,12 +71,10 @@ function images_admin_updateconfig()
             if (null !== xarModVars::get('images', 'path.' . $varname)) {
                 if (!file_exists($value) || !is_dir($value)) {
                     $msg = xarML('Location [#(1)] either does not exist or is not a valid directory!', $value);
-                    xarErrorSet(XAR_USER_EXCEPTION, 'INVALID_DIRECTORY', new DefaultUserException($msg));
-                    return;
+                    throw new BadParameterException(null, $msg);
                 } elseif (!is_writable($value)) {
                     $msg = xarML('Location [#(1)] can not be written to - please check permissions and try again!', $value);
-                    xarErrorSet(XAR_USER_EXCEPTION, 'NOT_WRITABLE', new DefaultUserException($msg));
-                    return;
+                    throw new BadParameterException(null, $msg);
                 } else {
                     xarModVars::set('images', 'path.' . $varname, $value);
                 }

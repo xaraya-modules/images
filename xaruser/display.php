@@ -18,7 +18,6 @@
  *  @access   public
  *  @param    string    fileId          The id (from the uploads module) of the image to push
  *  @return   boolean                   This function will exit upon succes and, returns False and throws an exception otherwise
- *  @throws   BAD_PARAM                 missing or invalid parameter
  */
 function images_user_display($args)
 {
@@ -49,13 +48,10 @@ function images_user_display($args)
     if (!is_object($image)) {
         xarController::redirect('modules/images/xarimages/admin.gif');
         return true;
-        //    $msg = xarML('Unable to find file: [#(1)]', $fileId);
-    //    xarErrorSet(XAR_SYSTEM_EXCEPTION, 'FILE_MISSING', new SystemException($msg));
-    //    return FALSE;
     }
 
-    $fileType =& $image->mime;
-    $fileName =& $image->fileName;
+    $fileType = $image->mime;
+    $fileName = $image->fileName;
 
     if (isset($width) && !empty($width)) {
         $width = urldecode($width);
@@ -96,9 +92,7 @@ function images_user_display($args)
     $fileLocation = $image->getDerivative();
 
     if (is_null($fileLocation)) {
-        $msg = xarML('Unable to find file: [#(1)]', $fileId);
-        xarErrorSet(XAR_SYSTEM_EXCEPTION, 'FILE_MISSING', new SystemException($msg));
-        return false;
+        throw new BadParameterException([$fileId], 'Unable to find file: [#(1)]');
     }
 
     // Close the buffer, saving it's current contents for possible future use
@@ -127,7 +121,7 @@ function images_user_display($args)
             fclose($fp);
         }
 
-    // FIXME: make sure the file is indeed supposed to be stored in the database :-)
+        // FIXME: make sure the file is indeed supposed to be stored in the database :-)
     } elseif (is_numeric($fileId) && xarMod::isAvailable('uploads')) {
         $fileSize = 0;
 

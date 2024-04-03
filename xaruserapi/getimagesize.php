@@ -19,7 +19,6 @@
  * @param   integer $fileType      The (uploads) mime type for the image
  * @param   integer $storeType     The (uploads) store type for the image
  * @return  array Array containing the width, height and gd_info if available
- * @throws  BAD_PARAM
  */
 function images_userapi_getimagesize($args)
 {
@@ -32,8 +31,7 @@ function images_userapi_getimagesize($args)
             'getimagesize',
             'images'
         );
-        xarErrorSet(XAR_SYSTEM_EXCEPTION, 'BAD_PARAM', new SystemException($mesg));
-        return;
+        throw new BadParameterException(null, $mesg);
     } elseif (!empty($fileId) && !is_numeric($fileId)) {
         $mesg = xarML(
             "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
@@ -41,8 +39,7 @@ function images_userapi_getimagesize($args)
             'getimagesize',
             'images'
         );
-        xarErrorSet(XAR_SYSTEM_EXCEPTION, 'BAD_PARAM', new SystemException($mesg));
-        return;
+        throw new BadParameterException(null, $mesg);
     } elseif (!empty($fileLocation) && !is_string($fileLocation)) {
         $mesg = xarML(
             "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
@@ -50,8 +47,7 @@ function images_userapi_getimagesize($args)
             'getimagesize',
             'images'
         );
-        xarErrorSet(XAR_SYSTEM_EXCEPTION, 'BAD_PARAM', new SystemException($mesg));
-        return;
+        throw new BadParameterException(null, $mesg);
     }
 
     if (!empty($fileLocation) && file_exists($fileLocation)) {

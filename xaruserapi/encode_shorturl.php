@@ -37,15 +37,15 @@ function images_userapi_encode_shorturl($args)
         if (!empty($fileType)) {
             $type = explode('/', $fileType);
 
-        // get the mime type from cache for resize()
-        } elseif (xarVar::isCached('Module.Images', 'imagemime.'.$fileId)) {
-            $fileType = xarVar::getCached('Module.Images', 'imagemime.'.$fileId);
+            // get the mime type from cache for resize()
+        } elseif (xarVar::isCached('Module.Images', 'imagemime.' . $fileId)) {
+            $fileType = xarVar::getCached('Module.Images', 'imagemime.' . $fileId);
             $type = explode('/', $fileType);
 
-        // get the mime type from the database (urgh)
+            // get the mime type from the database (urgh)
         } else {
             // Bug 5410 Make a two step process
-            $imageinfo = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' =>$fileId]);
+            $imageinfo = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $fileId]);
             $image = end($imageinfo);
 
             if (empty($image)) {

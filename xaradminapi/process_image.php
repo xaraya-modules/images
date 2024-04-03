@@ -49,19 +49,13 @@ function images_adminapi_process_image($args)
             'images'
         );
         if ($saveas == 3) {
-            $phpThumb =& images_get_thumb();
+            $phpThumb = images_get_thumb();
             // Generate an error image
             $phpThumb->ErrorImage($msg);
             // The calling GUI needs to stop processing here
             return true;
         } else {
-            xarErrorSet(
-                XAR_SYSTEM_EXCEPTION,
-                'BAD_PARAM',
-                new SystemException($msg)
-            );
-            // Throw back the error
-            return;
+            throw new BadParameterException(null, $msg);
         }
     }
 
@@ -117,13 +111,13 @@ function images_adminapi_process_image($args)
         }
 
         $file = realpath($image['fileLocation']);
-        $phpThumb =& images_get_thumb();
+        $phpThumb = images_get_thumb();
         $phpThumb->setSourceFilename($file);
 
-    // If the image is stored in the database (uploads module)
-    // NOTE: the next line is the *only* place i could find which suppresses exceptions through the 0 parameter at the end
-    // NOTE: in the 2.x branch that parameter does not exist anymore, so the next code needs to be changed.
-    } elseif (is_numeric($image['fileId']) && xarMod::isAvailable('uploads') && xarMod::apiLoad('uploads', 'user', 0) &&
+        // If the image is stored in the database (uploads module)
+        // NOTE: the next line is the *only* place i could find which suppresses exceptions through the 0 parameter at the end
+        // NOTE: in the 2.x branch that parameter does not exist anymore, so the next code needs to be changed.
+    } elseif (is_numeric($image['fileId']) && xarMod::isAvailable('uploads') && xarMod::apiLoad('uploads', 'user') &&
               defined('_UPLOADS_STORE_DB_DATA') && ($image['storeType'] & _UPLOADS_STORE_DB_DATA)) {
         $uploadsdir = xarModVars::get('uploads', 'path.uploads-directory');
         switch ($saveas) {
@@ -171,25 +165,19 @@ function images_adminapi_process_image($args)
                 'images'
             );
             if ($saveas == 3) {
-                $phpThumb =& images_get_thumb();
+                $phpThumb = images_get_thumb();
                 // Generate an error image
                 $phpThumb->ErrorImage($msg);
                 // The calling GUI needs to stop processing here
                 return true;
             } else {
-                xarErrorSet(
-                    XAR_SYSTEM_EXCEPTION,
-                    'BAD_PARAM',
-                    new SystemException($msg)
-                );
-                // Throw back the error
-                return;
+                throw new BadParameterException(null, $msg);
             }
         }
 
         $src = implode('', $data);
         unset($data);
-        $phpThumb =& images_get_thumb();
+        $phpThumb = images_get_thumb();
         $phpThumb->setSourceData($src);
     } else {
         $msg = xarML(
@@ -199,19 +187,13 @@ function images_adminapi_process_image($args)
             'images'
         );
         if ($saveas == 3) {
-            $phpThumb =& images_get_thumb();
+            $phpThumb = images_get_thumb();
             // Generate an error image
             $phpThumb->ErrorImage($msg);
             // The calling GUI needs to stop processing here
             return true;
         } else {
-            xarErrorSet(
-                XAR_SYSTEM_EXCEPTION,
-                'BAD_PARAM',
-                new SystemException($msg)
-            );
-            // Throw back the error
-            return;
+            throw new BadParameterException(null, $msg);
         }
     }
 
@@ -234,13 +216,7 @@ function images_adminapi_process_image($args)
             // The calling GUI needs to stop processing here
             return true;
         } else {
-            xarErrorSet(
-                XAR_SYSTEM_EXCEPTION,
-                'BAD_PARAM',
-                new SystemException($msg)
-            );
-            // Throw back the error
-            return;
+            throw new BadParameterException(null, $msg);
         }
     }
 
@@ -259,26 +235,14 @@ function images_adminapi_process_image($args)
             'process_image',
             'images'
         );
-        xarErrorSet(
-            XAR_SYSTEM_EXCEPTION,
-            'BAD_PARAM',
-            new SystemException($msg)
-        );
-        // Throw back the error
-        return;
+        throw new BadParameterException(null, $msg);
     }
 
     $result = $phpThumb->RenderToFile($save);
 
     if (empty($result)) {
         $msg = implode("\n\n", $phpThumb->debugmessages);
-        xarErrorSet(
-            XAR_SYSTEM_EXCEPTION,
-            'BAD_PARAM',
-            new SystemException($msg)
-        );
-        // Throw back the error
-        return;
+        throw new BadParameterException(null, $msg);
     }
 
     // TODO: add file entry to uploads when saveas == 1 ?
@@ -295,7 +259,7 @@ function images_adminapi_process_image($args)
                                  // reset the extrainfo
                                  'extrainfo' => '', ]
         )) {
-            return;
+            return '';
         }
         if (!empty($dbfile)) {
             // store the image in the database
@@ -306,7 +270,7 @@ function images_adminapi_process_image($args)
                 ['fileSrc' => $save,
                                      'fileId'  => $image['fileId'], ]
             )) {
-                return;
+                return '';
             }
         }
     }
@@ -314,7 +278,7 @@ function images_adminapi_process_image($args)
     return $save;
 }
 
-function &images_get_thumb()
+function images_get_thumb()
 {
     sys::import('modules.images.xarclass.phpthumb.class');
     $phpThumb = new phpThumb();

@@ -2021,7 +2021,7 @@ class phpthumb
                 }
                 $watermark_img = $this->ImageCreateFromStringReplacement(file_get_contents($this->config_nooffsitelink_watermark_src));
                 $phpthumbFilters = new phpthumb_filters();
-                $phpthumbFilters->phpThumbObject = &$this;
+                $phpthumbFilters->phpThumbObject = $this;
                 $opacity = 50;
                 $margin  = 5;
                 $phpthumbFilters->WatermarkOverlay($this->gdimg_output, $watermark_img, '*', $opacity, $margin);
@@ -2152,7 +2152,7 @@ class phpthumb
                 return false;
             }
             $phpthumbFilters = new phpthumb_filters();
-            $phpthumbFilters->phpThumbObject = &$this;
+            $phpthumbFilters->phpThumbObject = $this;
             foreach ($this->fltr as $filtercommand) {
                 @[$command, $parameter] = explode('|', $filtercommand, 2);
                 $this->DebugMessage('Attempting to process filter command "'.$command.'('.$parameter.')"', __FILE__, __LINE__);

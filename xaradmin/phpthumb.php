@@ -45,7 +45,7 @@ function images_admin_phpthumb($args)
     if (empty($fileId)) {
         $data['selimage'] = [];
 
-    // we're dealing with an uploads file here
+        // we're dealing with an uploads file here
     } elseif (is_numeric($fileId)) {
         $data['images'] = xarMod::apiFunc(
             'images',
@@ -57,7 +57,7 @@ function images_admin_phpthumb($args)
             $data['selimage'] = $data['images'][$fileId];
         }
 
-    // we're dealing with a derivative image here
+        // we're dealing with a derivative image here
     } elseif (preg_match('/^[0-9a-f]{32}$/i', $fileId)) {
         $data['thumbsdir'] = xarModVars::get('images', 'path.derivative-store');
         $data['images'] = xarMod::apiFunc(
@@ -74,7 +74,7 @@ function images_admin_phpthumb($args)
             }
         }
 
-    // we're dealing with a server image here
+        // we're dealing with a server image here
     } else {
         $data['images'] = xarMod::apiFunc(
             'images',
@@ -294,13 +294,7 @@ function images_admin_phpthumb($args)
                 if (!$phpThumb->RenderToFile($save)) {
                     // do something with debug/error messages
                     $msg = implode("\n\n", $phpThumb->debugmessages);
-                    xarErrorSet(
-                        XAR_SYSTEM_EXCEPTION,
-                        'BAD_PARAM',
-                        new SystemException($msg)
-                    );
-                    // Throw back the error
-                    return;
+                    throw new BadParameterException(null, $msg);
                 } else {
                     if (!empty($dbfile) || realpath($save) == realpath($data['selimage']['fileLocation'])) {
                         // update the uploads file entry if we overwrite a file !
@@ -379,13 +373,7 @@ function images_admin_phpthumb($args)
                 // Stop processing here
                 exit;
             } else {
-                xarErrorSet(
-                    XAR_SYSTEM_EXCEPTION,
-                    'BAD_PARAM',
-                    new SystemException($msg)
-                );
-                // Throw back the error
-                return;
+                throw new BadParameterException(null, $msg);
             }
         }
     }

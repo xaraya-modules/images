@@ -202,27 +202,23 @@ class Image_Properties
                 switch (strtolower(key($args))) {
                     case 'percent':
                         return $this->_setPercent($args['percent']);
-                        break;
                     case 'wpercent':
                         return $this->_setWPercent($args['wpercent']);
-                        break;
                     case 'hpercent':
                         return $this->_setHPercent($args['hpercent']);
-                        break;
                     default:
                         return false;
                 }
-                break;
+                // no break
             case 2:
                 if (isset($args['wpercent']) && isset($args['hpercent'])) {
                     return $this->_setWxHPercent($args['wpercent'], $args['hpercent']);
                 } else {
                     return false;
                 }
-                break;
+                // no break
             default:
                 return false;
-                break;
         }
     }
 

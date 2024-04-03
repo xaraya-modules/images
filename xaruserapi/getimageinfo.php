@@ -19,7 +19,6 @@
  * @param   string  $basedir       (optional) The directory where images are stored
  * @param   string  $baseurl       (optional) The corresponding base URL for the images
  * @return  array   An array containing the image information if available or false if not available
- * @throws BAD_PARAM
  */
 function images_userapi_getimageinfo($args)
 {
@@ -32,8 +31,7 @@ function images_userapi_getimageinfo($args)
             'getimageinfo',
             'images'
         );
-        xarErrorSet(XAR_SYSTEM_EXCEPTION, 'BAD_PARAM', new SystemException($mesg));
-        return;
+        throw new BadParameterException(null, $mesg);
     } elseif (!empty($fileId) && !is_numeric($fileId)) {
         $mesg = xarML(
             "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
@@ -41,8 +39,7 @@ function images_userapi_getimageinfo($args)
             'getimageinfo',
             'images'
         );
-        xarErrorSet(XAR_SYSTEM_EXCEPTION, 'BAD_PARAM', new SystemException($mesg));
-        return;
+        throw new BadParameterException(null, $mesg);
     } elseif (!empty($fileLocation) && !is_string($fileLocation)) {
         $mesg = xarML(
             "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
@@ -50,8 +47,7 @@ function images_userapi_getimageinfo($args)
             'getimageinfo',
             'images'
         );
-        xarErrorSet(XAR_SYSTEM_EXCEPTION, 'BAD_PARAM', new SystemException($mesg));
-        return;
+        throw new BadParameterException(null, $mesg);
     }
 
     if (!empty($fileId) && is_numeric($fileId)) {

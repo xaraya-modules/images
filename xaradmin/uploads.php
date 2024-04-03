@@ -174,7 +174,7 @@ function images_admin_uploads($args)
                 $action = '';
             }
 
-        // if we're dealing with an individual fileId, get some additional information
+            // if we're dealing with an individual fileId, get some additional information
         } elseif (is_numeric($fileId) && !empty($data['images'][$fileId])) {
             $found = $data['images'][$fileId];
             // Get derivative images for this image
@@ -217,7 +217,7 @@ function images_admin_uploads($args)
                         }
                         $modlist[$assoc['modId']][$assoc['itemType']][$assoc['objectId']] = 1;
 
-                    // uploads_guimods 0.9.9+ format
+                        // uploads_guimods 0.9.9+ format
                     } elseif (isset($assoc['itemid'])) {
                         if (!isset($modlist[$assoc['modid']])) {
                             $modlist[$assoc['modid']] = [];
@@ -246,11 +246,11 @@ function images_admin_uploads($args)
                         $moditem['itemtype'] = $itemtype;
                         if ($itemtype == 0) {
                             $moditem['modname'] = ucwords($modinfo['displayname']);
-                        //    $moditem['modlink'] = xarController::URL($modinfo['name'],'user','main');
+                            //    $moditem['modlink'] = xarController::URL($modinfo['name'],'user','main');
                         } else {
                             if (isset($mytypes) && !empty($mytypes[$itemtype])) {
                                 $moditem['modname'] = ucwords($modinfo['displayname']) . ' ' . $itemtype . ' - ' . $mytypes[$itemtype]['label'];
-                            //    $moditem['modlink'] = $mytypes[$itemtype]['url'];
+                                //    $moditem['modlink'] = $mytypes[$itemtype]['url'];
                             } else {
                                 $moditem['modname'] = ucwords($modinfo['displayname']) . ' ' . $itemtype;
                                 //    $moditem['modlink'] = xarController::URL($modinfo['name'],'user','view',array('itemtype' => $itemtype));

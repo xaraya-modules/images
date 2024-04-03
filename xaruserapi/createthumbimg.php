@@ -79,15 +79,15 @@ function createthumb($IMAGE_SOURCE, $THUMB_X, $THUMB_Y, $OUTPUT_FILE)
     if (($THUMB_Y == "0") and ($THUMB_X == "0")) {
         return(0);
     } elseif ($THUMB_Y == "0") {
-        $SCALEX = $THUMB_X/($SRC_X-1);
-        $THUMB_Y = $SRC_Y*$SCALEX;
+        $SCALEX = $THUMB_X / ($SRC_X - 1);
+        $THUMB_Y = $SRC_Y * $SCALEX;
     } elseif ($THUMB_X == "0") {
-        $SCALEY = $THUMB_Y/($SRC_Y-1);
-        $THUMB_X = $SRC_X*$SCALEY;
+        $SCALEY = $THUMB_Y / ($SRC_Y - 1);
+        $THUMB_X = $SRC_X * $SCALEY;
     }
 
-    $THUMB_X = (int)($THUMB_X);
-    $THUMB_Y = (int)($THUMB_Y);
+    $THUMB_X = (int) ($THUMB_X);
+    $THUMB_Y = (int) ($THUMB_Y);
 
     $DEST_IMAGE = imagecreatetruecolor($THUMB_X, $THUMB_Y);
 

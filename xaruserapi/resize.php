@@ -32,15 +32,11 @@ function images_userapi_resize($args)
     extract($args);
 
     if (!isset($src) || empty($src)) {
-        $msg = xarML("Required parameter '#(1)' is missing or empty.", 'src');
-        xarErrorSet(XAR_USER_EXCEPTION, xarML('Invalid Parameter'), new DefaultUserException($msg));
-        return false;
+        throw new BadParameterException(['src'], "Required parameter '#(1)' is missing or empty.");
     }
 
     if (!isset($label) || empty($label)) {
-        $msg = xarML("Required parameter '#(1)' is missing or empty.", 'label');
-        xarErrorSet(XAR_USER_EXCEPTION, xarML('Invalid Parameter'), new DefaultUserException($msg));
-        return false;
+        throw new BadParameterException(['label'], "Required parameter '#(1)' is missing or empty.");
     }
 
     if (!isset($width) && !isset($height) && !isset($setting) && !isset($params)) {
@@ -51,16 +47,11 @@ function images_userapi_resize($args)
             'setting',
             'params'
         );
-        xarErrorSet(XAR_USER_EXCEPTION, xarML('Missing Parameters'), new DefaultUserException($msg));
-        return false;
+        throw new BadParameterException(['width', 'height', 'setting', 'params'], "Required attributes '#(1)', '#(2)', '#(3)' or '#(4)' for tag <xar:image> are missing. See tag documentation.");
     } elseif (isset($height) && !xarVar::validate('regexp:/[0-9]+(px|%)/:', $height)) {
-        $msg = xarML("'#(1)' parameter is incorrectly formatted.", 'height');
-        xarErrorSet(XAR_USER_EXCEPTION, xarML('Invalid Parameter'), new DefaultUserException($msg));
-        return false;
+        throw new BadParameterException(['height'], "'#(1)' parameter is incorrectly formatted.");
     } elseif (isset($width) && !xarVar::validate('regexp:/[0-9]+(px|%)/:', $width)) {
-        $msg = xarML("'#(1)' parameter is incorrectly formatted.", 'width');
-        xarErrorSet(XAR_USER_EXCEPTION, xarML('Invalid Parameter'), new DefaultUserException($msg));
-        return false;
+        throw new BadParameterException(['width'], "'#(1)' parameter is incorrectly formatted.");
     }
 
     if (!isset($returnpath)) {
@@ -126,10 +117,7 @@ function images_userapi_resize($args)
                                             'iscached' => true, ]
             );
             if (empty($location)) {
-                $errorstack = xarErrorGet();
-                $errorstack = array_shift($errorstack);
-                $msg = $errorstack['short'];
-                xarErrorHandled();
+                $msg = 'Oops with process_image';
                 return sprintf('<img src="" alt="%s" %s />', $msg, $attribs);
             }
 
@@ -143,7 +131,7 @@ function images_userapi_resize($args)
                 if (!empty($baseurl)) {
                     $url = $baseurl . '/' . basename($location);
 
-                // or if it's an absolute URL, try to get rid of it
+                    // or if it's an absolute URL, try to get rid of it
                 } elseif (substr($location, 0, 1) == '/' || substr($location, 1, 1) == ':') {
                     $thumbsdir = xarModVars::get('images', 'path.derivative-store');
                     $url = $thumbsdir . '/' . basename($location);
@@ -169,7 +157,7 @@ function images_userapi_resize($args)
             return sprintf('<img src="%s" alt="%s" %s />', $url, $label, $attribs);
         }
 
-    // use parameters for processing
+        // use parameters for processing
     } elseif (!empty($params)) {
         $location = xarMod::apiFunc(
             'images',
@@ -182,10 +170,7 @@ function images_userapi_resize($args)
                                         'iscached' => true, ]
         );
         if (empty($location)) {
-            $errorstack = xarErrorGet();
-            $errorstack = array_shift($errorstack);
-            $msg = $errorstack['short'];
-            xarErrorHandled();
+            $msg = 'Oops with process_image';
             return sprintf('<img src="" alt="%s" %s />', $msg, $attribs);
         }
 
@@ -199,7 +184,7 @@ function images_userapi_resize($args)
             if (!empty($baseurl)) {
                 $url = $baseurl . '/' . basename($location);
 
-            // or if it's an absolute URL, try to get rid of it
+                // or if it's an absolute URL, try to get rid of it
             } elseif (substr($location, 0, 1) == '/' || substr($location, 1, 1) == ':') {
                 $thumbsdir = xarModVars::get('images', 'path.derivative-store');
                 $url = $thumbsdir . '/' . basename($location);
@@ -307,7 +292,7 @@ function images_userapi_resize($args)
         if (!empty($baseurl)) {
             $url = $baseurl . '/' . basename($location);
 
-        // or if it's an absolute URL, try to get rid of it
+            // or if it's an absolute URL, try to get rid of it
         } elseif (substr($location, 0, 1) == '/' || substr($location, 1, 1) == ':') {
             $thumbsdir = xarModVars::get('images', 'path.derivative-store');
             $url = $thumbsdir . '/' . basename($location);
@@ -319,9 +304,9 @@ function images_userapi_resize($args)
         // put the mime type in cache for encode_shorturl()
         $mime = $image->getMime();
         if (is_array($mime) && isset($mime['text'])) {
-            xarVar::setCached('Module.Images', 'imagemime.'.$src, $mime['text']);
+            xarVar::setCached('Module.Images', 'imagemime.' . $src, $mime['text']);
         } else {
-            xarVar::setCached('Module.Images', 'imagemime.'.$src, $mime);
+            xarVar::setCached('Module.Images', 'imagemime.' . $src, $mime);
         }
         $url = xarController::URL(
             'images',

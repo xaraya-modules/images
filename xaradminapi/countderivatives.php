@@ -60,8 +60,8 @@ function images_adminapi_countderivatives($args)
 
     $cachekey = md5(serialize($params));
     // get the number of images from temporary cache - see getderivatives()
-    if (xarVar::isCached('Modules.Images', 'countderivatives.'.$cachekey)) {
-        return xarVar::getCached('Modules.Images', 'countderivatives.'.$cachekey);
+    if (xarVar::isCached('Modules.Images', 'countderivatives.' . $cachekey)) {
+        return xarVar::getCached('Modules.Images', 'countderivatives.' . $cachekey);
     } else {
         $files = xarMod::apiFunc(
             'dynamicdata',

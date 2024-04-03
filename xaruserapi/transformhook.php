@@ -17,7 +17,7 @@
  * @param  $args ['extrainfo']
  * @return
  */
-function & images_userapi_transformhook($args)
+function images_userapi_transformhook($args)
 {
     extract($args);
 
@@ -25,21 +25,21 @@ function & images_userapi_transformhook($args)
         if (isset($extrainfo['transform']) && is_array($extrainfo['transform'])) {
             foreach ($extrainfo['transform'] as $key) {
                 if (isset($extrainfo[$key])) {
-                    $extrainfo[$key] =& images_userapi_transform($extrainfo[$key]);
+                    $extrainfo[$key] = images_userapi_transform($extrainfo[$key]);
                 }
             }
             return $extrainfo;
         }
         foreach ($extrainfo as $text) {
-            $result[] =& images_userapi_transform($text);
+            $result[] = images_userapi_transform($text);
         }
     } else {
-        $result =& images_userapi_transform($extrainfo);
+        $result = images_userapi_transform($extrainfo);
     }
     return $result;
 }
 
-function & images_userapi_transform($body)
+function images_userapi_transform($body)
 {
     while (preg_match('/#(image-resize):([0-9]+):([^#]*)#/i', $body, $parts)) {
         // first argument is always the complete haystack

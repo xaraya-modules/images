@@ -4,12 +4,12 @@ sys::import('modules.images.xarclass.image_properties');
 
 class Image_GD extends Image_Properties
 {
-    public function __constructor($fileLocation, $thumbsdir=null)
+    public function __constructor($fileLocation, $thumbsdir = null)
     {
         parent::__constructor($fileLocation, $thumbsdir);
     }
 
-    public function Image_GD($fileLocation, $thumbsdir=null)
+    public function Image_GD($fileLocation, $thumbsdir = null)
     {
         return $this->__constructor($fileLocation, $thumbsdir);
     }
@@ -53,7 +53,7 @@ class Image_GD extends Image_Properties
         return true;
     }
 
-    public function &_open()
+    public function _open()
     {
         $origImage = null;
 
@@ -97,15 +97,9 @@ class Image_GD extends Image_Properties
         return $origImage;
     }
 
-    public function rotate()
-    {
-    }
+    public function rotate() {}
 
-    public function scale()
-    {
-    }
+    public function scale() {}
 
-    public function crop()
-    {
-    }
+    public function crop() {}
 }

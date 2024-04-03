@@ -206,7 +206,7 @@ class Album
             print "Upgrading item $i of $count...";
             my_flush();
 
-            $photo = &$this->getPhoto($i);
+            $photo = $this->getPhoto($i);
             if ($photo->integrityCheck($this->getAlbumDir())) {
                 $changed = 1;
                 $this->updateSerial = 1;
@@ -377,7 +377,7 @@ class Album
         $this->updateSerial = 1;
 
         for ($i = 1; $i <= $this->numPhotos(1); $i++) {
-            $photo = &$this->getPhoto($i);
+            $photo = $this->getPhoto($i);
             $photo->setHighlight($this->getAlbumDir(), $i == $index);
         }
     }
@@ -607,7 +607,7 @@ class Album
     {
         $this->updateSerial = 1;
 
-        $photo = &$this->getPhoto($index);
+        $photo = $this->getPhoto($index);
         if (!$photo->isMovie()) {
             $photo->resize($this->getAlbumDir(), $target, $pathToResized);
         }
@@ -685,13 +685,13 @@ class Album
 
     public function hidePhoto($index)
     {
-        $photo = &$this->getPhoto($index);
+        $photo = $this->getPhoto($index);
         $photo->hide();
     }
 
     public function unhidePhoto($index)
     {
-        $photo = &$this->getPhoto($index);
+        $photo = $this->getPhoto($index);
         $photo->unhide();
     }
 
@@ -884,7 +884,7 @@ class Album
         return $ids;
     }
 
-    public function &getPhoto($index)
+    public function getPhoto($index)
     {
         if ($index >= 1 && $index <= sizeof($this->photos)) {
             return $this->photos[$index-1];
@@ -918,7 +918,7 @@ class Album
 
     public function setCaption($index, $caption)
     {
-        $photo = &$this->getPhoto($index);
+        $photo = $this->getPhoto($index);
         $photo->setCaption($caption);
     }
 
@@ -936,7 +936,7 @@ class Album
 
     public function setUploadDate($index, $uploadDate="")
     {
-        $photo = &$this->getPhoto($index);
+        $photo = $this->getPhoto($index);
         $photo->setUploadDate($uploadDate);
     }
 
@@ -954,7 +954,7 @@ class Album
 
     public function setItemCaptureDate($index, $itemCaptureDate="")
     {
-        $photo = &$this->getPhoto($index);
+        $photo = $this->getPhoto($index);
         $photo->setItemCaptureDate($itemCaptureDate);
     }
 
@@ -972,13 +972,13 @@ class Album
 
     public function addComment($index, $comment, $IPNumber, $name)
     {
-        $photo = &$this->getPhoto($index);
+        $photo = $this->getPhoto($index);
         $photo->addComment($comment, $IPNumber, $name);
     }
 
     public function deleteComment($index, $comment_index)
     {
-        $photo = &$this->getPhoto($index);
+        $photo = $this->getPhoto($index);
         $photo->deleteComment($comment_index);
     }
 
@@ -990,14 +990,14 @@ class Album
 
     public function setKeyWords($index, $keywords)
     {
-        $photo = &$this->getPhoto($index);
+        $photo = $this->getPhoto($index);
         $photo->setKeywords($keywords);
     }
 
     public function rotatePhoto($index, $direction)
     {
         $this->updateSerial = 1;
-        $photo = &$this->getPhoto($index);
+        $photo = $this->getPhoto($index);
         $retval = $photo->rotate($this->getAlbumDir(), $direction, $this->fields["thumb_size"]);
         if (!$retval) {
             return $retval;
@@ -1012,7 +1012,7 @@ class Album
     public function makeThumbnail($index)
     {
         $this->updateSerial = 1;
-        $photo = &$this->getPhoto($index);
+        $photo = $this->getPhoto($index);
         $photo->makeThumbnail($this->getAlbumDir(), $this->fields["thumb_size"]);
     }
 
@@ -1038,7 +1038,7 @@ class Album
 
     public function setIsAlbumName($index, $name)
     {
-        $photo = &$this->getPhoto($index);
+        $photo = $this->getPhoto($index);
         $photo->setIsAlbumName($name);
     }
 
@@ -1105,7 +1105,7 @@ class Album
             return;
         }
 
-        $photo = &$this->getPhoto($index);
+        $photo = $this->getPhoto($index);
         $photo->incrementItemClicks();
 
         $resetModDate=0; //don't reset last_mod_date
@@ -1114,7 +1114,7 @@ class Album
 
     public function resetItemClicks($index)
     {
-        $photo = &$this->getPhoto($index);
+        $photo = $this->getPhoto($index);
         $photo->resetItemClicks();
     }
 
@@ -1127,7 +1127,7 @@ class Album
         }
 
         $dir = $this->getAlbumDir();
-        $photo =& $this->getPhoto($index);
+        $photo = $this->getPhoto($index);
         [$status, $exif, $needToSave] = $photo->getExif($dir, $forceRefresh);
 
         if ($status != 0) {
@@ -1405,7 +1405,7 @@ class Album
     }
     public function setExtraField($index, $field, $value)
     {
-        $photo = &$this->getPhoto($index);
+        $photo = $this->getPhoto($index);
         $photo->setExtraField($field, $value);
     }
 }

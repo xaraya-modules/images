@@ -19,7 +19,7 @@
  * @param   string  $thumbsdir     (optional) The directory where derivative images are stored
  * @return object Image_GD (or other) object
  */
-function & images_userapi_load_image($args)
+function images_userapi_load_image($args)
 {
     extract($args);
 
@@ -30,8 +30,7 @@ function & images_userapi_load_image($args)
             'load_image',
             'images'
         );
-        xarErrorSet(XAR_SYSTEM_EXCEPTION, 'BAD_PARAM', new SystemException($mesg));
-        return;
+        throw new BadParameterException(null, $mesg);
     } elseif (!empty($fileId) && !is_string($fileId)) {
         $mesg = xarML(
             "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
@@ -39,8 +38,7 @@ function & images_userapi_load_image($args)
             'load_image',
             'images'
         );
-        xarErrorSet(XAR_SYSTEM_EXCEPTION, 'BAD_PARAM', new SystemException($mesg));
-        return;
+        throw new BadParameterException(null, $mesg);
     } elseif (!empty($fileLocation) && !is_string($fileLocation)) {
         $mesg = xarML(
             "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
@@ -48,8 +46,7 @@ function & images_userapi_load_image($args)
             'load_image',
             'images'
         );
-        xarErrorSet(XAR_SYSTEM_EXCEPTION, 'BAD_PARAM', new SystemException($mesg));
-        return;
+        throw new BadParameterException(null, $mesg);
     }
 
     // if both arguments are specified, give priority to fileId
@@ -69,7 +66,7 @@ function & images_userapi_load_image($args)
                 $location = $fileInfo;
             }
 
-        // if we get the whole file info
+            // if we get the whole file info
         } elseif (file_exists($fileLocation)) {
             $location = $fileLocation;
         } elseif (defined('_UPLOADS_STORE_DB_DATA') && ($storeType & _UPLOADS_STORE_DB_DATA)) {
@@ -82,8 +79,7 @@ function & images_userapi_load_image($args)
                 'load_image',
                 'images'
             );
-            xarErrorSet(XAR_SYSTEM_EXCEPTION, 'BAD_PARAM', new SystemException($mesg));
-            return;
+            throw new BadParameterException(null, $mesg);
         }
     } else {
         $location = $fileLocation;
