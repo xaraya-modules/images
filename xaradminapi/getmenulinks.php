@@ -42,13 +42,15 @@ function images_adminapi_getmenulinks()
         ),
                              'title' => xarML('Browse Server Images'),
                              'label' => xarML('Browse Server Images'), ];
+        /**
         $menulinks[] = ['url'   => xarController::URL(
             'images',
             'admin',
             'phpthumb'
         ),
-                             'title' => xarML('Define Settings for Image Processing'),
-                             'label' => xarML('Image Processing'), ];
+        'title' => xarML('Define Settings for Image Processing'),
+        'label' => xarML('Image Processing'), ];
+         */
         $menulinks[] = ['url'   => xarController::URL(
             'images',
             'admin',

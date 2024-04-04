@@ -1,17 +1,8 @@
 <?php
 
-//////////////////////////////////////////////////////////////
-///  phpThumb() by James Heinrich <info@silisoftware.com>   //
-//        available at http://phpthumb.sourceforge.net     ///
-//////////////////////////////////////////////////////////////
-///                                                         //
-// See: phpthumb.changelog.txt for recent changes           //
-// See: phpthumb.readme.txt for usage instructions          //
-//                                                         ///
-//////////////////////////////////////////////////////////////
-
-use Xaraya\Modules\Images\phpThumb\phpthumb;
-
+/**
+ * @deprecated 2.0.0 phpThumb() is seriously dated and doesn't play nice as a library
+ */
 function images_admin_phpthumb($args)
 {
     // Security check

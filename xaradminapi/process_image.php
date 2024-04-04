@@ -1,6 +1,6 @@
 <?php
 /**
- * Process an image using phpThumb
+ * Process an image using phpThumb - deprecated
  *
  * @package modules
  * @copyright (C) 2002-2007 The Digital Development Foundation
@@ -21,6 +21,7 @@
  * @param   array   $params   The phpThumb parameters to use
  * @param   boolean $iscached Check if the processed file already exists (default FALSE)
  * @return  string the location of the newly processed image
+ * @deprecated 2.0.0 phpThumb() is seriously dated and doesn't play nice as a library
  */
 
 function images_adminapi_process_image($args)
@@ -278,6 +279,9 @@ function images_adminapi_process_image($args)
     return $save;
 }
 
+/**
+ * @deprecated 2.0.0 phpThumb() is seriously dated and doesn't play nice as a library
+ */
 function images_get_thumb()
 {
     sys::import('modules.images.class.phpthumb_class');
