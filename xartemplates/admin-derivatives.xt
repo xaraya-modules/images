@@ -158,10 +158,12 @@
                     <a href="#xarController::URL('images','admin','derivatives',array('action' => 'view', 'fileId' => $image['fileId']))#">
                         <xar:mlstring>View</xar:mlstring>
                     </a>
+                    <!--
                     |
                     <a href="#xarController::URL('images','admin','phpthumb',array('fid' => $image['fileId']))#">
                         <xar:mlstring>Process</xar:mlstring>
                     </a>
+                    -->
                     |
                     <a href="#xarController::URL('images','admin','derivatives',array('action' => 'delete', 'fileId' => $image['fileId']))#">
                         <xar:mlstring>Delete</xar:mlstring>
