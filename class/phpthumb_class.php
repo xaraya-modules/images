@@ -12,7 +12,7 @@
 namespace Xaraya\Modules\Images\phpThumb;
 
 use sys;
-sys::import('modules.images.class.phpthumb.functions');
+sys::import('modules.images.class.phpthumb_functions');
 
 // make sure all image type constants are defined, even in older PHP versions that don't natively support them
 $predefined_IMG_constants = array(
@@ -615,8 +615,8 @@ class phpthumb {
 					break;
 				}
 				$this->DebugMessage('GD does not have required built-in support for BMP output', __FILE__, __LINE__);
-				if (!@include_once __DIR__ .'/phpthumb.bmp.php' ) {
-					$this->DebugMessage('Error including "'. __DIR__ .'/phpthumb.bmp.php" which is required for BMP format output', __FILE__, __LINE__);
+				if (!@include_once __DIR__ .'/phpthumb_bmp.php' ) {
+					$this->DebugMessage('Error including "'. __DIR__ .'/phpthumb_bmp.php" which is required for BMP format output', __FILE__, __LINE__);
 					ob_end_clean();
 					return false;
 				}
@@ -626,8 +626,8 @@ class phpthumb {
 				break;
 
 			case 'ico':
-				if (!@include_once __DIR__ .'/phpthumb.ico.php' ) {
-					$this->DebugMessage('Error including "'. __DIR__ .'/phpthumb.ico.php" which is required for ICO format output', __FILE__, __LINE__);
+				if (!@include_once __DIR__ .'/phpthumb_ico.php' ) {
+					$this->DebugMessage('Error including "'. __DIR__ .'/phpthumb_ico.php" which is required for ICO format output', __FILE__, __LINE__);
 					ob_end_clean();
 					return false;
 				}
@@ -744,8 +744,8 @@ class phpthumb {
 						imagebmp($this->gdimg_output);
 						break;
 					}
-					if (!@include_once __DIR__ .'/phpthumb.bmp.php' ) {
-						$this->DebugMessage('Error including "'. __DIR__ .'/phpthumb.bmp.php" which is required for BMP format output', __FILE__, __LINE__);
+					if (!@include_once __DIR__ .'/phpthumb_bmp.php' ) {
+						$this->DebugMessage('Error including "'. __DIR__ .'/phpthumb_bmp.php" which is required for BMP format output', __FILE__, __LINE__);
 						return false;
 					}
 					$phpthumb_bmp = new phpthumb_bmp();
@@ -765,8 +765,8 @@ class phpthumb {
 					break;
 
 				case 'ico':
-					if (!@include_once __DIR__ .'/phpthumb.ico.php' ) {
-						$this->DebugMessage('Error including "'. __DIR__ .'/phpthumb.ico.php" which is required for ICO format output', __FILE__, __LINE__);
+					if (!@include_once __DIR__ .'/phpthumb_ico.php' ) {
+						$this->DebugMessage('Error including "'. __DIR__ .'/phpthumb_ico.php" which is required for ICO format output', __FILE__, __LINE__);
 						return false;
 					}
 					$phpthumb_ico = new phpthumb_ico();
@@ -1017,10 +1017,10 @@ class phpthumb {
 
 		$AvailableImageOutputFormats = array();
 		$AvailableImageOutputFormats[] = 'text';
-		if (@is_readable( __DIR__ .'/phpthumb.ico.php')) {
+		if (@is_readable( __DIR__ .'/phpthumb_ico.php')) {
 			$AvailableImageOutputFormats[] = 'ico';
 		}
-		if (@is_readable( __DIR__ .'/phpthumb.bmp.php')) {
+		if (@is_readable( __DIR__ .'/phpthumb_bmp.php')) {
 			$AvailableImageOutputFormats[] = 'bmp';
 		}
 
@@ -2468,8 +2468,8 @@ if (false) {
 				$this->DebugMessage('!function_exists(imagerotate)', __FILE__, __LINE__);
 				return false;
 			}
-			if (!include_once __DIR__ .'/phpthumb.filters.php' ) {
-				$this->DebugMessage('Error including "'. __DIR__ .'/phpthumb.filters.php" which is required for applying filters ('.implode(';', $this->fltr).')', __FILE__, __LINE__);
+			if (!include_once __DIR__ .'/phpthumb_filters.php' ) {
+				$this->DebugMessage('Error including "'. __DIR__ .'/phpthumb_filters.php" which is required for applying filters ('.implode(';', $this->fltr).')', __FILE__, __LINE__);
 				return false;
 			}
 
@@ -2666,8 +2666,8 @@ if (false) {
 			$this->config_nooffsitelink_watermark_src = $this->ResolveFilenameToAbsolute($this->config_nooffsitelink_watermark_src);
 			if (is_file($this->config_nooffsitelink_watermark_src)) {
 
-				if (!include_once __DIR__ .'/phpthumb.filters.php' ) {
-					$this->DebugMessage('Error including "'. __DIR__ .'/phpthumb.filters.php" which is required for applying watermark', __FILE__, __LINE__);
+				if (!include_once __DIR__ .'/phpthumb_filters.php' ) {
+					$this->DebugMessage('Error including "'. __DIR__ .'/phpthumb_filters.php" which is required for applying watermark', __FILE__, __LINE__);
 					return false;
 				}
 				$watermark_img = $this->ImageCreateFromStringReplacement(file_get_contents($this->config_nooffsitelink_watermark_src));
@@ -2807,8 +2807,8 @@ if (false) {
 
 	public function ApplyFilters() {
 		if ($this->fltr && is_array($this->fltr)) {
-			if (!include_once __DIR__ .'/phpthumb.filters.php' ) {
-				$this->DebugMessage('Error including "'. __DIR__ .'/phpthumb.filters.php" which is required for applying filters ('.implode(';', $this->fltr).')', __FILE__, __LINE__);
+			if (!include_once __DIR__ .'/phpthumb_filters.php' ) {
+				$this->DebugMessage('Error including "'. __DIR__ .'/phpthumb_filters.php" which is required for applying filters ('.implode(';', $this->fltr).')', __FILE__, __LINE__);
 				return false;
 			}
 			$phpthumbFilters = new phpthumb_filters();
@@ -3186,12 +3186,12 @@ if (false) {
 						$threshold = ('' !== $threshold ? $threshold : 3);
 						if (phpthumb_functions::gd_version() >= 2.0) {
 							ob_start();
-							if (!@include_once __DIR__ .'/phpthumb.unsharp.php' ) {
+							if (!@include_once __DIR__ .'/phpthumb_unsharp.php' ) {
 								$include_error = ob_get_contents();
 								if ($include_error) {
-									$this->DebugMessage('include_once("'. __DIR__ .'/phpthumb.unsharp.php") generated message: "'.$include_error.'"', __FILE__, __LINE__);
+									$this->DebugMessage('include_once("'. __DIR__ .'/phpthumb_unsharp.php") generated message: "'.$include_error.'"', __FILE__, __LINE__);
 								}
-								$this->DebugMessage('Error including "'. __DIR__ .'/phpthumb.unsharp.php" which is required for unsharp masking', __FILE__, __LINE__);
+								$this->DebugMessage('Error including "'. __DIR__ .'/phpthumb_unsharp.php" which is required for unsharp masking', __FILE__, __LINE__);
 								ob_end_clean();
 								return false;
 							}
@@ -4042,9 +4042,9 @@ if (false) {
 			switch (@$this->getimagesizeinfo[2]) {
 				case 6:
 					ob_start();
-					if (!@include_once __DIR__ .'/phpthumb.bmp.php' ) {
+					if (!@include_once __DIR__ .'/phpthumb_bmp.php' ) {
 						ob_end_clean();
-						return $this->ErrorImage('include_once('. __DIR__ .'/phpthumb.bmp.php) failed');
+						return $this->ErrorImage('include_once('. __DIR__ .'/phpthumb_bmp.php) failed');
 					}
 					ob_end_clean();
 					if ($fp = @fopen($this->sourceFilename, 'rb')) {
@@ -4485,8 +4485,8 @@ if (false) {
 
 					// Need to create from GIF file, but imagecreatefromgif does not exist
 					ob_start();
-					if (!@include_once __DIR__ .'/phpthumb.gif.php' ) {
-						$ErrorMessage = 'Failed to include required file "'. __DIR__ .'/phpthumb.gif.php" in '.__FILE__.' on line '.__LINE__;
+					if (!@include_once __DIR__ .'/phpthumb_gif.php' ) {
+						$ErrorMessage = 'Failed to include required file "'. __DIR__ .'/phpthumb_gif.php" in '.__FILE__.' on line '.__LINE__;
 						$this->DebugMessage($ErrorMessage, __FILE__, __LINE__);
 					}
 					ob_end_clean();

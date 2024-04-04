@@ -249,7 +249,7 @@ function images_admin_phpthumb($args)
             }
         }
 
-        sys::import('modules.images.class.phpthumb.class');
+        sys::import('modules.images.class.phpthumb_class');
         $phpThumb = new phpthumb();
 
         $imagemagick = xarModVars::get('images', 'file.imagemagick');
