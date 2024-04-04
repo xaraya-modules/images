@@ -17,7 +17,7 @@
  *  @author   Carl P. Corliss
  *  @access   public
  *  @param    string    fileId          The id (from the uploads module) of the image to push
- *  @return   boolean                   This function will exit upon succes and, returns False and throws an exception otherwise
+ *  @return   bool|null|never           This function will exit upon succes and, returns False and throws an exception otherwise
  */
 function images_user_display($args)
 {

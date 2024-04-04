@@ -13,7 +13,7 @@
  */
 /**
  * the main administration function
- * @return bool true on succes of redirect
+ * @return bool|null true on succes of redirect
  */
 function images_admin_main()
 {

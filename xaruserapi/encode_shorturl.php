@@ -16,8 +16,7 @@
  *
  * @author the Images module development team
  * @param $args the function and arguments passed to xarController::URL
- * @returns string
- * @return path to be added to index.php for a short URL, or empty if failed
+ * @return string path to be added to index.php for a short URL, or empty if failed
  */
 function images_userapi_encode_shorturl($args)
 {
