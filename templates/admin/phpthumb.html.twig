@@ -1,0 +1,590 @@
+{# @images/admin/phpthumb.html.twig #}
+
+{% block phpthumb %}
+<div class="xar-mod-head">
+    <span class="xar-mod-title">
+        {{ xar_translate('Images Administration') }}
+    </span>
+</div>
+
+<div class="xar-mod-body">
+  {{ include('@images/includes/admin-menu.html.twig') }}
+    <h2>
+        {{ xar_translate('Image Processing with phpThumb()') }}
+    </h2>
+
+
+    {% if message %}
+        <p><strong>{{ message }}</strong></p>
+    {% endif %}
+
+    {% if not selimage %}
+        {% set selimage = [] %}
+    {% endif %}
+
+    <a name="config"></a>
+    <fieldset>
+        <legend>
+            {{ xar_translate('Settings') }}
+        </legend>
+        <div class="xar-form-input-wrapper">
+
+        <strong>{{ xar_translate('Configure') }}</strong>
+        {% if selimage['filePreview'] %}
+        |
+        <a href="{{ xar_currenturl() }}#preview">{{ xar_translate('Preview Image') }}</a>
+        {% endif %}
+        {% if selimage['fileDownload'] %}
+        |
+        <a href="{{ xar_currenturl() }}#original">{{ xar_translate('Original Image') }}</a>
+        {% endif %}
+    <form method="post" name="post" id="post" action="{{ xar_moduleurl('images', 'admin', 'phpthumb') }}">
+    <table class="xar-fullwidth xar-accent">
+    {% if selimage %}
+        <tr>
+            <th colspan="4" class="xar-accent" align="center">
+                {{ xar_translate('Image') }}
+            </th>
+        </tr>
+        <tr>
+            <td class="xar-accent">
+                {{ xar_translate('Filename') }}
+            </td>
+            <td>{{ selimage['fileName'] }}</td>
+            <td class="xar-accent">
+                {{ xar_translate('Modified') }}
+            </td>
+            <td>{{ xar_localedate(selimage['fileModified'], 'short', '') }}</td>
+        </tr>
+        <tr>
+            <td class="xar-accent">
+                {{ xar_translate('Filetype') }}
+            </td>
+            <td>{{ selimage['fileType'] }}</td>
+            <td class="xar-accent">
+                {{ xar_translate('Size') }}
+            </td>
+            <td>{{ selimage['fileSize'] }}</td>
+        </tr>
+        <tr>
+            <td class="xar-accent">
+                {{ xar_translate('Width') }}
+            </td>
+            <td>{{ selimage['width'] }}</td>
+            <td class="xar-accent">
+                {{ xar_translate('Height') }}
+            </td>
+            <td>{{ selimage['height'] }}</td>
+        </tr>
+    {% endif %}
+        <tr>
+            <th colspan="4" class="xar-accent" align="center">
+                {{ xar_translate('Settings') }}
+            </th>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <input type="submit" name="load" value="{{ xar_translate('Load') }}" />
+                <select name="setting" id="setting">
+                    <option value="">{{ xar_translate('[ New Settings --&#62; ]')|raw }}</option>
+                    {% for name in settings|keys %}
+                        {% if setting and name == setting %}
+                            <option value="{{ xar_prep_display(name) }}" selected="selected">{{ name }}</option>
+                        {% else %}
+                            <option value="{{ xar_prep_display(name) }}">{{ name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <input type="text" name="newset" id="newset" value="" />
+                <input type="submit" name="store" value="{{ xar_translate('Store') }}" />
+            </td>
+        </tr>
+        <tr>
+            <th colspan="4" class="xar-accent" align="center">
+                {{ xar_translate('Resize') }}
+            </th>
+        </tr>
+        <tr>
+            <td class="xar-accent">
+                <label for="w">
+                {{ xar_translate('Width') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="w" id="w" value="{{ w }}" size="3" />
+            </td>
+            <td class="xar-accent">
+                <label for="h">
+                {{ xar_translate('Height') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="h" id="h" value="{{ h }}" size="3" />
+            </td>
+        </tr>
+        <tr>
+            <th colspan="4" class="xar-accent" align="center">
+                {{ xar_translate('Crop') }}
+            </th>
+        </tr>
+        <tr>
+            <td class="xar-accent">
+                <label for="sx">
+                {{ xar_translate('Crop Left') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="sx" id="sx" value="{{ sx }}" size="3" />
+            </td>
+            <td class="xar-accent">
+                <label for="sy">
+                {{ xar_translate('Crop Top') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="sy" id="sy" value="{{ sy }}" size="3" />
+            </td>
+        </tr>
+        <tr>
+            <td class="xar-accent">
+                <label for="sw">
+                {{ xar_translate('Crop Width') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="sw" id="sw" value="{{ sw }}" size="3" />
+            </td>
+            <td class="xar-accent">
+                <label for="sh">
+                {{ xar_translate('Crop Height') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="sh" id="sh" value="{{ sh }}" size="3" />
+            </td>
+        </tr>
+        <tr>
+            <th colspan="4" class="xar-accent" align="center">
+                {{ xar_translate('Rotate') }}
+            </th>
+        </tr>
+        <tr>
+            <td class="xar-accent">
+                <label for="ra">
+                {{ xar_translate('Angle') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="ra" id="ra" value="{{ ra }}" size="3" />
+                -360 - 360
+            </td>
+            <td class="xar-accent">
+                <label for="ar">
+                {{ xar_translate('Auto') }}
+                </label>
+            </td>
+            <td>
+                {% set options = {
+                    'p': xar_translate('Portrait Left'),
+                    'P': xar_translate('Portrait Right'),
+                    'L': xar_translate('Landscape Left'),
+                    'l': xar_translate('Landscape Right'),
+                    'x': xar_translate('EXIF Orientation')
+                } %}
+                <select name="ar" id="ar">
+                    <option value=""> </option>
+                    {% for id, val in options %}
+                        {% if ar and ar == id %}
+                            <option value="{{ id }}" selected="selected">{{ val }}</option>
+                        {% else %}
+                            <option value="{{ id }}">{{ val }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th colspan="4" class="xar-accent" align="center">
+                {{ xar_translate('Flip') }}
+            </th>
+        </tr>
+        <tr>
+            <td class="xar-accent">
+                <label for="filter_flip_x">
+                {{ xar_translate('Horizontal') }}
+                </label>
+            </td>
+            <td>
+                {% if filter['flip'] and 'x' in filter['flip'] %}
+                    <input type="checkbox" name="filter[flip][0]" id="filter_flip_x" value="x" checked="checked" />
+                {% else %}
+                    <input type="checkbox" name="filter[flip][0]" id="filter_flip_x" value="x" />
+                {% endif %}
+            </td>
+            <td class="xar-accent">
+                <label for="filter_flip_y">
+                {{ xar_translate('Vertical') }}
+                </label>
+            </td>
+            <td>
+                {% if filter['flip'] and 'y' in filter['flip'] %}
+                    <input type="checkbox" name="filter[flip][0]" id="filter_flip_y" value="y" checked="checked" />
+                {% else %}
+                    <input type="checkbox" name="filter[flip][0]" id="filter_flip_y" value="y" />
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="4" class="xar-accent" align="center">
+                {{ xar_translate('Color Correction') }}
+            </th>
+        </tr>
+        <tr>
+            <td class="xar-accent">
+                <label for="filter_gam_0">
+                {{ xar_translate('Gamma') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="filter[gam][0]" id="filter_gam_0" value="{{ filter['gam'][0] }}" size="3" />
+                0 - 10
+            </td>
+            <td class="xar-accent">
+                <label for="filter_ds_0">
+                {{ xar_translate('De-saturate') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="filter[ds][0]" id="filter_ds_0" value="{{ filter['ds'][0] }}" size="3" />
+                0 - 100
+            </td>
+        </tr>
+        <tr>
+            <th colspan="4" class="xar-accent" align="center">
+                {{ xar_translate('Watermark Image') }}
+            </th>
+        </tr>
+        <tr>
+            <td class="xar-accent">
+                <label for="filter_wmi_0">
+                {{ xar_translate('Filename') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="filter[wmi][0]" id="filter_wmi_0" value="{{ filter['wmi'][0] }}" />
+            </td>
+            <td class="xar-accent">
+                <label for="filter_wmi_2">
+                {{ xar_translate('Opacity') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="filter[wmi][2]" id="filter_wmi_2" value="{{ filter['wmi'][2] }}" size="3" />
+                0 - 100
+            </td>
+        </tr>
+        <tr>
+            <td class="xar-accent">
+                <label for="filter_wmi_1">
+                {{ xar_translate('Alignment') }}
+                </label>
+            </td>
+            <td>
+                {% set options = {
+                    'BR': xar_translate('Bottom Right'),
+                    'BL': xar_translate('Bottom Left'),
+                    'TR': xar_translate('Top Right'),
+                    'TL': xar_translate('Top Left'),
+                    'C' : xar_translate('Center'),
+                    'R' : xar_translate('Right'),
+                    'L' : xar_translate('Left'),
+                    'T' : xar_translate('Top'),
+                    'B' : xar_translate('Bottom'),
+                    '*' : xar_translate('Tile')
+                } %}
+                <select name="filter[wmi][1]" id="filter_wmi_1">
+                    <option value=""> </option>
+                    {% for id, val in options %}
+                        {% if filter['wmi'][1] and filter['wmi'][1] == id %}
+                            <option value="{{ id }}" selected="selected">{{ val }}</option>
+                        {% else %}
+                            <option value="{{ id }}">{{ val }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </td>
+            <td class="xar-accent">
+                <label for="filter_wmi_3">
+                {{ xar_translate('Margin') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="filter[wmi][3]" id="filter_wmi_3" value="{{ filter['wmi'][3] }}" size="3" />
+                %
+            </td>
+        </tr>
+        <tr>
+            <th colspan="4" class="xar-accent" align="center">
+                {{ xar_translate('Watermark Text') }}
+            </th>
+        </tr>
+        <tr>
+            <td class="xar-accent">
+                <label for="filter_wmt_0">
+                {{ xar_translate('Text') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="filter[wmt][0]" id="filter_wmt_0" value="{{ xar_prep_display(filter['wmt'][0]) }}" />
+            </td>
+            <td class="xar-accent">
+                <label for="filter_wmt_5">
+                {{ xar_translate('Opacity') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="filter[wmt][5]" id="filter_wmt_5" value="{{ filter['wmt'][5] }}" size="3" />
+                0 - 100
+            </td>
+        </tr>
+        <tr>
+            <td class="xar-accent">
+                <label for="filter_wmt_2">
+                {{ xar_translate('Alignment') }}
+                </label>
+            </td>
+            <td>
+                {% set options = {
+                    'BR': xar_translate('Bottom Right'),
+                    'BL': xar_translate('Bottom Left'),
+                    'TR': xar_translate('Top Right'),
+                    'TL': xar_translate('Top Left'),
+                    'C' : xar_translate('Center'),
+                    'R' : xar_translate('Right'),
+                    'L' : xar_translate('Left'),
+                    'T' : xar_translate('Top'),
+                    'B' : xar_translate('Bottom'),
+                    '*' : xar_translate('Tile')
+                } %}
+                <select name="filter[wmt][2]" id="filter_wmt_2">
+                    <option value=""> </option>
+                    {% for id, val in options %}
+                        {% if filter['wmt'][2] and filter['wmt'][2] == id %}
+                            <option value="{{ id }}" selected="selected">{{ val }}</option>
+                        {% else %}
+                            <option value="{{ id }}">{{ val }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </td>
+            <td class="xar-accent">
+                <label for="filter_wmt_6">
+                {{ xar_translate('Margin') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="filter[wmt][6]" id="filter_wmt_6" value="{{ filter['wmt'][6] }}" size="3" />
+                %
+            </td>
+        </tr>
+        <tr>
+            <td class="xar-accent">
+                <label for="filter_wmt_1">
+                {{ xar_translate('Font Size') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="filter[wmt][1]" id="filter_wmt_1" value="{{ filter['wmt'][1] }}" size="3" />
+                1 - 5
+            </td>
+            <td class="xar-accent">
+                <label for="filter_wmt_4">
+                {{ xar_translate('TTF File') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="filter[wmt][4]" id="filter_wmt_4" value="{{ filter['wmt'][4] }}" />
+            </td>
+        </tr>
+        <tr>
+            <td class="xar-accent">
+                <label for="filter_wmt_3">
+                {{ xar_translate('Hex Color') }}
+                </label>
+            </td>
+            <td>
+                <xar.data-input type="tcolorpicker" name="filter[wmt][3]" id="filter_wmt_3" value="filter['wmt'][3]" />
+            </td>
+            <td class="xar-accent">
+                <label for="filter_wmt_7">
+                {{ xar_translate('Angle') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="filter[wmt][7]" id="filter_wmt_7" value="{{ filter['wmt'][7] }}" size="3" />
+                -360 - 360
+            </td>
+        </tr>
+<xar.comment>
+To be continued (any volunteers ?) - we'll let people specify filters by hand below.
+Perhaps we could provide a separate (javascript-based) page to fill in those fields ?
+</xar.comment>
+        <tr>
+            <th colspan="4" class="xar-accent" align="center">
+                {{ xar_translate('Other Filters') }}
+                <br/>
+                [<a href="code/modules/images/xardocs/phpthumb.readme.txt" target="readme">{{ xar_translate('see description of \'fltr\' parameter in readme.txt') }}</a>]
+            </th>
+        </tr>
+        <tr>
+            <td class="xar-accent">
+                <label for="fltr_0">
+                {{ xar_translate('Filter') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="fltr[0]" id="fltr_0" value="{{ xar_prep_display(fltr[0]) }}" />
+            </td>
+            <td class="xar-accent">
+                <label for="fltr_1">
+                {{ xar_translate('Filter') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="fltr[1]" id="fltr_1" value="{{ xar_prep_display(fltr[1]) }}" />
+            </td>
+        </tr>
+        <tr>
+            <td class="xar-accent">
+                <label for="fltr_2">
+                {{ xar_translate('Filter') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="fltr[2]" id="fltr_2" value="{{ xar_prep_display(fltr[2]) }}" />
+            </td>
+            <td class="xar-accent">
+                <label for="fltr_3">
+                {{ xar_translate('Filter') }}
+                </label>
+            </td>
+            <td>
+                <input type="text" name="fltr[3]" id="fltr_3" value="{{ xar_prep_display(fltr[3]) }}" />
+            </td>
+        </tr>
+        <tr>
+            <th colspan="4" class="xar-accent" align="center">
+                {{ xar_translate('Output') }}
+            </th>
+        </tr>
+        <tr>
+            <td class="xar-accent">
+                <label for="f">
+                {{ xar_translate('Format') }}
+                </label>
+            </td>
+            <td>
+                {% set options = {
+                    'jpeg': 'JPEG',
+                    'png': 'PNG',
+                    'gif': 'GIF'
+                } %}
+                <select name="f" id="f">
+                    {% for id, val in options %}
+                        {% if f and f == id %}
+                            <option value="{{ id }}" selected="selected">{{ val }}</option>
+                        {% else %}
+                            <option value="{{ id }}">{{ val }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </td>
+            <td class="xar-accent">
+                <label for="q">
+                {{ xar_translate('Quality') }}
+                </label>
+            </td>
+            <td>
+                <select name="q" id="q">
+                    <option value=""> </option>
+                    {% for i in range(0, 95, 5) %}
+                        {% if q and q == i %}
+                            <option value="{{ i }}" selected="selected">{{ i }}</option>
+                        {% else %}
+                            <option value="{{ i }}">{{ i }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+    {% if selimage %}
+        <tr>
+            <td class="xar-accent">
+                <label for="save">
+                {{ xar_translate('Save As') }}
+                </label>
+            </td>
+            <td colspan="3">
+                <input type="text" name="save" id="save" value="{{ save }}" size="60" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" align="center">
+                <input type="hidden" name="authid" value="{{ authid }}"/>
+                <input type="hidden" name="bid" value="{{ baseId }}"/>
+                <input type="hidden" name="fid" value="{{ fileId }}"/>
+                <input type="submit" value="{{ xar_translate('Preview') }}"/>
+                <input type="submit" name="confirm" value="{{ xar_translate('Save') }}"/>
+            </td>
+        </tr>
+    {% endif %}
+    </table>
+    </form>
+
+{% if params %}
+    <p>{{ xar_translate('', params) }}</p>
+{% endif %}
+
+{% if selimage['filePreview'] %}
+    <a name="preview"></a>
+
+    <hr/>
+    <p>
+        <a href="{{ xar_currenturl() }}#config">{{ xar_translate('Configure') }}</a>
+        |
+        <strong>{{ xar_translate('Preview Image') }}</strong>
+        {% if selimage['fileDownload'] %}
+        |
+        <a href="{{ xar_currenturl() }}#original">{{ xar_translate('Original Image') }}</a>
+        {% endif %}
+    </p>
+    <p><img src="{{ selimage['filePreview'] }}" border="0" /></p>
+{% endif %}
+
+{% if selimage['fileDownload'] %}
+    <a name="original"></a>
+
+    <hr/>
+    <p>
+        <a href="{{ xar_currenturl() }}#config">{{ xar_translate('Configure') }}</a>
+        {% if selimage['filePreview'] %}
+        |
+        <a href="{{ xar_currenturl() }}#preview">{{ xar_translate('Preview Image') }}</a>
+        {% endif %}
+        |
+        <strong>{{ xar_translate('Original Image') }}</strong>
+    </p>
+    <p><img src="{{ selimage['fileDownload'] }}" border="0" /></p>
+{% endif %}
+
+    </div>
+    </fieldset>
+</div>
+    <div>
+        <p><i>
+            Based on <a href="https://github.com/JamesHeinrich/phpThumb">phpThumb()</a> by James Heinrich
+        </i></p>
+    </div>
+
+
+{% endblock %}

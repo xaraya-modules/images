@@ -1,0 +1,63 @@
+{# @images/includes/admin-menu.html.twig #}
+
+{% block admin_menu %}
+{#   License: GPL http://www.gnu.org/copyleft/gpl.html  #}
+{#  Common Administration menu #}
+{{ xar_style({scope: "module", module: "base", file: "navtabs"}) }}
+
+{% set activetab = _bl_module_func %}
+<div>
+  <dl class="xar-tabs">
+    <dt class="help" title="Choose an action to perform">
+      {{ xar_translate('Actions:') }}
+    </dt>
+    {% if xar_security_check('AdminImages') %}
+        {% if xar_coremethod('xarMod', 'isAvailable', 'uploads') and xar_security_check('AdminUploads',0) %}
+            {% set tabclass = activetab == 'uploads' ? 'active' : '' %}
+            <dd class="{{ tabclass }}">
+              <a href="{{ xar_moduleurl('images', 'admin', 'uploads') }}">
+                {{ xar_translate('Uploaded Images') }}
+              </a>
+            </dd>
+
+        {% endif %}
+        {% set tabclass = activetab == 'derivatives' ? 'active' : '' %}
+        <dd class="{{ tabclass }}">
+          <a href="{{ xar_moduleurl('images', 'admin', 'derivatives') }}">
+            {{ xar_translate('Derivatives') }}
+          </a>
+        </dd>
+
+        {% set tabclass = activetab == 'browse' ? 'active' : '' %}
+        <dd class="{{ tabclass }}">
+            <a href="{{ xar_moduleurl('images', 'admin', 'browse') }}" >
+                {{ xar_translate('Server Images') }}
+            </a>
+        </dd>
+        {# <!--
+        {% set tabclass = activetab == 'phpthumb' ? 'active' : '' %}
+        <dd class="{{ tabclass }}">
+            <a href="{{ xar_moduleurl('images', 'admin', 'phpthumb') }}" >
+                {{ xar_translate('Image Processing') }}
+            </a>
+        </dd>
+        --> #}
+
+        {% set tabclass = activetab == 'modifyconfig' ? 'active' : '' %}
+        <dd class="{{ tabclass }}">
+          <a href="{{ xar_moduleurl('images', 'admin', 'modifyconfig') }}">
+            {{ xar_translate('Modify Config') }}
+          </a>
+        </dd>
+
+        {% set tabclass = activetab == 'main' ? 'active' : '' %}
+        <dd class="{{ tabclass }}">
+            <a href="{{ xar_moduleurl('images', 'admin', 'overview') }}">
+                {{ xar_translate('Overview') }}
+            </a>
+        </dd>
+    {% endif %}
+  </dl>
+</div>
+
+{% endblock %}

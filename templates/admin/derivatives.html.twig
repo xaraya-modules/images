@@ -1,0 +1,192 @@
+{# @images/admin/derivatives.html.twig #}
+
+{% block derivatives %}
+<div class="xar-mod-head">
+    <span class="xar-mod-title">
+        {{ xar_translate('Images Administration') }}
+    </span>
+</div>
+
+<div class="xar-mod-body">
+  {{ include('@images/includes/admin-menu.html.twig') }}
+    <h2>
+        {{ xar_translate('View Derivative Images') }}
+    </h2>
+    {% if selimage %}
+
+
+        {% if action and action == 'delete' %}
+        <form method="post" action="{{ xar_moduleurl('images', 'admin', 'derivatives') }}">
+            <p><strong>{{ xar_translate('Are you sure you want to delete this image ?') }}</strong></p>
+            <input type="hidden" name="authid" value="{{ authid }}" />
+            <input type="hidden" name="action" value="delete" />
+            <input type="hidden" name="fileId" value="{{ selimage['fileId'] }}" />
+            <input type="submit" name="confirm" value="{{ xar_translate('Confirm') }}" />
+            <input type="submit" name="action" value="{{ xar_translate('Cancel') }}" />
+        </form>
+        {% endif %}
+        <fieldset>
+            <legend>
+                {{ xar_translate('Image') }}
+            </legend>
+            <div class="xar-form-input-wrapper">
+            <p class="xar-align-center">
+                <img src="{{ selimage['fileDownload'] }}" class="xar-noborder" alt=""/>
+            </p>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>
+                {{ xar_translate('Derivative Image Details') }}
+            </legend>
+                <div class="xar-form-input-wrapper">
+                    <label class="xar-form-label">{{ xar_translate('Filename') }} :</label>
+                     {{ selimage['fileName'] }}
+                </div>
+                <div class="xar-form-input-wrapper">
+                    <label class="xar-form-label">{{ xar_translate('Width') }} :</label>
+                     {{ selimage['width'] }}
+                </div>
+                <div class="xar-form-input-wrapper">
+                    <label class="xar-form-label">{{ xar_translate('Height') }} :</label>
+                     {{ selimage['height'] }}
+                </div>
+                <div class="xar-form-input-wrapper">
+                    <label class="xar-form-label">{{ xar_translate('Size') }} :</label>
+                     {{ selimage['fileSize'] }}
+                </div>
+                <div class="xar-form-input-wrapper">
+                    <label class="xar-form-label">{{ xar_translate('Modified') }} :</label>
+                     {{ xar_localedate(selimage['fileModified'], 'short', '') }}
+                </div>
+                <div class="xar-form-input-wrapper">
+                    {% if selimage['fileSetting'] %}
+                     <label class="xar-form-label">{{ xar_translate('Settings') }} :</label>
+                      {{ selimage['fileSetting'] }}
+                    {% endif %}
+                </div>
+                <div class="xar-form-input-wrapper">
+                    {% if selimage['original'] %}
+                          <label class="xar-form-label">{{ xar_translate('Original') }} : </label>
+                          <a href="{{ xar_moduleurl('images', 'admin', 'uploads', {'action': 'view', 'fileId': selimage['original']['fileId']}) }}">{{ selimage['original']['fileName'] }}</a>
+                    {% endif %}
+                </div>
+        </fieldset>
+
+    {% endif %}
+
+    {#  
+        Note: we always show the list here
+     #}
+
+
+
+        <p>
+            <strong>{{ xar_translate('Derivatives Storage Directory') }}:</strong>
+            {{ thumbsdir }}
+            {% if cacheExpire %}
+                <a href="{{ xar_moduleurl('images','admin','derivatives',{'refresh': 1}) }}">
+                    {{ xar_translate('Refresh') }}
+                </a>
+            {% endif %}
+        </p>
+
+        {% set showoriginal = xar_coremethod('xarMod', 'isAvailable', 'uploads') %}
+
+        <table class="xar-accent">
+            <tr>
+                {% if showoriginal %}
+                <th>
+                    {{ xar_translate('Original') }}
+                </th>
+                {% endif %}
+                <th>
+                    <a href="{{ xar_moduleurl('images','admin','derivatives') }}">
+                    {{ xar_translate('Filename') }}
+                    </a>
+                </th>
+                <th>
+                    <a href="{{ xar_moduleurl('images','admin','derivatives',{'sort': 'width'}) }}">
+                    {{ xar_translate('Width') }}
+                    </a>
+                </th>
+                <th>
+                    <a href="{{ xar_moduleurl('images','admin','derivatives',{'sort': 'height'}) }}">
+                    {{ xar_translate('Height') }}
+                    </a>
+                </th>
+                <th>
+                    <a href="{{ xar_moduleurl('images','admin','derivatives',{'sort': 'size'}) }}">
+                    {{ xar_translate('Size') }}
+                    </a>
+                </th>
+                <th>
+                    <a href="{{ xar_moduleurl('images','admin','derivatives',{'sort': 'time'}) }}">
+                    {{ xar_translate('Modified') }}
+                    </a>
+                </th>
+                <th>
+                    {{ xar_translate('Action') }}
+                </th>
+            </tr>
+            {% for image in images %}
+            <tr>
+                {% if showoriginal %}
+                <td>
+                    {% if image['original'] %}
+                        <a href="{{ xar_moduleurl('images', 'admin', 'uploads', {'action': 'view', 'fileId': image['original']['fileId']}) }}">{{ image['original']['fileName'] }}</a>
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                {% endif %}
+                <td>
+                    {{ image['fileName'] }}
+                </td>
+                <td>
+                    {{ image['width'] }}
+                </td>
+                <td>
+                    {{ image['height'] }}
+                </td>
+                <td>
+                    {{ image['fileSize'] }}
+                </td>
+                <td>
+                    {{ xar_localedate(image['fileModified'], 'short', '') }}
+                </td>
+                <td>
+                    <a href="{{ xar_moduleurl('images','admin','derivatives',{'action': 'view', 'fileId': image['fileId']}) }}">
+                        {{ xar_translate('View') }}
+                    </a>
+                    {# <!--
+                    |
+                    <a href="{{ xar_moduleurl('images','admin','phpthumb',{'fid': image['fileId']}) }}">
+                        {{ xar_translate('Process') }}
+                    </a>
+                    --> #}
+                    |
+                    <a href="{{ xar_moduleurl('images','admin','derivatives',{'action': 'delete', 'fileId': image['fileId']}) }}">
+                        {{ xar_translate('Delete') }}
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+            {% if pager %}
+            <tr>
+                {% if showoriginal %}
+                <td colspan="7" align="center">
+                    {{ pager }}
+                </td>
+                {% else %}
+                <td colspan="6" align="center">
+                    {{ pager }}
+                </td>
+                {% endif %}
+            </tr>
+            {% endif %}
+        </table>
+
+</div>
+
+{% endblock %}

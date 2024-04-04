@@ -1,0 +1,163 @@
+{# @images/admin/modifyconfig.html.twig #}
+
+{% block modifyconfig %}
+<div class="xar-mod-head">
+    <span class="xar-mod-title">
+        {{ xar_translate('Images Administration') }}
+    </span>
+</div>
+
+<div class="xar-mod-body">
+  {{ include('@images/includes/admin-menu.html.twig') }}
+    <h2>
+        {{ xar_translate('Modify Images Configuration') }}
+    </h2>
+
+    <form method="post" id="post" action="{{ xar_moduleurl('images', 'admin', 'updateconfig') }}">
+
+        <fieldset>
+            <legend>
+                {{ xar_translate('Image Module Options') }}
+            </legend>
+                <div class="xar-form-input-wrapper">
+                    <label for="path[derivative-store]" class="xar-form-label" title="{{ xar_translate('Derivatives Storage Directory') }}">
+                        {{ xar_translate('Derivatives Storage Directory') }}:
+                    </label>
+                    <input type="text" name="path[derivative-store]" value="{{ path['derivative-store'] }}" size="70"/>
+                    <p class="xar-form-input-wrapper-after">
+                        {{ xar_translate('This is the full path to the directory where Derivative images will be stored.
+                        It is strongly recommended that this directory be located outside of your web directory.
+                        <br />NOTE: This directory MUST be writable by the webserver.') }}
+                    </p>
+                </div>
+                <div class="xar-form-input-wrapper">
+                    <label for="libtype[graphics-library]" class="xar-form-label" title="{{ xar_translate('Select Graphics Library') }}">
+                        {{ xar_translate('Graphics Library:') }}
+                    </label>
+                    {% if gdextension %}
+
+                        {% if libtype['graphics-library'] == library['GD'] %}
+                            <input type="radio" name="libtype[graphics-library]" value="{{ library['GD'] }}" checked="checked" /> GD
+                            <input type="radio" name="libtype[graphics-library]" value="{{ library['ImageMagick'] }}" disabled="true" /> Image Magick
+                            <input type="radio" name="libtype[graphics-library]" value="{{ library['NetPBM'] }}" disabled="true" /> NetPBM
+        {#  
+                        {% elseif libtype['graphics-library'] == library['ImageMagick'] %}
+                            <input type="radio" name="libtype[graphics-library]" value="{{ library['GD'] }}" /> GD
+                            <input type="radio" name="libtype[graphics-library]" value="{{ library['ImageMagick'] }}" checked="checked" /> Image Magick
+                            <input type="radio" name="libtype[graphics-library]" value="{{ library['NetPBM'] }}" /> NetPBM
+                        {% else %}
+                            <input type="radio" name="libtype[graphics-library]" value="{{ library['GD'] }}" /> GD
+                            <input type="radio" name="libtype[graphics-library]" value="{{ library['ImageMagick'] }}" /> Image Magick
+                            <input type="radio" name="libtype[graphics-library]" value="{{ library['NetPBM'] }}" checked="checked" /> NetPBM
+         #}
+                        {% endif %}
+                    {% else %}
+                        <input type="radio" name="libtype[graphics-library]" value="{{ library['GD'] }}" disabled="true" /> GD
+                        <input type="radio" name="libtype[graphics-library]" value="{{ library['ImageMagick'] }}" disabled="true" /> Image Magick
+                        <input type="radio" name="libtype[graphics-library]" value="{{ library['NetPBM'] }}" disabled="true" /> NetPBM
+                    {% endif %}
+                    <p class="xar-form-input-wrapper-after">
+                    {% if gdextension %}
+                        {{ xar_translate('<em>
+                            <strong>Note:</strong> Currently only GD &#62;= 2.0.1 is supported
+                        </em>')|raw }}
+                    {% else %}
+                        {{ xar_translate('You do not have any graphics library available, you will not be able to use the resize functions') }}
+                    {% endif %}
+                    </p>
+                </div>
+                <div class="xar-form-input-wrapper">
+                    <label for="file[imagemagick]" class="xar-form-label" title="{{ xar_translate('ImageMagick convert program') }}">
+                         {{ xar_translate('ImageMagick \'convert\' program:') }}
+                    </label>
+                    <input type="text" name="file[imagemagick]" id="file_imagemagick" size="60" value="{{ xar_modulevar('images', 'file.imagemagick') }}" />
+                    <p class="xar-form-input-wrapper-after">
+                        {{ xar_translate('<em>
+                            <strong>Example:</strong> /usr/local/bin/convert (Unix) or<br />
+                             C:\Program Files\ImageMagick-6.0.6-Q16\convert.exe (Windows)
+                        </em>')|raw }}
+                    </p>
+               </div>
+               <br />
+                <div class="xar-form-input-wrapper-after">
+                    {% if shortURLs == TRUE %}
+                        <input type="checkbox" id="shortURLs" name="shortURLs" value="true" checked="checked"/>
+                    {% else %}
+                        <input type="checkbox" id="shortURLs" name="shortURLs"  value="true"/>
+                    {% endif %}
+                    <label for="shortURLs" title="{{ xar_translate('Support short urls?') }}">
+                        <strong>{{ xar_translate('Support Short URLs?') }}</strong>
+                    </label>
+
+                    <p class="xar-form-input-wrapper">
+                    {{ xar_translate('This will cause urls to be displayed in a condescenced format.') }}
+                    </p>
+                </div>
+                <br />
+                <div class="xar-form-input-wrapper">
+                    <label for="file[cache-expire]" class="xar-form-label" title="{{ xar_translate('Cache server file information?') }}">
+                        {{ xar_translate('Cache server file information:') }}
+                    </label>
+                    <input type="text" name="file[cache-expire]" id="file_cache_expire" size="3" maxlength="3" value="{{ xar_modulevar('images', 'file.cache-expire') }}" />
+                    {{ xar_translate('seconds') }}
+                </div>
+                <div class="xar-form-input-wrapper">
+                    <label for="view_itemsperpage" class="xar-form-label" title="{{ xar_translate('Items per page in admin view') }}">
+                        {{ xar_translate('Items per page in admin view:') }}
+                    </label>
+                    <input type="text" name="view[itemsperpage]" id="view_itemsperpage" size="3" maxlength="3" value="{{ xar_modulevar('images', 'view.itemsperpage') }}" />
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>
+                    {{ xar_translate('Base directories for browsing server images') }}
+                </legend>
+                <div class="xar-form-container">
+                    <table class="xar-accent">
+                    <tr>
+                       <th>
+                        {{ xar_translate('Base Directory') }}
+                       </th>
+                       <th>
+                           {{ xar_translate('Base URL') }}
+                       </th>
+                       <th>
+                           {{ xar_translate('Recursive') }}
+                       </th>
+                       <th>
+                           {{ xar_translate('File Extensions') }}
+                       </th>
+                    </tr>
+                     {% for id, info in basedirs %}
+                     <tr>
+                        <td>
+                            <input type="text" name="basedirs[{{ id }}][basedir]" id="basedirs_{{ id }}_basedir" value="{{ info['basedir'] }}" size="30" />
+                        </td>
+                        <td>
+                            <input type="text" name="basedirs[{{ id }}][baseurl]" id="basedirs_{{ id }}_baseurl" value="{{ info['baseurl'] }}" size="30" />
+                        </td>
+                        <td>
+                        {% if info['recursive'] %}
+                            <input type="checkbox" name="basedirs[{{ id }}][recursive]" id="basedirs_{{ id }}_recursive" value="1" checked="checked" />
+                        {% else %}
+                            <input type="checkbox" name="basedirs[{{ id }}][recursive]" id="basedirs_{{ id }}_recursive" value="1" />
+                        {% endif %}
+                        </td>
+                        <td>
+                            <input type="text" name="basedirs[{{ id }}][filetypes]" id="basedirs_{{ id }}_filetypes" value="{{ info['filetypes'] }}" size="10" />
+                        </td>
+                    </tr>
+                    {% endfor %}
+                     </table>
+
+                  </div>
+             </fieldset>
+
+            <div class="xar-form-input-wrapper">
+                <input type="hidden" name="authid" value="{{ authid }}"/>
+                <input type="submit" name="update" value="{{ xar_translate('Update Configuration') }}"/>
+            </div>
+        </form>
+</div>
+
+{% endblock %}

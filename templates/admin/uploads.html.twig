@@ -1,0 +1,327 @@
+{# @images/admin/uploads.html.twig #}
+
+{% block uploads %}
+<div class="xar-mod-head">
+    <span class="xar-mod-title">
+        {{ xar_translate('Images Administration') }}
+    </span>
+</div>
+
+<div class="xar-mod-body">
+  {{ include('@images/includes/admin-menu.html.twig') }}
+    <h2>
+        {{ xar_translate('View Uploaded Images') }}
+    </h2>
+    {% if selimage %}
+
+
+        {% if action and action == 'delete' %}
+        <form method="post" action="{{ xar_moduleurl('images', 'admin', 'uploads') }}">
+            <p><strong>{{ xar_translate('Are you sure you want to delete this image ?') }}</strong></p>
+            <input type="hidden" name="authid" value="{{ authid }}" />
+            <input type="hidden" name="action" value="delete" />
+            <input type="hidden" name="fileId" value="{{ selimage['fileId'] }}" />
+            <input type="submit" name="confirm" value="{{ xar_translate('Confirm') }}" />
+            <input type="submit" name="action" value="{{ xar_translate('Cancel') }}" />
+        </form>
+        {% elseif action and action == 'resize' %}
+        <form method="post" action="{{ xar_moduleurl('images', 'admin', 'uploads') }}">
+            <p><strong>{{ xar_translate('Specify the width and/or height you want :') }}</strong></p>
+            <label for="width">{{ xar_translate('Width') }}</label> 
+                <input type="text" name="width" id="width" size="5" value="{{ width }}" />
+            <label for="height">{{ xar_translate('Height') }}</label> 
+                <input type="text" name="height" id="height" size="5" value="{{ height }}" />
+            <label for="replace">{{ xar_translate('Replace') }}</label>
+            <select name="replace" id="replace">
+                {% if not replace %}
+                    <option value="0" selected="selected">{{ xar_translate('No') }}</option>
+                    <option value="1">{{ xar_translate('Yes') }}</option>
+                {% else %}
+                    <option value="0">{{ xar_translate('No') }}</option>
+                    <option value="1" selected="selected">{{ xar_translate('Yes') }}</option>
+                {% endif %}
+            </select>
+            <input type="hidden" name="authid" value="{{ authid }}" />
+            <input type="hidden" name="action" value="resize" />
+            <input type="hidden" name="fileId" value="{{ selimage['fileId'] }}" />
+            <input type="submit" name="preview" value="{{ xar_translate('Preview') }}" />
+            <input type="submit" name="confirm" value="{{ xar_translate('Confirm') }}" />
+            <input type="submit" name="action" value="{{ xar_translate('Cancel') }}" />
+        </form>
+        {% endif %}
+
+        {#  
+            use $selimage['fileId'] if you want to navigate by id instead of name for prev/next
+         #}
+        <fieldset>
+            <legend>
+                {{ xar_translate('Image') }}
+            </legend>
+            <div class="xar-form-input-wrapper">
+            <p class="xar-align-center">
+            <a href="{{ xar_moduleurl('images','admin','uploads',{'action': action,'getprev': selimage['fileName']}) }}">&#60;&#60;</a>&#160;&#160;&#160;
+            {% if width or height %}
+                <img src="{{ selimage['fileDownload'] }}" width="{{ width }}" height="{{ height }}" class="xar-noborder xar-valign-top" />
+            {% else %}
+                <img src="{{ selimage['fileDownload'] }}" class="xar-noborder xar-valign-top" alt=""/>
+            {% endif %}
+            &#160;&#160;&#160;<a href="{{ xar_moduleurl('images','admin','uploads',{'action': action,'getnext': selimage['fileName']}) }}">&#62;&#62;</a>
+           </p>
+           </div>
+        </fieldset>
+        <fieldset>
+            <legend>
+                {{ xar_translate('Image Details') }}
+            </legend>
+                <div class="xar-form-input-wrapper">
+                    <label class="xar-form-label">{{ xar_translate('Filename') }} :</label>
+                     {{ selimage['fileName'] }}
+                </div>
+                <div class="xar-form-input-wrapper">
+                    <label class="xar-form-label">{{ xar_translate('Filetype') }} :</label>
+                     {{ selimage['fileType'] }}
+                </div>
+                <div class="xar-form-input-wrapper">
+                    <label class="xar-form-label">{{ xar_translate('Width') }} :</label>
+                     {{ selimage['width'] }}
+                </div>
+                <div class="xar-form-input-wrapper">
+                    <label class="xar-form-label">{{ xar_translate('Height') }} :</label>
+                     {{ selimage['height'] }}
+                </div>
+                <div class="xar-form-input-wrapper">
+                    <label class="xar-form-label">{{ xar_translate('Size') }} :</label>
+                     {{ selimage['fileSize'] }}
+                </div>
+                <div class="xar-form-input-wrapper">
+                    <label class="xar-form-label">{{ xar_translate('Modified') }} :</label>
+                     {{ xar_localedate(selimage['fileModified'], 'short', '') }}
+                </div>
+            </fieldset>
+           <fieldset>
+                <legend>
+                    {{ xar_translate('Derivatives &#38; Associations') }}
+                </legend>
+                <div class="xar-form-input-wrapper">
+                {% if selimage['derivatives'] %}
+                 <label class="xar-form-label">{{ xar_translate('Derivatives') }} :</label>
+
+                   {% for derivimage in selimage['derivatives'] %}
+                    {% if derivimage['fileSetting'] %}
+                        <a href="{{ xar_moduleurl('images','admin','derivatives',{'action': 'view', 'fileId': derivimage['fileId']}) }}">{{ derivimage['fileSetting'] }}</a>
+                    {% else %}
+                        <a href="{{ xar_moduleurl('images','admin','derivatives',{'action': 'view', 'fileId': derivimage['fileId']}) }}">{{ derivimage['width'] }} x {{ derivimage['height'] }}</a>
+                    {% endif %}
+                    {% endfor %}
+                 {% else %}
+                     <p>{{ xar_translate('No Derivatives') }}</p>
+                {% endif %}
+                </div>
+                <div class="xar-form-input-wrapper">
+                {% if selimage['associations'] %}
+                    <label class="xar-form-label">{{ xar_translate('Associations') }} :</label>
+                    {% for moditem in selimage['moditems'] %}
+                        [{{ moditem['modname'] }}]
+                        {% for itemid, item in moditem['items'] %}
+                        {% if item['link'] %}
+                            <a href="{{ item['link'] }}" title="{{ item['title'] }}">{{ itemid }}</a>
+                        {% else %}
+                            {{ itemid }}
+                        {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                 {% else %}
+                     <p>{{ xar_translate('No Associations') }}</p>
+                {% endif %}
+                </div>
+                </fieldset>
+        {% endif %}
+
+    {#  
+        Note: we always show the list here
+     #}
+
+
+
+        <p><a href="{{ xar_moduleurl('uploads', 'admin', 'get_files') }}">{{ xar_translate('Add Image') }}</a></p>
+
+        {{ xar_javascript({module: "base", filename: "checkall.js"}) }}
+
+        <form id="viewuploads" method="post" action="{{ xar_moduleurl('images', 'admin', 'uploads') }}">
+        <table class="xar-accent">
+            <tr>
+                <th>
+                    <a href="{{ xar_moduleurl('images','admin','uploads') }}">
+                    {{ xar_translate('Filename') }}
+                    </a>
+                </th>
+                <th>
+                    <a href="{{ xar_moduleurl('images','admin','uploads',{'sort': 'type'}) }}">
+                    {{ xar_translate('Filetype') }}
+                    </a>
+                </th>
+                <th>
+                    <a href="{{ xar_moduleurl('images','admin','uploads',{'sort': 'width'}) }}">
+                    {{ xar_translate('Width') }}
+                    </a>
+                </th>
+                <th>
+                    <a href="{{ xar_moduleurl('images','admin','uploads',{'sort': 'height'}) }}">
+                    {{ xar_translate('Height') }}
+                    </a>
+                </th>
+                <th>
+                    <a href="{{ xar_moduleurl('images','admin','uploads',{'sort': 'size'}) }}">
+                    {{ xar_translate('Size') }}
+                    </a>
+                </th>
+                <th>
+                    <a href="{{ xar_moduleurl('images','admin','uploads',{'sort': 'time'}) }}">
+                    {{ xar_translate('Modified') }}
+                    </a>
+                </th>
+                <th>
+                    {{ xar_translate('Action') }}
+                </th>
+            </tr>
+            {% for image in images %}
+            <tr>
+                <td>
+                    {% if selected and image['fileId'] in selected %}
+                        <input type="checkbox" name="fileId[{{ image['fileId'] }}]" id="fileId_{{ image['fileId'] }}" value="1" checked="checked" />
+                    {% else %}
+                        <input type="checkbox" name="fileId[{{ image['fileId'] }}]" id="fileId_{{ image['fileId'] }}" value="1" />
+                    {% endif %}
+                    <label for="fileId_{{ image['fileId'] }}">
+                        {{ image['fileName'] }}
+                    </label>
+                </td>
+                <td>
+                    {{ image['fileType'] }}
+                </td>
+                <td>
+                    {{ image['width'] }}
+                </td>
+                <td>
+                    {{ image['height'] }}
+                </td>
+                <td>
+                    {{ image['fileSize'] }}
+                </td>
+                <td>
+                    {{ xar_localedate(image['fileModified'], 'short', '') }}
+                </td>
+                <td>
+                    <a href="{{ xar_moduleurl('images','admin','uploads',{'action': 'view', 'fileId': image['fileId']}) }}">
+                        {{ xar_translate('View') }}
+                    </a>
+                    |
+                    <a href="{{ xar_moduleurl('images','admin','uploads',{'action': 'resize', 'fileId': image['fileId']}) }}">
+                        {{ xar_translate('Resize') }}
+                    </a>
+                    |
+                    <a href="{{ xar_moduleurl('images','admin','phpthumb',{'fid': image['fileId']}) }}">
+                        {{ xar_translate('Process') }}
+                    </a>
+                    |
+                    <a href="{{ xar_moduleurl('images','admin','uploads',{'action': 'delete', 'fileId': image['fileId']}) }}">
+                        {{ xar_translate('Delete') }}
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="7" align="center">
+                    {% if pager %}
+                        {{ pager }}
+                    {% endif %}
+<script type="text/javascript"><![CDATA[
+    document.write("[ <a href=\"javascript:xar_base_checkall(document.forms['viewuploads'],true)\">{{ xar_translate('Check All') }}</a> | ");
+    document.write("<a href=\"javascript:xar_base_checkall(document.forms['viewuploads'],false)\">{{ xar_translate('Uncheck All') }}</a> ]");
+]]>
+</script>
+                </td>
+            </tr>
+            {% if not action %}
+            <tr>
+                <td colspan="7" align="center" class="xar-accent">
+                    <label for="setting">{{ xar_translate('Image Processing') }}</label>
+                    <select name="setting" id="setting">
+                        <option value=""> </option>
+                        {% for name in settings|keys %}
+                            {% if setting and setting == name %}
+                                <option value="{{ xar_prep_display(name) }}" selected="selected">{{ name }}</option>
+                            {% else %}
+                                <option value="{{ xar_prep_display(name) }}">{{ name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                    <label for="saveas">{{ xar_translate('Save As') }}</label>
+                    <select name="saveas" id="saveas">
+                        <option value="0">{{ xar_translate('derivative') }}</option>
+                        <option value="1">{{ xar_translate('[image]_new.[ext]') }}</option>
+                        <option value="2">{{ xar_translate('replace') }}</option>
+                    </select>
+                    <input type="submit" name="processlist" value="{{ xar_translate('Process') }}" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7" align="center">
+                    <label for="width">{{ xar_translate('Width') }}</label> <input type="text" name="width" id="width" size="5" value="" />
+                    <label for="height">{{ xar_translate('Height') }}</label> <input type="text" name="height" id="height" size="5" value="" />
+                    <label for="replace">{{ xar_translate('Replace') }}</label>
+                    <select name="replace" id="replace">
+                        <option value="0">{{ xar_translate('No') }}</option>
+                        <option value="1">{{ xar_translate('Yes') }}</option>
+                    </select>
+                    <input type="submit" name="resizelist" value="{{ xar_translate('Resize') }}" />
+                </td>
+            </tr>
+            {% elseif action == 'resizelist' %}
+            <tr>
+                <td colspan="7">
+                    {% if replace %}
+                        {{ xar_translate('Are you sure you want to replace the selected images to [#(1) x #(2)] ?', width, height) }}
+                    {% else %}
+                        {{ xar_translate('Are you sure you want to resize the selected images to [#(1) x #(2)] ?', width, height) }}
+                    {% endif %}
+                    <input type="hidden" name="authid" value="{{ authid }}" />
+                    <input type="hidden" name="width" value="{{ width }}" />
+                    <input type="hidden" name="height" value="{{ height }}" />
+                    <input type="hidden" name="replace" value="{{ replace }}" />
+                    <input type="hidden" name="action" value="resize" />
+                    {% if replace %}
+                        <input type="submit" name="confirm" value="{{ xar_translate('Replace') }}" />
+                    {% else %}
+                        <input type="submit" name="confirm" value="{{ xar_translate('Resize') }}" />
+                    {% endif %}
+                    <input type="submit" name="action" value="{{ xar_translate('Cancel') }}" />
+                </td>
+            </tr>
+            {% elseif action == 'processlist' %}
+            <tr>
+                <td colspan="7">
+                    {% if not saveas or saveas < 2 %}
+                        {{ xar_translate('Are you sure you want to process the selected images using \'#(1)\' ?', setting) }}
+                    {% else %}
+                        {{ xar_translate('Are you sure you want to replace the selected images using \'#(1)\' ?', setting) }}
+                    {% endif %}
+                    <input type="hidden" name="authid" value="{{ authid }}" />
+                    <input type="hidden" name="setting" value="{{ xar_prep_display(setting) }}" />
+                    <input type="hidden" name="saveas" value="{{ saveas }}" />
+                    <input type="hidden" name="action" value="processlist" />
+                    {% if not saveas or saveas < 2 %}
+                        <input type="submit" name="confirm" value="{{ xar_translate('Process') }}" />
+                    {% else %}
+                        <input type="submit" name="confirm" value="{{ xar_translate('Replace') }}" />
+                    {% endif %}
+                    <input type="submit" name="action" value="{{ xar_translate('Cancel') }}" />
+                </td>
+            </tr>
+            {% endif %}
+        </table>
+        </form>
+
+</div>
+
+{% endblock %}
