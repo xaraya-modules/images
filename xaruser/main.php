@@ -14,7 +14,7 @@
 /**
  * Empty main user function.
  */
-function images_user_main($args)
+function images_user_main(array $args = [], $context = null)
 {
     return;
 }

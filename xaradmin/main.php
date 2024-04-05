@@ -15,13 +15,13 @@
  * the main administration function
  * @return bool|null true on succes of redirect
  */
-function images_admin_main()
+function images_admin_main(array $args = [], $context = null)
 {
     // Security Check
     if (!xarSecurity::check('AdminImages')) {
         return;
     }
-    xarController::redirect(xarController::URL('images', 'admin', 'modifyconfig'));
+    xarController::redirect(xarController::URL('images', 'admin', 'modifyconfig'), null, $context);
     // success
     return true;
 }

@@ -22,7 +22,7 @@ use Xaraya\Modules\Images\Image_GD;
  * @param   string  $thumbsdir     (optional) The directory where derivative images are stored
  * @return object|null Image_GD (or other) object
  */
-function images_userapi_load_image($args)
+function images_userapi_load_image(array $args = [], $context = null)
 {
     extract($args);
 

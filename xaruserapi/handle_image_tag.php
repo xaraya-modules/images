@@ -24,7 +24,7 @@
  * @return string the PHP code needed to invoke resize() in the BL template
  */
 
-function images_userapi_handle_image_tag($args)
+function images_userapi_handle_image_tag(array $args = [], $context = null)
 {
     extract($args);
 

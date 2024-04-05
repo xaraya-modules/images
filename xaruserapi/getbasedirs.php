@@ -16,7 +16,7 @@
  *
  * @return array containing the base directories for server images
  */
-function images_userapi_getbasedirs()
+function images_userapi_getbasedirs(array $args = [], $context = null)
 {
     $basedirs = xarModVars::get('images', 'basedirs');
     if (!empty($basedirs)) {

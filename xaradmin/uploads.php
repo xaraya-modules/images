@@ -19,7 +19,7 @@ sys::import('modules.base.class.pager');
  *
  * @todo add startnum and numitems support
  */
-function images_admin_uploads($args)
+function images_admin_uploads(array $args = [], $context = null)
 {
     extract($args);
 
@@ -91,8 +91,8 @@ function images_admin_uploads($args)
                 'admin',
                 'uploads',
                 ['action' => empty($action) ? 'view' : $action,
-                                                'fileId' => $image['fileId'], ]
-            ));
+                'fileId' => $image['fileId'], ]
+            ), null, $context);
             return true;
         }
     } elseif (!empty($getprev)) {
@@ -109,8 +109,8 @@ function images_admin_uploads($args)
                 'admin',
                 'uploads',
                 ['action' => empty($action) ? 'view' : $action,
-                                                'fileId' => $image['fileId'], ]
-            ));
+                'fileId' => $image['fileId'], ]
+            ), null, $context);
             return true;
         }
     } else {
@@ -119,8 +119,8 @@ function images_admin_uploads($args)
             'admin',
             'getuploads',
             ['startnum' => $startnum,
-                                              'numitems' => $numitems,
-                                              'sort'     => $sort, ]
+            'numitems' => $numitems,
+            'sort'     => $sort, ]
         );
         $countitems = xarMod::apiFunc('images', 'admin', 'countuploads');
 
@@ -134,8 +134,8 @@ function images_admin_uploads($args)
                     'admin',
                     'uploads',
                     ['startnum' => '%%',
-                                                            'numitems' => $data['numitems'],
-                                                            'sort'     => $data['sort'], ]
+                    'numitems' => $data['numitems'],
+                    'sort'     => $data['sort'], ]
                 ),
                 $numitems
             );
@@ -231,14 +231,11 @@ function images_admin_uploads($args)
                 foreach ($modlist as $modid => $itemtypes) {
                     $modinfo = xarMod::getInfo($modid);
                     // Get the list of all item types for this module (if any)
-                    $mytypes = xarMod::apiFunc(
-                        $modinfo['name'],
-                        'user',
-                        'getitemtypes',
-                        // don't throw an exception if this function doesn't exist
-                        [],
-                        0
-                    );
+                    try {
+                        $mytypes = xarMod::apiFunc($modinfo['name'], 'user', 'getitemtypes');
+                    } catch (Exception $e) {
+                        $mytypes = [];
+                    }
                     foreach ($itemtypes as $itemtype => $items) {
                         $moditem = [];
                         $moditem['module'] = $modinfo['name'];
@@ -257,14 +254,17 @@ function images_admin_uploads($args)
                             }
                         }
                         $itemids = array_keys($items);
-                        $itemlinks = xarMod::apiFunc(
-                            $modinfo['name'],
-                            'user',
-                            'getitemlinks',
-                            ['itemtype' => $itemtype,
-                                                         'itemids' => $itemids, ],
-                            0
-                        ); // don't throw an exception here
+                        try {
+                            $itemlinks = xarMod::apiFunc(
+                                $modinfo['name'],
+                                'user',
+                                'getitemlinks',
+                                ['itemtype' => $itemtype,
+                                'itemids' => $itemids]
+                            );
+                        } catch (Exception $e) {
+                            $itemlinks = [];
+                        }
                         $moditem['items'] = [];
                         foreach ($itemids as $itemid) {
                             if (isset($itemlinks[$itemid])) {
@@ -312,8 +312,8 @@ function images_admin_uploads($args)
                             'admin',
                             'replace_image',
                             ['fileId' => $found['fileId'],
-                                                        'width'  => (!empty($width) ? $width . 'px' : null),
-                                                        'height' => (!empty($height) ? $height . 'px' : null), ]
+                            'width'  => (!empty($width) ? $width . 'px' : null),
+                            'height' => (!empty($height) ? $height . 'px' : null), ]
                         );
                         if (!$location) {
                             return;
@@ -324,16 +324,16 @@ function images_admin_uploads($args)
                             'admin',
                             'uploads',
                             ['action' => 'view',
-                                                            'fileId' => $found['fileId'], ]
-                        ));
+                            'fileId' => $found['fileId'], ]
+                        ), null, $context);
                     } else {
                         $location = xarMod::apiFunc(
                             'images',
                             'admin',
                             'resize_image',
                             ['fileId' => $found['fileId'],
-                                                        'width'  => (!empty($width) ? $width . 'px' : null),
-                                                        'height' => (!empty($height) ? $height . 'px' : null), ]
+                            'width'  => (!empty($width) ? $width . 'px' : null),
+                            'height' => (!empty($height) ? $height . 'px' : null), ]
                         );
                         if (!$location) {
                             return;
@@ -344,8 +344,8 @@ function images_admin_uploads($args)
                             'admin',
                             'derivatives',
                             ['action' => 'view',
-                                                            'fileId' => md5($location), ]
-                        ));
+                            'fileId' => md5($location), ]
+                        ), null, $context);
                     }
                     return true;
                 }
@@ -380,7 +380,7 @@ function images_admin_uploads($args)
                     if (!$result) {
                         return;
                     }
-                    xarController::redirect(xarController::URL('images', 'admin', 'uploads'));
+                    xarController::redirect(xarController::URL('images', 'admin', 'uploads'), null, $context);
                     return true;
                 }
                 $data['selimage'] = $found;
@@ -431,8 +431,8 @@ function images_admin_uploads($args)
                             'admin',
                             'replace_image',
                             ['fileId' => $id,
-                                                        'width'  => (!empty($width) ? $width . 'px' : null),
-                                                        'height' => (!empty($height) ? $height . 'px' : null), ]
+                            'width'  => (!empty($width) ? $width . 'px' : null),
+                            'height' => (!empty($height) ? $height . 'px' : null), ]
                         );
                         if (!$location) {
                             return;
@@ -444,7 +444,7 @@ function images_admin_uploads($args)
                         'admin',
                         'uploads',
                         ['sort' => 'time']
-                    ));
+                    ), null, $context);
                 } else {
                     foreach ($found as $id) {
                         $location = xarMod::apiFunc(
@@ -452,8 +452,8 @@ function images_admin_uploads($args)
                             'admin',
                             'resize_image',
                             ['fileId' => $id,
-                                                        'width'  => (!empty($width) ? $width . 'px' : null),
-                                                        'height' => (!empty($height) ? $height . 'px' : null), ]
+                            'width'  => (!empty($width) ? $width . 'px' : null),
+                            'height' => (!empty($height) ? $height . 'px' : null), ]
                         );
                         if (!$location) {
                             return;
@@ -465,9 +465,9 @@ function images_admin_uploads($args)
                         'admin',
                         'derivatives',
                         ['sort'    => 'time',
-                                                        // we need to refresh the cache here
-                                                        'refresh' => 1, ]
-                    ));
+                        // we need to refresh the cache here
+                        'refresh' => 1, ]
+                    ), null, $context);
                 }
                 return true;
 
@@ -513,8 +513,8 @@ function images_admin_uploads($args)
                         'admin',
                         'process_image',
                         ['image'   => $data['images'][$id],
-                                                    'saveas'  => $saveas,
-                                                    'setting' => $setting, ]
+                        'saveas'  => $saveas,
+                        'setting' => $setting, ]
                     );
                     if (!$location) {
                         return;
@@ -529,7 +529,7 @@ function images_admin_uploads($args)
                             'admin',
                             'uploads',
                             ['sort' => 'time']
-                        ));
+                        ), null, $context);
                         break;
 
                     case 2: // replace
@@ -539,7 +539,7 @@ function images_admin_uploads($args)
                             'admin',
                             'uploads',
                             ['sort' => 'time']
-                        ));
+                        ), null, $context);
                         break;
 
                     case 0: // derivative
@@ -550,9 +550,9 @@ function images_admin_uploads($args)
                             'admin',
                             'derivatives',
                             ['sort'    => 'time',
-                                                            // we need to refresh the cache here
-                                                            'refresh' => 1, ]
-                        ));
+                            // we need to refresh the cache here
+                            'refresh' => 1, ]
+                        ), null, $context);
                         break;
                 }
                 return true;

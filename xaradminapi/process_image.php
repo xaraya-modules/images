@@ -24,7 +24,7 @@
  * @deprecated 2.0.0 phpThumb() is seriously dated and doesn't play nice as a library
  */
 
-function images_adminapi_process_image($args)
+function images_adminapi_process_image(array $args = [], $context = null)
 {
     extract($args);
 
@@ -282,7 +282,7 @@ function images_adminapi_process_image($args)
 /**
  * @deprecated 2.0.0 phpThumb() is seriously dated and doesn't play nice as a library
  */
-function images_get_thumb()
+function images_get_thumb(array $args = [], $context = null)
 {
     sys::import('modules.images.class.phpthumb_class');
     $phpThumb = new phpthumb();

@@ -13,9 +13,9 @@
  */
 /**
  * Update configuration
- * @return bool true on success of update
+ * @return bool|void true on success of update
  */
-function images_admin_updateconfig()
+function images_admin_updateconfig(array $args = [], $context = null)
 {
     // Get parameters
     if (!xarVar::fetch('libtype', 'list:int:1:3', $libtype, '', xarVar::NOT_REQUIRED)) {
@@ -113,7 +113,7 @@ function images_admin_updateconfig()
     }
 
     xarModHooks::call('module', 'updateconfig', 'images', ['module' => 'images']);
-    xarController::redirect(xarController::URL('images', 'admin', 'modifyconfig'));
+    xarController::redirect(xarController::URL('images', 'admin', 'modifyconfig'), null, $context);
 
     // Return
     return true;

@@ -19,7 +19,7 @@ sys::import('modules.base.class.pager');
  *
  * @todo add startnum and numitems support
  */
-function images_admin_browse()
+function images_admin_browse(array $args = [], $context = null)
 {
     // Security check
     if (!xarSecurity::check('AdminImages')) {
@@ -114,9 +114,9 @@ function images_admin_browse()
                 'admin',
                 'browse',
                 ['action' => empty($action) ? 'view' : $action,
-                                                'bid' => $baseId,
-                                                'fid' => $image['fileId'], ]
-            ));
+                'bid' => $baseId,
+                'fid' => $image['fileId'], ]
+            ), null, $context);
             return true;
         }
 
@@ -138,9 +138,9 @@ function images_admin_browse()
                     'admin',
                     'browse',
                     ['bid'      => $baseId,
-                                                            'startnum' => '%%',
-                                                            'numitems' => $data['numitems'],
-                                                            'sort'     => $data['sort'], ]
+                    'startnum' => '%%',
+                    'numitems' => $data['numitems'],
+                    'sort'     => $data['sort'], ]
                 ),
                 $params['numitems']
             );
@@ -226,8 +226,8 @@ function images_admin_browse()
                             'admin',
                             'replace_image',
                             ['fileLocation' => $found['fileLocation'],
-                                                        'width'  => (!empty($width) ? $width . 'px' : null),
-                                                        'height' => (!empty($height) ? $height . 'px' : null), ]
+                            'width'  => (!empty($width) ? $width . 'px' : null),
+                            'height' => (!empty($height) ? $height . 'px' : null), ]
                         );
                         if (!$location) {
                             return;
@@ -238,17 +238,17 @@ function images_admin_browse()
                             'admin',
                             'browse',
                             ['action' => 'view',
-                                                            'bid' => $baseId,
-                                                            'fid' => $found['fileId'], ]
-                        ));
+                            'bid' => $baseId,
+                            'fid' => $found['fileId'], ]
+                        ), null, $context);
                     } else {
                         $location = xarMod::apiFunc(
                             'images',
                             'admin',
                             'resize_image',
                             ['fileLocation' => $found['fileLocation'],
-                                                        'width'  => (!empty($width) ? $width . 'px' : null),
-                                                        'height' => (!empty($height) ? $height . 'px' : null), ]
+                            'width'  => (!empty($width) ? $width . 'px' : null),
+                            'height' => (!empty($height) ? $height . 'px' : null), ]
                         );
                         if (!$location) {
                             return;
@@ -259,8 +259,8 @@ function images_admin_browse()
                             'admin',
                             'derivatives',
                             ['action' => 'view',
-                                                            'fileId' => md5($location), ]
-                        ));
+                            'fileId' => md5($location), ]
+                        ), null, $context);
                     }
                     return true;
                 }
@@ -291,7 +291,7 @@ function images_admin_browse()
                     }
                     // delete the server image now
                     @unlink($found['fileLocation']);
-                    xarController::redirect(xarController::URL('images', 'admin', 'browse'));
+                    xarController::redirect(xarController::URL('images', 'admin', 'browse'), null, $context);
                     return true;
                 }
                 $data['selimage'] = $found;
@@ -345,8 +345,8 @@ function images_admin_browse()
                             'admin',
                             'replace_image',
                             ['fileLocation' => $info['fileLocation'],
-                                                        'width'  => (!empty($width) ? $width . 'px' : null),
-                                                        'height' => (!empty($height) ? $height . 'px' : null), ]
+                            'width'  => (!empty($width) ? $width . 'px' : null),
+                            'height' => (!empty($height) ? $height . 'px' : null), ]
                         );
                         if (!$location) {
                             return;
@@ -358,10 +358,10 @@ function images_admin_browse()
                         'admin',
                         'browse',
                         ['bid'     => $baseId,
-                                                        'sort'    => 'time',
-                                                        // we need to refresh the cache here
-                                                        'refresh' => 1, ]
-                    ));
+                        'sort'    => 'time',
+                        // we need to refresh the cache here
+                        'refresh' => 1, ]
+                    ), null, $context);
                 } else {
                     foreach ($found as $id => $info) {
                         if (empty($info['fileLocation'])) {
@@ -372,8 +372,8 @@ function images_admin_browse()
                             'admin',
                             'resize_image',
                             ['fileLocation' => $info['fileLocation'],
-                                                        'width'  => (!empty($width) ? $width . 'px' : null),
-                                                        'height' => (!empty($height) ? $height . 'px' : null), ]
+                            'width'  => (!empty($width) ? $width . 'px' : null),
+                            'height' => (!empty($height) ? $height . 'px' : null), ]
                         );
                         if (!$location) {
                             return;
@@ -385,9 +385,9 @@ function images_admin_browse()
                         'admin',
                         'derivatives',
                         ['sort'    => 'time',
-                                                        // we need to refresh the cache here
-                                                        'refresh' => 1, ]
-                    ));
+                        // we need to refresh the cache here
+                        'refresh' => 1, ]
+                    ), null, $context);
                 }
                 return true;
 
@@ -433,8 +433,8 @@ function images_admin_browse()
                         'admin',
                         'process_image',
                         ['image'   => $info,
-                                                    'saveas'  => $saveas,
-                                                    'setting' => $setting, ]
+                        'saveas'  => $saveas,
+                        'setting' => $setting, ]
                     );
                     if (!$location) {
                         return;
@@ -449,10 +449,10 @@ function images_admin_browse()
                             'admin',
                             'browse',
                             ['bid'     => $baseId,
-                                                            'sort'    => 'time',
-                                                            // we need to refresh the cache here
-                                                            'refresh' => 1, ]
-                        ));
+                            'sort'    => 'time',
+                            // we need to refresh the cache here
+                            'refresh' => 1, ]
+                        ), null, $context);
                         break;
 
                     case 2: // replace
@@ -462,10 +462,10 @@ function images_admin_browse()
                             'admin',
                             'browse',
                             ['bid'     => $baseId,
-                                                            'sort'    => 'time',
-                                                            // we need to refresh the cache here
-                                                            'refresh' => 1, ]
-                        ));
+                            'sort'    => 'time',
+                            // we need to refresh the cache here
+                            'refresh' => 1, ]
+                        ), null, $context);
                         break;
 
                     case 0: // derivative
@@ -476,9 +476,9 @@ function images_admin_browse()
                             'admin',
                             'derivatives',
                             ['sort'    => 'time',
-                                                            // we need to refresh the cache here
-                                                            'refresh' => 1, ]
-                        ));
+                            // we need to refresh the cache here
+                            'refresh' => 1, ]
+                        ), null, $context);
                         break;
                 }
                 return true;

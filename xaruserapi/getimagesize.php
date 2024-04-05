@@ -20,7 +20,7 @@
  * @param   integer $storeType     The (uploads) store type for the image
  * @return  array Array containing the width, height and gd_info if available
  */
-function images_userapi_getimagesize($args)
+function images_userapi_getimagesize(array $args = [], $context = null)
 {
     extract($args);
 

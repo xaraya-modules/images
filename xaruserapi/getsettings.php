@@ -16,7 +16,7 @@
  *
  * @return array containing the predefined settings for image processing
  */
-function images_userapi_getsettings()
+function images_userapi_getsettings(array $args = [], $context = null)
 {
     $settings = xarModVars::get('images', 'phpthumb-settings');
     if (empty($settings)) {

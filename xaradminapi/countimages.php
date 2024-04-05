@@ -24,7 +24,7 @@
  * @param   string  $filematch (optional) Specific file match for images
  * @return  integer the number of images
  */
-function images_adminapi_countimages($args)
+function images_adminapi_countimages(array $args = [], $context = null)
 {
     extract($args);
     if (empty($basedir)) {

@@ -18,7 +18,7 @@
  * @param $args the function and arguments passed to xarController::URL
  * @return string path to be added to index.php for a short URL, or empty if failed
  */
-function images_userapi_encode_shorturl($args)
+function images_userapi_encode_shorturl(array $args = [], $context = null)
 {
     // Get arguments from argument array
     extract($args);

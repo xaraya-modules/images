@@ -4,6 +4,7 @@ namespace Xaraya\Modules\Images;
 
 use xarMod;
 use sys;
+
 sys::import('modules.images.class.image_properties');
 
 class Image_GD extends Image_Properties
@@ -33,7 +34,7 @@ class Image_GD extends Image_Properties
             return true;
         }
 
-        $origImage =& $this->_open();
+        $origImage = & $this->_open();
 
         if (is_resource($origImage) || is_object($origImage)) {
             if (is_dir($this->_thumbsdir) && is_writable($this->_thumbsdir)) {

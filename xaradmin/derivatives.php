@@ -19,7 +19,7 @@ sys::import('modules.base.class.pager');
  * @author mikespub
  * @todo add startnum and numitems support
  */
-function images_admin_derivatives()
+function images_admin_derivatives(array $args = [], $context = null)
 {
     // Security check
     if (!xarSecurity::check('AdminImages')) {
@@ -139,7 +139,7 @@ function images_admin_derivatives()
                     }
                     // delete the derivative image now
                     @unlink($found['fileLocation']);
-                    xarController::redirect(xarController::URL('images', 'admin', 'derivatives'));
+                    xarController::redirect(xarController::URL('images', 'admin', 'derivatives'), null, $context);
                     return true;
                 }
                 $data['selimage'] = $found;

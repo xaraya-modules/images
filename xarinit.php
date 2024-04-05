@@ -98,7 +98,6 @@ function images_upgrade($oldversion)
 
 /**
  * delete the images module
- * @param none
  * @return bool
  */
 function images_delete()

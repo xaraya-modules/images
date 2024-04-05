@@ -11,7 +11,7 @@
  * @link http://xaraya.com/index.php/release/152.html
  * @author Images Module Development Team
  */
-function images_admin_importpictures($args)
+function images_admin_importpictures(array $args = [], $context = null)
 {
     //global $dd_26;
     //$dd_26 = 'http://epicsaga.com/what_do_you_know?';

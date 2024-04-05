@@ -23,7 +23,7 @@
  * @return  string the location of the newly resized image
  */
 
-function images_adminapi_replace_image($args)
+function images_adminapi_replace_image(array $args = [], $context = null)
 {
     extract($args);
 

@@ -16,7 +16,7 @@
  *
  * @return array containing the menulinks for the main menu items.
  */
-function images_adminapi_getmenulinks()
+function images_adminapi_getmenulinks(array $args = [], $context = null)
 {
     if (xarSecurity::check('AdminImages')) {
         if (xarMod::isAvailable('uploads') && xarSecurity::check('AdminUploads', 0)) {

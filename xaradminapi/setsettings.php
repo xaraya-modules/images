@@ -18,7 +18,7 @@
  * @param $args array containing the predefined settings for image processing
  * @return void
  */
-function images_adminapi_setsettings($args)
+function images_adminapi_setsettings(array $args = [], $context = null)
 {
     if (empty($args) || !is_array($args)) {
         $args = [];

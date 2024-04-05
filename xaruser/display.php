@@ -19,7 +19,7 @@
  *  @param    string    fileId          The id (from the uploads module) of the image to push
  *  @return   bool|null|never           This function will exit upon succes and, returns False and throws an exception otherwise
  */
-function images_user_display($args)
+function images_user_display(array $args = [], $context = null)
 {
     extract($args);
 
@@ -46,7 +46,7 @@ function images_user_display($args)
     $image = xarMod::apiFunc('images', 'user', 'load_image', $data);
 
     if (!is_object($image)) {
-        xarController::redirect('modules/images/xarimages/admin.gif');
+        xarController::redirect('modules/images/xarimages/admin.gif', null, $context);
         return true;
     }
 
@@ -135,7 +135,7 @@ function images_user_display($args)
             unset($data);
         }
     } else {
-        xarController::redirect('modules/images/xarimages/admin.gif');
+        xarController::redirect('modules/images/xarimages/admin.gif', null, $context);
         return true;
     }
 

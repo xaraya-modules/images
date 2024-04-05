@@ -12,7 +12,7 @@
  * @author Images Module Development Team
  */
 
-function images_userapi_gd_info()
+function images_userapi_gd_info(array $args = [], $context = null)
 {
     if (function_exists('gd_info')) {
         $gd_info = gd_info();

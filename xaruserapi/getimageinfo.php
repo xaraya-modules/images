@@ -20,7 +20,7 @@
  * @param   string  $baseurl       (optional) The corresponding base URL for the images
  * @return  array   An array containing the image information if available or false if not available
  */
-function images_userapi_getimageinfo($args)
+function images_userapi_getimageinfo(array $args = [], $context = null)
 {
     extract($args);
 

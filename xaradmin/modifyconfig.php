@@ -11,7 +11,7 @@
  * @link http://xaraya.com/index.php/release/152.html
  * @author Images Module Development Team
  */
-function images_admin_modifyconfig()
+function images_admin_modifyconfig(array $args = [], $context = null)
 {
     // Security check
     if (!xarSecurity::check('AdminImages')) {

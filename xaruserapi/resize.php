@@ -27,7 +27,7 @@
  * @param   boolean $returnpath (optional) Flag to return the image path instead of the image tag
  * @return  string An <img> tag for the newly resized image
  */
-function images_userapi_resize($args)
+function images_userapi_resize(array $args = [], $context = null)
 {
     extract($args);
 

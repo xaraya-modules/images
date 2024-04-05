@@ -3,7 +3,7 @@
 /**
  * @deprecated 2.0.0 phpThumb() is seriously dated and doesn't play nice as a library
  */
-function images_admin_phpthumb($args)
+function images_admin_phpthumb(array $args = [], $context = null)
 {
     // Security check
     if (!xarSecurity::check('AdminImages')) {
@@ -302,10 +302,10 @@ function images_admin_phpthumb($args)
                                 'user',
                                 'db_modify_file',
                                 ['fileId'    => $fileId,
-                                                     'fileType'  => $fileType,
-                                                     'fileSize'  => filesize($save),
-                                                     // reset the extrainfo
-                                                     'extrainfo' => '', ]
+                                'fileType'  => $fileType,
+                                'fileSize'  => filesize($save),
+                                // reset the extrainfo
+                                'extrainfo' => '', ]
                             )) {
                                 return;
                             }
@@ -315,7 +315,7 @@ function images_admin_phpthumb($args)
                                     'user',
                                     'file_dump',
                                     ['fileSrc' => $save,
-                                                         'fileId' => $fileId, ]
+                                    'fileId' => $fileId, ]
                                 )) {
                                     return;
                                 }
@@ -326,8 +326,8 @@ function images_admin_phpthumb($args)
                                 'admin',
                                 'uploads',
                                 ['action' => 'view',
-                                                                'fileId' => $fileId, ]
-                            ));
+                                'fileId' => $fileId, ]
+                            ), null, $context);
                             return true;
                         } elseif (preg_match('/^[0-9a-f]{32}$/i', $fileId)) {
                             // Redirect to viewing the updated image here (for now)
@@ -336,8 +336,8 @@ function images_admin_phpthumb($args)
                                 'admin',
                                 'derivatives',
                                 ['action' => 'view',
-                                                                'fileId' => $fileId, ]
-                            ));
+                                'fileId' => $fileId, ]
+                            ), null, $context);
                             return true;
                         } else {
                             // Redirect to viewing the updated image here (for now)
@@ -346,9 +346,9 @@ function images_admin_phpthumb($args)
                                 'admin',
                                 'browse',
                                 ['action' => 'view',
-                                                                'bid'    => $baseId,
-                                                                'fid'    => $fileId, ]
-                            ));
+                                'bid'    => $baseId,
+                                'fid'    => $fileId, ]
+                            ), null, $context);
                             return true;
                         }
                     }

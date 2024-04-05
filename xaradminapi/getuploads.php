@@ -17,7 +17,7 @@
  * @return array|null containing the list of uploads
  * @todo add cache for large # of images ?
  */
-function images_adminapi_getuploads($args)
+function images_adminapi_getuploads(array $args = [], $context = null)
 {
     extract($args);
 
@@ -113,7 +113,9 @@ function images_adminapi_getuploads($args)
     }
     if (!empty($numsort)) {
         $sortfunc = function ($a, $b) use ($numsort) {
-            if ($a[$numsort] == $b[$numsort]) return 0;
+            if ($a[$numsort] == $b[$numsort]) {
+                return 0;
+            }
             return ($a[$numsort] > $b[$numsort]) ? -1 : 1;
         };
         usort($imagelist, $sortfunc);

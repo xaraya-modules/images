@@ -17,7 +17,7 @@
  * @param  $args ['extrainfo']
  * @return
  */
-function images_userapi_transformhook($args)
+function images_userapi_transformhook(array $args = [], $context = null)
 {
     extract($args);
 

@@ -21,7 +21,7 @@
  * @param   string  $filematch (optional) Specific file match for derivative images
  * @return int the number of images
  */
-function images_adminapi_countderivatives($args)
+function images_adminapi_countderivatives(array $args = [], $context = null)
 {
     extract($args);
 

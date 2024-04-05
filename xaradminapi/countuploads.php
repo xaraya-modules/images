@@ -17,7 +17,7 @@
  * @author mikespub
  * @return integer the number of uploaded images
  */
-function images_adminapi_countuploads($args)
+function images_adminapi_countuploads(array $args = [], $context = null)
 {
     extract($args);
     if (empty($typeName)) {

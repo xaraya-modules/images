@@ -26,7 +26,7 @@
  * @param   boolean $cacheRefresh (optional) Force refresh of the cache
  * @return array|null containing the list of images
  */
-function images_adminapi_getimages($args)
+function images_adminapi_getimages(array $args = [], $context = null)
 {
     extract($args);
     if (empty($basedir)) {
@@ -161,7 +161,9 @@ function images_adminapi_getimages($args)
     }
     if (!empty($numsort)) {
         $sortfunc = function ($a, $b) use ($numsort) {
-            if ($a[$numsort] == $b[$numsort]) return 0;
+            if ($a[$numsort] == $b[$numsort]) {
+                return 0;
+            }
             return ($a[$numsort] > $b[$numsort]) ? -1 : 1;
         };
         usort($imagelist, $sortfunc);
