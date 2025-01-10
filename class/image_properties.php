@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Images module class
  *
