@@ -11,6 +11,7 @@
 
 namespace Xaraya\Modules\Images\UserApi;
 
+use Xaraya\Modules\Images\Image_GD;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarModVars;

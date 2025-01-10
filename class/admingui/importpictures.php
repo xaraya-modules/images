@@ -38,7 +38,7 @@ class ImportpicturesMethod extends MethodClass
      * @link http://xaraya.com/index.php/release/152.html
      * @author Images Module Development Team
      */
-    protected function __invoke(array $args = [])
+    public function __invoke(array $args = [])
     {
         //global $dd_26;
         //$dd_26 = 'http://epicsaga.com/what_do_you_know?';
@@ -169,7 +169,7 @@ class ImportpicturesMethod extends MethodClass
         return $FilesInDir;
     }
 
-    public function pruneFiles($FilesInDir, $image_import_dir)
+    protected function pruneFiles($FilesInDir, $image_import_dir)
     {
         // Now check to see if any of those files are already in the system
         if (isset($FilesInDir)) {

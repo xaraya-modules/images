@@ -20,7 +20,7 @@ use xarController;
 use xarTplPager;
 use xarSec;
 use sys;
-use BadParameterException;
+use Exception;
 
 sys::import('xaraya.modules.method');
 

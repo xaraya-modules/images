@@ -31,7 +31,7 @@ class GetimagesizeMethod extends MethodClass
      * @param int $fileId The (uploads) file id of the image
      * @param int $fileType The (uploads) mime type for the image
      * @param int $storeType The (uploads) store type for the image
-     * @return array Array containing the width, height and gd_info if available
+     * @return array|void Array containing the width, height and gd_info if available
      */
     public function __invoke(array $args = [])
     {

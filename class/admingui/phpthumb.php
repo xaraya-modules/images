@@ -271,8 +271,9 @@ class PhpthumbMethod extends MethodClass
                 }
             }
 
+            // @todo no idea where this is now
             sys::import('modules.images.class.phpthumb_class');
-            $phpThumb = new phpthumb();
+            $phpThumb = new \phpthumb();
 
             $imagemagick = xarModVars::get('images', 'file.imagemagick');
             if (!empty($imagemagick) && file_exists($imagemagick)) {

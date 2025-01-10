@@ -19,7 +19,7 @@ use xarModVars;
 use xarMasks;
 use xarModHooks;
 use sys;
-use Exception;
+use BadParameterException;
 
 sys::import('xaraya.modules.installer');
 
