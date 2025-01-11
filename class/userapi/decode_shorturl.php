@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Images\UserApi;
 
+
+use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use sys;
 use BadParameterException;
@@ -19,6 +21,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * images userapi decode_shorturl function
+ * @extends MethodClass<UserApi>
  */
 class DecodeShorturlMethod extends MethodClass
 {

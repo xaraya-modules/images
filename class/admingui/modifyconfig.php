@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Images\AdminGui;
 
+use Xaraya\Modules\Images\Defines;
+use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarMod;
@@ -24,6 +26,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * images admin modifyconfig function
+ * @extends MethodClass<AdminGui>
  */
 class ModifyconfigMethod extends MethodClass
 {
@@ -64,9 +67,9 @@ class ModifyconfigMethod extends MethodClass
             xarModVars::set('images', 'file.imagemagick', '');
         }
         $data['authid']                         = xarSec::genAuthKey();
-        $data['library']   = ['GD'          => _IMAGES_LIBRARY_GD,
-            'ImageMagick' => _IMAGES_LIBRARY_IMAGEMAGICK,
-            'NetPBM'      => _IMAGES_LIBRARY_NETPBM, ];
+        $data['library']   = ['GD'          => Defines::LIBRARY_GD,
+            'ImageMagick' => Defines::LIBRARY_IMAGEMAGICK,
+            'NetPBM'      => Defines::LIBRARY_NETPBM, ];
 
         $shortURLs = xarModVars::get('images', 'SupportShortURLs');
 

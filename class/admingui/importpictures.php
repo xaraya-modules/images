@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Images\AdminGui;
 
+
+use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
 use xarMod;
@@ -23,6 +25,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * images admin importpictures function
+ * @extends MethodClass<AdminGui>
  */
 class ImportpicturesMethod extends MethodClass
 {

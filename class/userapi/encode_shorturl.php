@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Images\UserApi;
 
+
+use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarVar;
 use xarMod;
@@ -21,6 +23,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * images userapi encode_shorturl function
+ * @extends MethodClass<UserApi>
  */
 class EncodeShorturlMethod extends MethodClass
 {

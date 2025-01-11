@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Images\AdminGui;
 
+
+use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarVar;
@@ -26,6 +28,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * images admin derivatives function
+ * @extends MethodClass<AdminGui>
  */
 class DerivativesMethod extends MethodClass
 {

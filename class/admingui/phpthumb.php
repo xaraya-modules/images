@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Images\AdminGui;
 
+
+use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarVar;
@@ -25,6 +27,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * images admin phpthumb function
+ * @extends MethodClass<AdminGui>
  */
 class PhpthumbMethod extends MethodClass
 {
@@ -285,7 +288,7 @@ class PhpthumbMethod extends MethodClass
             if (file_exists($data['selimage']['fileLocation'])) {
                 $file = realpath($data['selimage']['fileLocation']);
                 $phpThumb->setSourceFilename($file);
-            } elseif (is_numeric($fileId) && defined('_UPLOADS_STORE_DB_DATA') && ($data['selimage']['storeType'] & _UPLOADS_STORE_DB_DATA)) {
+            } elseif (is_numeric($fileId) && defined('\Xaraya\Modules\Uploads\Defines::STORE_DB_DATA') && ($data['selimage']['storeType'] & \Xaraya\Modules\Uploads\Defines::STORE_DB_DATA)) {
                 // get the image data from the database
                 $data = xarMod::apiFunc('uploads', 'user', 'db_get_file_data', ['fileId' => $fileId]);
                 if (!empty($data)) {

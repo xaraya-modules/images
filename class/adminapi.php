@@ -18,6 +18,18 @@ sys::import('xaraya.modules.adminapi');
 
 /**
  * Handle the images admin API
+ *
+ * @method mixed countderivatives(array $args)
+ * @method mixed countimages(array $args)
+ * @method mixed countuploads(array $args)
+ * @method mixed getderivatives(array $args)
+ * @method mixed getimages(array $args)
+ * @method mixed getmenulinks(array $args)
+ * @method mixed getuploads(array $args)
+ * @method mixed processImage(array $args)
+ * @method mixed replaceImage(array $args)
+ * @method mixed resizeImage(array $args)
+ * @method mixed setsettings(array $args)
  * @extends AdminApiClass<Module>
  */
 class AdminApi extends AdminApiClass

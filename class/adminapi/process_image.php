@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Images\AdminApi;
 
+
+use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarModVars;
@@ -22,6 +24,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * images adminapi process_image function
+ * @extends MethodClass<AdminApi>
  */
 class ProcessImageMethod extends MethodClass
 {
@@ -133,7 +136,7 @@ class ProcessImageMethod extends MethodClass
             // NOTE: the next line is the *only* place i could find which suppresses exceptions through the 0 parameter at the end
             // NOTE: in the 2.x branch that parameter does not exist anymore, so the next code needs to be changed.
         } elseif (is_numeric($image['fileId']) && xarMod::isAvailable('uploads') && xarMod::apiLoad('uploads', 'user') &&
-                  defined('_UPLOADS_STORE_DB_DATA') && ($image['storeType'] & _UPLOADS_STORE_DB_DATA)) {
+                  defined('\Xaraya\Modules\Uploads\Defines::STORE_DB_DATA') && ($image['storeType'] & \Xaraya\Modules\Uploads\Defines::STORE_DB_DATA)) {
             $uploadsdir = xarModVars::get('uploads', 'path.uploads-directory');
             switch ($saveas) {
                 case 1: // [image]_new.[ext] // CHECKME: not in the database ?

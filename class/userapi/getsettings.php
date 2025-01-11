@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Images\UserApi;
 
+
+use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
 use sys;
@@ -20,6 +22,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * images userapi getsettings function
+ * @extends MethodClass<UserApi>
  */
 class GetsettingsMethod extends MethodClass
 {

@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Images\AdminApi;
 
+
+use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
 use xarVar;
@@ -22,6 +24,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * images adminapi countderivatives function
+ * @extends MethodClass<AdminApi>
  */
 class CountderivativesMethod extends MethodClass
 {

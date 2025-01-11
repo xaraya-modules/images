@@ -18,6 +18,19 @@ sys::import('xaraya.modules.userapi');
 
 /**
  * Handle the images user API
+ *
+ * @method mixed decodeShorturl(array $args)
+ * @method mixed dropdownlist(array $args)
+ * @method mixed encodeShorturl(array $args)
+ * @method mixed gdInfo(array $args)
+ * @method mixed getbasedirs(array $args)
+ * @method mixed getimageinfo(array $args)
+ * @method mixed getimagesize(array $args)
+ * @method mixed getsettings(array $args)
+ * @method mixed handleImageTag(array $args)
+ * @method mixed loadImage(array $args)
+ * @method mixed resize(array $args)
+ * @method mixed transformhook(array $args)
  * @extends UserApiClass<Module>
  */
 class UserApi extends UserApiClass

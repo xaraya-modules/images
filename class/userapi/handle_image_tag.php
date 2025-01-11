@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Images\UserApi;
 
+
+use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use sys;
@@ -20,6 +22,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * images userapi handle_image_tag function
+ * @extends MethodClass<UserApi>
  */
 class HandleImageTagMethod extends MethodClass
 {

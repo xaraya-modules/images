@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Images\AdminApi;
 
+use Xaraya\Modules\Images\Defines;
+use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarVar;
 use xarMod;
@@ -22,6 +24,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * images adminapi resize_image function
+ * @extends MethodClass<AdminApi>
  */
 class ResizeImageMethod extends MethodClass
 {
@@ -38,7 +41,7 @@ class ResizeImageMethod extends MethodClass
      * @param string $thumbsdir (optional) The directory where derivative images are stored
      * @param string $derivName (optional) The name of the derivative image to be saved
      * @param bool $forceResize (optional) Force resizing the image even if it already exists
-     * @return string the location of the newly resized image
+     * @return string|void the location of the newly resized image
      */
     public function __invoke(array $args = [])
     {
@@ -106,7 +109,8 @@ class ResizeImageMethod extends MethodClass
 
         // if both arguments are specified, give priority to fileId
         if (!empty($fileId)) {
-            $fileInfo = end(xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $fileId]));
+            $fileInfos = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $fileId]);
+            $fileInfo = end($fileInfos);
             if (empty($fileInfo)) {
                 return;
             } else {
@@ -154,13 +158,13 @@ class ResizeImageMethod extends MethodClass
 
         if (isset($width)) {
             preg_match('/([0-9]+)(px|%)/i', $width, $parts);
-            $type = ($parts[2] == '%') ? _IMAGES_UNIT_TYPE_PERCENT : _IMAGES_UNIT_TYPE_PIXELS;
+            $type = ($parts[2] == '%') ? Defines::UNIT_TYPE_PERCENT : Defines::UNIT_TYPE_PIXELS;
             switch ($type) {
-                case _IMAGES_UNIT_TYPE_PERCENT:
+                case Defines::UNIT_TYPE_PERCENT:
                     $image->setPercent(['wpercent' => $width]);
                     break;
                 default:
-                case _IMAGES_UNIT_TYPE_PIXELS:
+                case Defines::UNIT_TYPE_PIXELS:
                     $image->setWidth($parts[1]);
             }
 
@@ -171,13 +175,13 @@ class ResizeImageMethod extends MethodClass
 
         if (isset($height)) {
             preg_match('/([0-9]+)(px|%)/i', $height, $parts);
-            $type = ($parts[2] == '%') ? _IMAGES_UNIT_TYPE_PERCENT : _IMAGES_UNIT_TYPE_PIXELS;
+            $type = ($parts[2] == '%') ? Defines::UNIT_TYPE_PERCENT : Defines::UNIT_TYPE_PIXELS;
             switch ($type) {
-                case _IMAGES_UNIT_TYPE_PERCENT:
+                case Defines::UNIT_TYPE_PERCENT:
                     $image->setPercent(['hpercent' => $height]);
                     break;
                 default:
-                case _IMAGES_UNIT_TYPE_PIXELS:
+                case Defines::UNIT_TYPE_PIXELS:
                     $image->setHeight($parts[1]);
             }
 

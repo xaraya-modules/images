@@ -19,6 +19,16 @@ sys::import('modules.images.class.adminapi');
 
 /**
  * Handle the images admin GUI
+ *
+ * @method mixed browse(array $args)
+ * @method mixed derivatives(array $args)
+ * @method mixed importpictures(array $args)
+ * @method mixed main(array $args)
+ * @method mixed modifyconfig(array $args)
+ * @method mixed overview(array $args)
+ * @method mixed phpthumb(array $args)
+ * @method mixed updateconfig(array $args)
+ * @method mixed uploads(array $args)
  * @extends AdminGuiClass<Module>
  */
 class AdminGui extends AdminGuiClass

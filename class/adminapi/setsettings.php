@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Images\AdminApi;
 
+
+use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
 use sys;
@@ -20,6 +22,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * images adminapi setsettings function
+ * @extends MethodClass<AdminApi>
  */
 class SetsettingsMethod extends MethodClass
 {

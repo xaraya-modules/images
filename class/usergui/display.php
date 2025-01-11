@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Images\UserGui;
 
+use Xaraya\Modules\Images\Defines;
+use Xaraya\Modules\Images\UserGui;
 use Xaraya\Modules\MethodClass;
 use xarVar;
 use xarMod;
@@ -23,6 +25,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * images user display function
+ * @extends MethodClass<UserGui>
  */
 class DisplayMethod extends MethodClass
 {
@@ -32,7 +35,9 @@ class DisplayMethod extends MethodClass
      * Pushes an image to the client browser
      *  @author   Carl P. Corliss
      * @access public
-     * @param    string    fileId          The id (from the uploads module) of the image to push
+     * @param   array $args
+     * with
+     *     string    fileId          The id (from the uploads module) of the image to push
      * @return   bool|null|never           This function will exit upon succes and, returns False and throws an exception otherwise
      */
     public function __invoke(array $args = [])
@@ -72,13 +77,13 @@ class DisplayMethod extends MethodClass
         if (isset($width) && !empty($width)) {
             $width = urldecode($width);
             preg_match('/([0-9]+)(px|%|)/i', $width, $parts);
-            $type = ($parts[2] == '%') ? _IMAGES_UNIT_TYPE_PERCENT : _IMAGES_UNIT_TYPE_PIXELS;
+            $type = ($parts[2] == '%') ? Defines::UNIT_TYPE_PERCENT : Defines::UNIT_TYPE_PIXELS;
             switch ($type) {
-                case _IMAGES_UNIT_TYPE_PERCENT:
+                case Defines::UNIT_TYPE_PERCENT:
                     $image->setPercent(['wpercent' => $width]);
                     break;
                 default:
-                case _IMAGES_UNIT_TYPE_PIXELS:
+                case Defines::UNIT_TYPE_PIXELS:
                     $image->setWidth($parts[1]);
             }
 
@@ -90,13 +95,13 @@ class DisplayMethod extends MethodClass
         if (isset($height) && !empty($height)) {
             $height = urldecode($height);
             preg_match('/([0-9]+)(px|%|)/i', $height, $parts);
-            $type = ($parts[2] == '%') ? _IMAGES_UNIT_TYPE_PERCENT : _IMAGES_UNIT_TYPE_PIXELS;
+            $type = ($parts[2] == '%') ? Defines::UNIT_TYPE_PERCENT : Defines::UNIT_TYPE_PIXELS;
             switch ($type) {
-                case _IMAGES_UNIT_TYPE_PERCENT:
+                case Defines::UNIT_TYPE_PERCENT:
                     $image->setPercent(['hpercent' => $height]);
                     break;
                 default:
-                case _IMAGES_UNIT_TYPE_PIXELS:
+                case Defines::UNIT_TYPE_PIXELS:
                     $image->setHeight($parts[1]);
             }
 

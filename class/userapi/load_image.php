@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Images\UserApi;
 
+use Xaraya\Modules\Images\Defines;
+use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\Images\Image_GD;
 use Xaraya\Modules\MethodClass;
 use xarMod;
@@ -22,6 +24,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * images userapi load_image function
+ * @extends MethodClass<UserApi>
  */
 class LoadImageMethod extends MethodClass
 {
@@ -76,7 +79,7 @@ class LoadImageMethod extends MethodClass
                 if (!empty($fileInfo['fileLocation']) && file_exists($fileInfo['fileLocation'])) {
                     // pass the file location to Image_Properties
                     $location = $fileInfo['fileLocation'];
-                } elseif (defined('_UPLOADS_STORE_DB_DATA') && ($fileInfo['storeType'] & _UPLOADS_STORE_DB_DATA)) {
+                } elseif (defined('\Xaraya\Modules\Uploads\Defines::STORE_DB_DATA') && ($fileInfo['storeType'] & \Xaraya\Modules\Uploads\Defines::STORE_DB_DATA)) {
                     // pass the file info array to Image_Properties
                     $location = $fileInfo;
                 }
@@ -84,7 +87,7 @@ class LoadImageMethod extends MethodClass
                 // if we get the whole file info
             } elseif (file_exists($fileLocation)) {
                 $location = $fileLocation;
-            } elseif (defined('_UPLOADS_STORE_DB_DATA') && ($storeType & _UPLOADS_STORE_DB_DATA)) {
+            } elseif (defined('\Xaraya\Modules\Uploads\Defines::STORE_DB_DATA') && ($storeType & \Xaraya\Modules\Uploads\Defines::STORE_DB_DATA)) {
                 // pass the whole array to Image_Properties
                 $location = $args;
             } else {
@@ -108,19 +111,19 @@ class LoadImageMethod extends MethodClass
 
         switch (xarModVars::get('images', 'type.graphics-library')) {
             /**
-            case _IMAGES_LIBRARY_IMAGEMAGICK:
+            case Defines::LIBRARY_IMAGEMAGICK:
                 sys::import('modules.images.class.image_ImageMagick');
                 $newImage = new Image_ImageMagick($location, $thumbsdir);
                 return $newImage;
                 break;
-            case _IMAGES_LIBRARY_NETPBM:
+            case Defines::LIBRARY_NETPBM:
                 sys::import('modules.images.class.image_NetPBM');
                 $newImage = new Image_NetPBM($location, $thumbsdir);
                 return $newImage;
                 break;
              */
             default:
-            case _IMAGES_LIBRARY_GD:
+            case Defines::LIBRARY_GD:
                 sys::import('modules.images.class.image_gd');
                 $newImage = new Image_GD($location, $thumbsdir);
                 return $newImage;

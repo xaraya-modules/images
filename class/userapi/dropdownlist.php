@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Images\UserApi;
 
+
+use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarVar;
@@ -21,6 +23,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * images userapi dropdownlist function
+ * @extends MethodClass<UserApi>
  */
 class DropdownlistMethod extends MethodClass
 {

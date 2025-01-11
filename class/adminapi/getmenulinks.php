@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Images\AdminApi;
 
+
+use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarMod;
@@ -22,6 +24,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * images adminapi getmenulinks function
+ * @extends MethodClass<AdminApi>
  */
 class GetmenulinksMethod extends MethodClass
 {

@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Images\UserApi;
 
+use Xaraya\Modules\Images\Defines;
+use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarVar;
 use xarMod;
@@ -23,6 +25,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * images userapi resize function
+ * @extends MethodClass<UserApi>
  */
 class ResizeMethod extends MethodClass
 {
@@ -255,13 +258,13 @@ class ResizeMethod extends MethodClass
 
         if (isset($width)) {
             preg_match('/([0-9]+)(px|%)/i', $width, $parts);
-            $type = ($parts[2] == '%') ? _IMAGES_UNIT_TYPE_PERCENT : _IMAGES_UNIT_TYPE_PIXELS;
+            $type = ($parts[2] == '%') ? Defines::UNIT_TYPE_PERCENT : Defines::UNIT_TYPE_PIXELS;
             switch ($type) {
-                case _IMAGES_UNIT_TYPE_PERCENT:
+                case Defines::UNIT_TYPE_PERCENT:
                     $image->setPercent(['wpercent' => $width]);
                     break;
                 default:
-                case _IMAGES_UNIT_TYPE_PIXELS:
+                case Defines::UNIT_TYPE_PIXELS:
                     $image->setWidth($parts[1]);
             }
 
@@ -272,13 +275,13 @@ class ResizeMethod extends MethodClass
 
         if (isset($height)) {
             preg_match('/([0-9]+)(px|%)/i', $height, $parts);
-            $type = ($parts[2] == '%') ? _IMAGES_UNIT_TYPE_PERCENT : _IMAGES_UNIT_TYPE_PIXELS;
+            $type = ($parts[2] == '%') ? Defines::UNIT_TYPE_PERCENT : Defines::UNIT_TYPE_PIXELS;
             switch ($type) {
-                case _IMAGES_UNIT_TYPE_PERCENT:
+                case Defines::UNIT_TYPE_PERCENT:
                     $image->setPercent(['hpercent' => $height]);
                     break;
                 default:
-                case _IMAGES_UNIT_TYPE_PIXELS:
+                case Defines::UNIT_TYPE_PIXELS:
                     $image->setHeight($parts[1]);
             }
 

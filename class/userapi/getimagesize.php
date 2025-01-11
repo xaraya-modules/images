@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Images\UserApi;
 
+
+use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use sys;
@@ -20,6 +22,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * images userapi getimagesize function
+ * @extends MethodClass<UserApi>
  */
 class GetimagesizeMethod extends MethodClass
 {
@@ -84,7 +87,7 @@ class GetimagesizeMethod extends MethodClass
             $string = 'width="' . $extrainfo['width'] . '" height="' . $extrainfo['height'] . '"';
             return [$extrainfo['width'],$extrainfo['height'],$type,$string];
         } elseif (extension_loaded('gd') && xarMod::apiLoad('uploads', 'user') &&
-                  defined('_UPLOADS_STORE_DB_DATA') && ($storeType & _UPLOADS_STORE_DB_DATA)) {
+                  defined('\Xaraya\Modules\Uploads\Defines::STORE_DB_DATA') && ($storeType & \Xaraya\Modules\Uploads\Defines::STORE_DB_DATA)) {
             // get the image data from the database
             $data = xarMod::apiFunc('uploads', 'user', 'db_get_file_data', ['fileId' => $fileId]);
             if (!empty($data)) {

@@ -11,6 +11,8 @@
 
 namespace Xaraya\Modules\Images\AdminGui;
 
+
+use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\MethodClass;
 use xarVar;
 use xarModVars;
@@ -24,6 +26,7 @@ sys::import('xaraya.modules.method');
 
 /**
  * images admin updateconfig function
+ * @extends MethodClass<AdminGui>
  */
 class UpdateconfigMethod extends MethodClass
 {

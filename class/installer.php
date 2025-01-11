@@ -13,6 +13,7 @@
 
 namespace Xaraya\Modules\Images;
 
+use Xaraya\Modules\Images\Defines;
 use Xaraya\Modules\InstallerClass;
 use xarMod;
 use xarModVars;
@@ -69,7 +70,7 @@ class Installer extends InstallerClass
 
 
         // Set up module variables
-        xarModVars::set('images', 'type.graphics-library', _IMAGES_LIBRARY_GD);
+        xarModVars::set('images', 'type.graphics-library', Defines::LIBRARY_GD);
         xarModVars::set('images', 'path.derivative-store', 'Put a real directory in here...!');
         xarModVars::set('images', 'view.itemsperpage', 200);
         xarModVars::set('images', 'file.cache-expire', 60);
