@@ -31,7 +31,7 @@ class CountuploadsMethod extends MethodClass
     /**
      * count the number of uploaded images (managed by the uploads module)
      * @author mikespub
-     * @return int the number of uploaded images
+     * @return int|void the number of uploaded images
      */
     public function __invoke(array $args = [])
     {

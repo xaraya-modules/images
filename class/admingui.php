@@ -12,6 +12,8 @@
 namespace Xaraya\Modules\Images;
 
 use Xaraya\Modules\AdminGuiClass;
+use Xaraya\Modules\Uploads\UserApi as UploadsApi;
+use xarMod;
 use sys;
 
 sys::import('xaraya.modules.admingui');
@@ -33,5 +35,14 @@ sys::import('modules.images.class.adminapi');
  */
 class AdminGui extends AdminGuiClass
 {
-    // ...
+    /**
+     * Get Uploads UserApi class
+     * @return UploadsApi
+     */
+    public function getUploadsAPI()
+    {
+        /** @var UploadsApi $uploadsapi */
+        $uploadsapi = xarMod::getAPI('uploads');
+        return $uploadsapi;
+    }
 }

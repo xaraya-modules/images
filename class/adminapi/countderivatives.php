@@ -37,7 +37,7 @@ class CountderivativesMethod extends MethodClass
      * @param string $fileName (optional) The name of the image we're getting derivatives for
      * @param string $thumbsdir (optional) The directory where derivative images are stored
      * @param string $filematch (optional) Specific file match for derivative images
-     * @return int the number of images
+     * @return int|void the number of images
      */
     public function __invoke(array $args = [])
     {

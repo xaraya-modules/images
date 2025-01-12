@@ -32,9 +32,10 @@ class DropdownlistMethod extends MethodClass
     /**
      * get an array of images (id => field) for use in dropdown lists
      * Note : for additional optional parameters, see the getuploads() and getimages() functions
-     * @param mixed $args ['bid'] (optional) baseId for server images, otherwise uploads images
-     * @param mixed $args ['field'] field to use in the dropdown list (default 'fileName')
-     * @return array of images, or false on failure
+     * @param array<mixed> $args
+     * @var mixed $bid (optional) baseId for server images, otherwise uploads images
+     * @var mixed $field field to use in the dropdown list (default 'fileName')
+     * @return array|void of images, or false on failure
      */
     public function __invoke($args = [])
     {

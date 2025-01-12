@@ -12,6 +12,9 @@
 namespace Xaraya\Modules\Images;
 
 use Xaraya\Modules\UserApiClass;
+use Xaraya\Modules\Mime\UserApi as MimeApi;
+use Xaraya\Modules\Uploads\UserApi as UploadsApi;
+use xarMod;
 use sys;
 
 sys::import('xaraya.modules.userapi');
@@ -35,5 +38,25 @@ sys::import('xaraya.modules.userapi');
  */
 class UserApi extends UserApiClass
 {
-    // ...
+    /**
+     * Get Mime UserApi class
+     * @return MimeApi
+     */
+    public function getMimeAPI()
+    {
+        /** @var MimeApi $mimeapi */
+        $mimeapi = xarMod::getAPI('mime');
+        return $mimeapi;
+    }
+
+    /**
+     * Get Uploads UserApi class
+     * @return UploadsApi
+     */
+    public function getUploadsAPI()
+    {
+        /** @var UploadsApi $uploadsapi */
+        $uploadsapi = xarMod::getAPI('uploads');
+        return $uploadsapi;
+    }
 }

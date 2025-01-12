@@ -35,8 +35,7 @@ class DisplayMethod extends MethodClass
      * Pushes an image to the client browser
      *  @author   Carl P. Corliss
      * @access public
-     * @param   array $args
-     * with
+     * @param array<mixed> $args
      *     string    fileId          The id (from the uploads module) of the image to push
      * @return   bool|null|never           This function will exit upon succes and, returns False and throws an exception otherwise
      */

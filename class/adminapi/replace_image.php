@@ -36,14 +36,15 @@ class ReplaceImageMethod extends MethodClass
      * @param string $height The new height (in pixels or percent) ([0-9]+)(px|%)
      * @param string $width The new width (in pixels or percent)  ([0-9]+)(px|%)
      * @param bool $constrain if height XOR width, then constrain the missing value to the given one
-     * @return string the location of the newly resized image
+     * @return string|void the location of the newly resized image
      */
     public function __invoke(array $args = [])
     {
         extract($args);
 
         if (!empty($fileId) && empty($fileLocation)) {
-            $fileInfo = end(xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $fileId]));
+            $fileInfos = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $fileId]);
+            $fileInfo = end($fileInfos);
             if (empty($fileInfo)) {
                 return;
             } else {

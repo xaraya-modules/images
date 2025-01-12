@@ -39,7 +39,7 @@ class CountimagesMethod extends MethodClass
      * @param mixed $fileId (optional) The file id(s) of the image(s) we're looking for
      * @param string $fileName (optional) The name of the image we're looking for
      * @param string $filematch (optional) Specific file match for images
-     * @return int the number of images
+     * @return int|void the number of images
      */
     public function __invoke(array $args = [])
     {

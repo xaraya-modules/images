@@ -31,7 +31,8 @@ class TransformhookMethod extends MethodClass
 
     /**
      * Primarily used by Articles as a transform hook to turn "upload tags" into various display formats
-     * @param mixed $args ['extrainfo']
+     * @param array<mixed> $args
+     * @var mixed $extrainfo
      * @return mixed
      */
     public function __invoke(array $args = [])

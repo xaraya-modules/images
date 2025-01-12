@@ -33,6 +33,7 @@ class ProcessImageMethod extends MethodClass
     /**
      * Process an image using phpThumb
      * @author mikespub
+     * @param array<mixed> $args
      * @param array $image The image info array (e.g. coming from getimageinfo or getimages/getuploads/getderivatives)
      * @param int $saveas How to save the processed image (0 = derivative, 1 = [image]_new.[ext], 2 = replace, 3 = output)
      * @param string $setting The predefined setting to use, or

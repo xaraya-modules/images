@@ -12,6 +12,8 @@
 namespace Xaraya\Modules\Images;
 
 use Xaraya\Modules\UserGuiClass;
+use Xaraya\Modules\Uploads\UserApi as UploadsApi;
+use xarMod;
 use sys;
 
 sys::import('xaraya.modules.usergui');
@@ -38,5 +40,16 @@ class UserGui extends UserGuiClass
         // Pass along the context for xarTpl::module() if needed
         $args['context'] ??= $this->getContext();
         return $args;
+    }
+
+    /**
+     * Get Uploads UserApi class
+     * @return UploadsApi
+     */
+    public function getUploadsAPI()
+    {
+        /** @var UploadsApi $uploadsapi */
+        $uploadsapi = xarMod::getAPI('uploads');
+        return $uploadsapi;
     }
 }
