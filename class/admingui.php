@@ -35,14 +35,5 @@ sys::import('modules.images.class.adminapi');
  */
 class AdminGui extends AdminGuiClass
 {
-    /**
-     * Get Uploads UserApi class
-     * @return UploadsApi
-     */
-    public function getUploadsAPI()
-    {
-        /** @var UploadsApi $uploadsapi */
-        $uploadsapi = xarMod::getAPI('uploads');
-        return $uploadsapi;
-    }
+    // ...
 }

@@ -14,6 +14,7 @@ namespace Xaraya\Modules\Images\UserGui;
 use Xaraya\Modules\Images\Defines;
 use Xaraya\Modules\Images\UserGui;
 use Xaraya\Modules\Images\UserApi;
+use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
 use xarVar;
 use xarMod;
@@ -151,8 +152,11 @@ class DisplayMethod extends MethodClass
         } elseif (is_numeric($fileId) && xarMod::isAvailable('uploads')) {
             $fileSize = 0;
 
+            /** @var UploadsApi $uploadsapi */
+            $uploadsapi = $userapi->getUploadsAPI();
+
             // get the image data from the database
-            $data = xarMod::apiFunc('uploads', 'user', 'db_get_file_data', ['fileId' => $fileId]);
+            $data = $uploadsapi->dbGetFileData(['fileId' => $fileId]);
             if (!empty($data)) {
                 foreach ($data as $chunk) {
                     $fileSize += strlen($chunk);

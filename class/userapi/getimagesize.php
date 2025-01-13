@@ -12,6 +12,7 @@
 namespace Xaraya\Modules\Images\UserApi;
 
 use Xaraya\Modules\Images\UserApi;
+use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use sys;
@@ -42,7 +43,7 @@ class GetimagesizeMethod extends MethodClass
         extract($args);
 
         if (empty($fileId) && empty($fileLocation)) {
-            $mesg = xarML(
+            $mesg = $this->translate(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 '',
                 'getimagesize',
@@ -50,7 +51,7 @@ class GetimagesizeMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         } elseif (!empty($fileId) && !is_numeric($fileId)) {
-            $mesg = xarML(
+            $mesg = $this->translate(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 'fileId',
                 'getimagesize',
@@ -58,7 +59,7 @@ class GetimagesizeMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         } elseif (!empty($fileLocation) && !is_string($fileLocation)) {
-            $mesg = xarML(
+            $mesg = $this->translate(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 'fileLocation',
                 'getimagesize',
@@ -66,6 +67,7 @@ class GetimagesizeMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         }
+        $userapi = $this->getParent();
 
         if (!empty($fileLocation) && file_exists($fileLocation)) {
             return @getimagesize($fileLocation);
@@ -89,8 +91,12 @@ class GetimagesizeMethod extends MethodClass
             return [$extrainfo['width'],$extrainfo['height'],$type,$string];
         } elseif (extension_loaded('gd') && xarMod::apiLoad('uploads', 'user') &&
                   defined('\Xaraya\Modules\Uploads\Defines::STORE_DB_DATA') && ($storeType & \Xaraya\Modules\Uploads\Defines::STORE_DB_DATA)) {
+
+            /** @var UploadsApi $uploadsapi */
+            $uploadsapi = $userapi->getUploadsAPI();
+
             // get the image data from the database
-            $data = xarMod::apiFunc('uploads', 'user', 'db_get_file_data', ['fileId' => $fileId]);
+            $data = $uploadsapi->dbGetFileData(['fileId' => $fileId]);
             if (!empty($data)) {
                 $src = implode('', $data);
                 unset($data);
@@ -105,13 +111,10 @@ class GetimagesizeMethod extends MethodClass
                     }
                     $extrainfo['width'] = $width;
                     $extrainfo['height'] = $height;
-                    xarMod::apiFunc(
-                        'uploads',
-                        'user',
-                        'db_modify_file',
-                        ['fileId' => $fileId,
-                            'extrainfo' => $extrainfo, ]
-                    );
+                    $uploadsapi->dbModifyFile([
+                        'fileId' => $fileId,
+                        'extrainfo' => $extrainfo,
+                    ]);
                     // Simulate the type returned by getimagesize()
                     switch ($fileType) {
                         case 'image/gif':

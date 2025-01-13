@@ -14,6 +14,7 @@ namespace Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\Images\UserApi;
+use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarVar;
@@ -21,6 +22,7 @@ use xarMod;
 use xarModVars;
 use xarSec;
 use xarController;
+use xarLog;
 use sys;
 use BadParameterException;
 
@@ -42,7 +44,7 @@ class PhpthumbMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security check
-        if (!xarSecurity::check('AdminImages')) {
+        if (!$this->checkAccess('AdminImages')) {
             return;
         }
 
@@ -60,6 +62,8 @@ class PhpthumbMethod extends MethodClass
         $userapi = $admingui->getAPI();
         /** @var AdminApi $adminapi */
         $adminapi = $admingui->getModule()->getAdminAPI();
+        /** @var UploadsApi $uploadsapi */
+        $uploadsapi = $userapi->getUploadsAPI();
 
         // Get the base directories configured for server images
         $basedirs = $userapi->getbasedirs();
@@ -271,14 +275,7 @@ class PhpthumbMethod extends MethodClass
                 }
             }
 
-            // @todo no idea where this is now
-            sys::import('modules.images.class.phpthumb_class');
-            $phpThumb = new \phpthumb();
-
-            $imagemagick = xarModVars::get('images', 'file.imagemagick');
-            if (!empty($imagemagick) && file_exists($imagemagick)) {
-                $phpThumb->config_imagemagick_path = realpath($imagemagick);
-            }
+            $phpThumb = $adminapi->getPhpThumb();
 
             // CHECKME: document root may be incorrect in some cases
 
@@ -287,7 +284,7 @@ class PhpthumbMethod extends MethodClass
                 $phpThumb->setSourceFilename($file);
             } elseif (is_numeric($fileId) && defined('\Xaraya\Modules\Uploads\Defines::STORE_DB_DATA') && ($data['selimage']['storeType'] & \Xaraya\Modules\Uploads\Defines::STORE_DB_DATA)) {
                 // get the image data from the database
-                $data = xarMod::apiFunc('uploads', 'user', 'db_get_file_data', ['fileId' => $fileId]);
+                $data = $uploadsapi->dbGetFileData(['fileId' => $fileId]);
                 if (!empty($data)) {
                     $src = implode('', $data);
                     unset($data);
@@ -329,26 +326,20 @@ class PhpthumbMethod extends MethodClass
                                 } else {
                                     $fileType = 'image/' . $f;
                                 }
-                                if (!xarMod::apiFunc(
-                                    'uploads',
-                                    'user',
-                                    'db_modify_file',
-                                    ['fileId'    => $fileId,
-                                        'fileType'  => $fileType,
-                                        'fileSize'  => filesize($save),
-                                        // reset the extrainfo
-                                        'extrainfo' => '', ]
-                                )) {
+                                if (!$uploadsapi->dbModifyFile([
+                                    'fileId'    => $fileId,
+                                    'fileType'  => $fileType,
+                                    'fileSize'  => filesize($save),
+                                    // reset the extrainfo
+                                    'extrainfo' => '',
+                                ])) {
                                     return;
                                 }
                                 if (!empty($dbfile)) {
-                                    if (!xarMod::apiFunc(
-                                        'uploads',
-                                        'user',
-                                        'file_dump',
-                                        ['fileSrc' => $save,
-                                            'fileId' => $fileId, ]
-                                    )) {
+                                    if (!$uploadsapi->fileDump([
+                                        'fileSrc' => $save,
+                                        'fileId' => $fileId,
+                                    ])) {
                                         return;
                                     }
                                 }
@@ -384,15 +375,17 @@ class PhpthumbMethod extends MethodClass
                                 return true;
                             }
                         }
-                        $data['message'] = xarML('The image has been saved as "#(1)"', $save);
+                        $data['message'] = $this->translate('The image has been saved as "#(1)"', $save);
                     }
                 } else {
                     $phpThumb->OutputThumbnail();
+                    xarLog::message('Images Phpthumb failed to generate thumbnail:' . $msg, xarLog::LEVEL_INFO);
                     // Stop processing here
                     exit;
                 }
             } else {
                 $msg = implode("\n\n", $phpThumb->debugmessages);
+                xarLog::message('Images Phpthumb failed to generate thumbnail:' . $msg, xarLog::LEVEL_INFO);
                 if (!empty($preview)) {
                     $phpThumb->ErrorImage($msg);
                     // Stop processing here

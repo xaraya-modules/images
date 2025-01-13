@@ -443,7 +443,7 @@ Perhaps we could provide a separate (javascript-based) page to fill in those fie
             <th colspan="4" class="xar-accent" align="center">
                 <xar:mlstring>Other Filters</xar:mlstring>
                 <br/>
-                [<a href="modules/images/xardocs/phpthumb.readme.txt" target="readme"><xar:mlstring>see description of 'fltr' parameter in readme.txt</xar:mlstring></a>]
+                [<a href="https://github.com/JamesHeinrich/phpThumb/blob/master/docs/phpthumb.readme.txt" target="readme"><xar:mlstring>see description of 'fltr' parameter in readme.txt</xar:mlstring></a>]
             </th>
         </tr>
         <tr>

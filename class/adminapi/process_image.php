@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Images\AdminApi;
 
 use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\Images\UserApi;
+use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarModVars;
@@ -41,6 +42,7 @@ class ProcessImageMethod extends MethodClass
      * @var bool $iscached Check if the processed file already exists (default FALSE)
      * @return string the location of the newly processed image
      * @deprecated 2.0.0 phpThumb() is seriously dated and doesn't play nice as a library
+     * @see AdminApi::processImage()
      */
     public function __invoke(array $args = [])
     {
@@ -50,6 +52,9 @@ class ProcessImageMethod extends MethodClass
 
         /** @var UserApi $userapi */
         $userapi = $adminapi->getAPI();
+
+        /** @var UploadsApi $uploadsapi */
+        $uploadsapi = $adminapi->getUploadsAPI();
 
         $settings = $userapi->getsettings();
         if (!empty($setting) && !empty($settings[$setting])) {
@@ -66,14 +71,14 @@ class ProcessImageMethod extends MethodClass
         }
 
         if (empty($image) || empty($params)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 '',
                 'process_image',
                 'images'
             );
             if ($saveas == 3) {
-                $phpThumb = $this->get_thumb();
+                $phpThumb = $adminapi->getPhpThumb();
                 // Generate an error image
                 $phpThumb->ErrorImage($msg);
                 // The calling GUI needs to stop processing here
@@ -135,7 +140,7 @@ class ProcessImageMethod extends MethodClass
             }
 
             $file = realpath($image['fileLocation']);
-            $phpThumb = $this->get_thumb();
+            $phpThumb = $adminapi->getPhpThumb();
             $phpThumb->setSourceFilename($file);
 
             // If the image is stored in the database (uploads module)
@@ -180,16 +185,16 @@ class ProcessImageMethod extends MethodClass
             }
 
             // get the image data from the database
-            $data = xarMod::apiFunc('uploads', 'user', 'db_get_file_data', ['fileId' => $image['fileId']]);
+            $data = $uploadsapi->dbGetFileData(['fileId' => $image['fileId']]);
             if (empty($data)) {
-                $msg = xarML(
+                $msg = $this->translate(
                     "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                     'image',
                     'process_image',
                     'images'
                 );
                 if ($saveas == 3) {
-                    $phpThumb = $this->get_thumb();
+                    $phpThumb = $adminapi->getPhpThumb();
                     // Generate an error image
                     $phpThumb->ErrorImage($msg);
                     // The calling GUI needs to stop processing here
@@ -201,17 +206,17 @@ class ProcessImageMethod extends MethodClass
 
             $src = implode('', $data);
             unset($data);
-            $phpThumb = $this->get_thumb();
+            $phpThumb = $adminapi->getPhpThumb();
             $phpThumb->setSourceData($src);
         } else {
-            $msg = xarML(
+            $msg = $this->translate(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 'image',
                 'process_image',
                 'images'
             );
             if ($saveas == 3) {
-                $phpThumb = $this->get_thumb();
+                $phpThumb = $adminapi->getPhpThumb();
                 // Generate an error image
                 $phpThumb->ErrorImage($msg);
                 // The calling GUI needs to stop processing here
@@ -253,7 +258,7 @@ class ProcessImageMethod extends MethodClass
 
         // Save it to file
         if (empty($save)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 'save',
                 'process_image',
@@ -273,52 +278,26 @@ class ProcessImageMethod extends MethodClass
 
         // update the uploads file entry if we overwrite a file !
         if (is_numeric($image['fileId']) && $saveas == 2) {
-            if (!xarMod::apiFunc(
-                'uploads',
-                'user',
-                'db_modify_file',
-                ['fileId'    => $image['fileId'],
-                    'fileType'  => 'image/' . $params['f'],
-                    'fileSize'  => filesize($save),
-                    // reset the extrainfo
-                    'extrainfo' => '', ]
-            )) {
+            if (!$uploadsapi->dbModifyFile([
+                'fileId'    => $image['fileId'],
+                'fileType'  => 'image/' . $params['f'],
+                'fileSize'  => filesize($save),
+                // reset the extrainfo
+                'extrainfo' => '',
+            ])) {
                 return '';
             }
             if (!empty($dbfile)) {
                 // store the image in the database
-                if (!xarMod::apiFunc(
-                    'uploads',
-                    'user',
-                    'file_dump',
-                    ['fileSrc' => $save,
-                        'fileId'  => $image['fileId'], ]
-                )) {
+                if (!$uploadsapi->fileDump([
+                    'fileSrc' => $save,
+                    'fileId'  => $image['fileId'],
+                ])) {
                     return '';
                 }
             }
         }
 
         return $save;
-    }
-
-    /**
-     * @deprecated 2.0.0 phpThumb() is seriously dated and doesn't play nice as a library
-     * @see AdminApi::processImage()
-     */
-    protected function get_thumb(array $args = [], $context = null)
-    {
-        // @todo no idea where this is now
-        sys::import('modules.images.class.phpthumb_class');
-        $phpThumb = new \phpthumb();
-
-        $imagemagick = xarModVars::get('images', 'file.imagemagick');
-        if (!empty($imagemagick) && file_exists($imagemagick)) {
-            $phpThumb->config_imagemagick_path = realpath($imagemagick);
-        }
-
-        // CHECKME: document root may be incorrect in some cases
-
-        return $phpThumb;
     }
 }

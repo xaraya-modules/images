@@ -14,6 +14,7 @@ namespace Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\Images\Defines;
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\Images\Image_GD;
+use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarModVars;
@@ -44,7 +45,7 @@ class LoadImageMethod extends MethodClass
         extract($args);
 
         if (empty($fileId) && empty($fileLocation)) {
-            $mesg = xarML(
+            $mesg = $this->translate(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 '',
                 'load_image',
@@ -52,7 +53,7 @@ class LoadImageMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         } elseif (!empty($fileId) && !is_string($fileId)) {
-            $mesg = xarML(
+            $mesg = $this->translate(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 'fileId',
                 'load_image',
@@ -60,7 +61,7 @@ class LoadImageMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         } elseif (!empty($fileLocation) && !is_string($fileLocation)) {
-            $mesg = xarML(
+            $mesg = $this->translate(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 'fileLocation',
                 'load_image',
@@ -68,12 +69,16 @@ class LoadImageMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         }
+        $userapi = $this->getParent();
 
         // if both arguments are specified, give priority to fileId
         if (!empty($fileId) && is_numeric($fileId)) {
             // if we only get the fileId
             if (empty($fileLocation) || !isset($storeType)) {
-                $fileInfoArray = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $fileId]);
+                /** @var UploadsApi $uploadsapi */
+                $uploadsapi = $userapi->getUploadsAPI();
+
+                $fileInfoArray = $uploadsapi->dbGetFile(['fileId' => $fileId]);
                 $fileInfo = end($fileInfoArray);
                 if (empty($fileInfo)) {
                     return null;
@@ -93,7 +98,7 @@ class LoadImageMethod extends MethodClass
                 // pass the whole array to Image_Properties
                 $location = $args;
             } else {
-                $mesg = xarML(
+                $mesg = $this->translate(
                     "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                     'fileLocation',
                     'load_image',

@@ -36,46 +36,46 @@ class GetmenulinksMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        if (xarSecurity::check('AdminImages')) {
+        if ($this->checkAccess('AdminImages')) {
             if (xarMod::isAvailable('uploads') && xarSecurity::check('AdminUploads', 0)) {
                 $menulinks[] = ['url'   => xarController::URL(
                     'images',
                     'admin',
                     'uploads'
                 ),
-                    'title' => xarML('View Uploaded Images'),
-                    'label' => xarML('View Uploaded Images'), ];
+                    'title' => $this->translate('View Uploaded Images'),
+                    'label' => $this->translate('View Uploaded Images'), ];
             }
             $menulinks[] = ['url'   => xarController::URL(
                 'images',
                 'admin',
                 'derivatives'
             ),
-                'title' => xarML('View Derivative Images'),
-                'label' => xarML('View Derivative Images'), ];
+                'title' => $this->translate('View Derivative Images'),
+                'label' => $this->translate('View Derivative Images'), ];
             $menulinks[] = ['url'   => xarController::URL(
                 'images',
                 'admin',
                 'browse'
             ),
-                'title' => xarML('Browse Server Images'),
-                'label' => xarML('Browse Server Images'), ];
+                'title' => $this->translate('Browse Server Images'),
+                'label' => $this->translate('Browse Server Images'), ];
             /**
             $menulinks[] = ['url'   => xarController::URL(
                 'images',
                 'admin',
                 'phpthumb'
             ),
-            'title' => xarML('Define Settings for Image Processing'),
-            'label' => xarML('Image Processing'), ];
+            'title' => $this->translate('Define Settings for Image Processing'),
+            'label' => $this->translate('Image Processing'), ];
              */
             $menulinks[] = ['url'   => xarController::URL(
                 'images',
                 'admin',
                 'modifyconfig'
             ),
-                'title' => xarML('Edit the Images Configuration'),
-                'label' => xarML('Modify Config'), ];
+                'title' => $this->translate('Edit the Images Configuration'),
+                'label' => $this->translate('Modify Config'), ];
         }
         if (empty($menulinks)) {
             $menulinks = '';

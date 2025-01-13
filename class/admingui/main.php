@@ -36,7 +36,7 @@ class MainMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!xarSecurity::check('AdminImages')) {
+        if (!$this->checkAccess('AdminImages')) {
             return;
         }
         xarController::redirect(xarController::URL('images', 'admin', 'modifyconfig'), null, $this->getContext());

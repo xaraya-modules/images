@@ -12,6 +12,8 @@
 namespace Xaraya\Modules\Images\AdminGui;
 
 use Xaraya\Modules\Images\AdminGui;
+use Xaraya\Modules\Images\UserApi;
+use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
 use xarMod;
@@ -35,6 +37,7 @@ class ImportpicturesMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
+        // @todo remove Xaraya 1.x way of working
         //global $dd_26;
         //$dd_26 = 'http://epicsaga.com/what_do_you_know?';
 
@@ -47,6 +50,12 @@ class ImportpicturesMethod extends MethodClass
 
         xarModVars::set('uploads', 'obfuscate_imports', 0);
 
+        $admingui = $this->getParent();
+
+        /** @var UserApi $userapi */
+        $userapi = $admingui->getAPI();
+        /** @var UploadsApi $uploadsapi */
+        $uploadsapi = $userapi->getUploadsAPI();
 
         echo "Import Pictures here<br/>";
 
@@ -106,11 +115,12 @@ class ImportpicturesMethod extends MethodClass
             // import file into Uploads
             $filepath = $image_import_dir . $filename;
 
+            // @todo this is no longer the right way to store files with the uploads module
             if (is_file($filepath)) {
                 $data = ['ulfile'   => $shortname,'filepath' => $filepath,'utype'    => 'file','mod'      => 'uploads','modid'    => 0,'filesize' => filesize($filepath),'type'     => ''];
 
                 echo "About to store<br/>";
-                $info = xarMod::apiFunc('uploads', 'user', 'store', $data);
+                $info = $uploadsapi->fileStore($data);
                 echo '<pre>';
                 print_r($info);
                 echo '</pre>';

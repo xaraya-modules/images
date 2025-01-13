@@ -91,10 +91,10 @@ class UpdateconfigMethod extends MethodClass
                 $value = trim(preg_replace('~\/$~', '', $value));
                 if (null !== xarModVars::get('images', 'path.' . $varname)) {
                     if (!file_exists($value) || !is_dir($value)) {
-                        $msg = xarML('Location [#(1)] either does not exist or is not a valid directory!', $value);
+                        $msg = $this->translate('Location [#(1)] either does not exist or is not a valid directory!', $value);
                         throw new BadParameterException(null, $msg);
                     } elseif (!is_writable($value)) {
-                        $msg = xarML('Location [#(1)] can not be written to - please check permissions and try again!', $value);
+                        $msg = $this->translate('Location [#(1)] can not be written to - please check permissions and try again!', $value);
                         throw new BadParameterException(null, $msg);
                     } else {
                         xarModVars::set('images', 'path.' . $varname, $value);

@@ -85,7 +85,7 @@ class Installer extends InstallerClass
         xarMasks::register('AdminImages', 'All', 'images', 'Image', 'All', 'ACCESS_ADMIN');
 
         if (!xarModHooks::register('item', 'transform', 'API', 'images', 'user', 'transformhook')) {
-            $msg = xarML('Could not register hook.');
+            $msg = $this->translate('Could not register hook.');
             throw new BadParameterException(null, $msg);
         }
         /*
@@ -118,7 +118,7 @@ class Installer extends InstallerClass
                     xarModVars::set('images', 'upgrade-1.0.0', 1);
                     // remove all old-style derivatives
                     /* skip this - too risky depending on site config
-                        $images = xarMod::apiFunc('images','admin','getderivatives');
+                        $images = $adminapi->getderivatives();
                         if (!empty($images)) {
                             foreach ($images as $image) {
                                 @unlink($image['fileLocation']);

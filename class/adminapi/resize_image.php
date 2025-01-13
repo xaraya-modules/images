@@ -14,6 +14,7 @@ namespace Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\Images\Defines;
 use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\Images\UserApi;
+use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
 use xarVar;
 use xarMod;
@@ -51,7 +52,7 @@ class ResizeImageMethod extends MethodClass
         extract($args);
         // Check the conditions
         if (empty($fileId) && empty($fileLocation)) {
-            $mesg = xarML(
+            $mesg = $this->translate(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 '',
                 'resize_image',
@@ -59,7 +60,7 @@ class ResizeImageMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         } elseif (!empty($fileId) && !is_numeric($fileId)) {
-            $mesg = xarML(
+            $mesg = $this->translate(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 'fileId',
                 'resize_image',
@@ -67,7 +68,7 @@ class ResizeImageMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         } elseif (!empty($fileLocation) && !is_string($fileLocation)) {
-            $mesg = xarML(
+            $mesg = $this->translate(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 'fileLocation',
                 'resize_image',
@@ -77,19 +78,22 @@ class ResizeImageMethod extends MethodClass
         }
 
         if (!isset($width) && !isset($height)) {
-            $msg = xarML("Required parameters '#(1)' and '#(2)' are missing.", 'width', 'height');
+            $msg = $this->translate("Required parameters '#(1)' and '#(2)' are missing.", 'width', 'height');
             throw new BadParameterException(null, $msg);
         } elseif (!isset($width) && !xarVar::validate('regexp:/[0-9]+(px|%)/:', $height)) {
-            $msg = xarML("'#(1)' parameter is incorrectly formatted.", 'height');
+            $msg = $this->translate("'#(1)' parameter is incorrectly formatted.", 'height');
             throw new BadParameterException(null, $msg);
         } elseif (!isset($height) && !xarVar::validate('regexp:/[0-9]+(px|%)/:', $width)) {
-            $msg = xarML("'#(1)' parameter is incorrectly formatted.", 'width');
+            $msg = $this->translate("'#(1)' parameter is incorrectly formatted.", 'width');
             throw new BadParameterException(null, $msg);
         }
         $adminapi = $this->getParent();
 
         /** @var UserApi $userapi */
         $userapi = $adminapi->getAPI();
+
+        /** @var UploadsApi $uploadsapi */
+        $uploadsapi = $adminapi->getUploadsAPI();
 
         // just a flag for later
         $constrain_both = false;
@@ -116,7 +120,7 @@ class ResizeImageMethod extends MethodClass
 
         // if both arguments are specified, give priority to fileId
         if (!empty($fileId)) {
-            $fileInfos = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $fileId]);
+            $fileInfos = $uploadsapi->dbGetFile(['fileId' => $fileId]);
             $fileInfo = end($fileInfos);
             if (empty($fileInfo)) {
                 return;
@@ -146,7 +150,7 @@ class ResizeImageMethod extends MethodClass
         }
         // Raise a user error when the format is not supported
         if ($notSupported) {
-            $msg = xarML('Image type for file: #(1) is not supported for resizing', $location);
+            $msg = $this->translate('Image type for file: #(1) is not supported for resizing', $location);
             throw new BadParameterException(null, $msg);
         }
 
@@ -161,7 +165,7 @@ class ResizeImageMethod extends MethodClass
         ]);
 
         if (!is_object($image)) {
-            $msg = xarML('File not found.');
+            $msg = $this->translate('File not found.');
             throw new BadParameterException(null, $msg);
         }
 
@@ -214,11 +218,11 @@ class ResizeImageMethod extends MethodClass
             if ($image->resize($forceResize)) {
                 $location = $image->saveDerivative($derivName);
                 if (!$location) {
-                    $msg = xarML('Unable to save resized image !');
+                    $msg = $this->translate('Unable to save resized image !');
                     throw new BadParameterException(null, $msg);
                 }
             } else {
-                $msg = xarML("Unable to resize image '#(1)'!", $image->fileLocation);
+                $msg = $this->translate("Unable to resize image '#(1)'!", $image->fileLocation);
                 throw new BadParameterException(null, $msg);
             }
         }

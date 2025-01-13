@@ -14,6 +14,7 @@ namespace Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\Images\UserApi;
+use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarMod;
@@ -45,12 +46,12 @@ class UploadsMethod extends MethodClass
         extract($args);
 
         // Security check for images
-        if (!xarSecurity::check('AdminImages')) {
+        if (!$this->checkAccess('AdminImages')) {
             return;
         }
 
         // Security check for uploads
-        if (!xarMod::isAvailable('uploads') || !xarSecurity::check('AdminUploads')) {
+        if (!xarMod::isAvailable('uploads') || !$this->checkAccess('AdminUploads')) {
             return;
         }
 
@@ -86,6 +87,8 @@ class UploadsMethod extends MethodClass
         $userapi = $admingui->getAPI();
         /** @var AdminApi $adminapi */
         $adminapi = $admingui->getModule()->getAdminAPI();
+        /** @var UploadsApi $uploadsapi */
+        $uploadsapi = $userapi->getUploadsAPI();
 
         $data = [];
         $data['startnum'] = $startnum;
@@ -207,12 +210,9 @@ class UploadsMethod extends MethodClass
                     }
                 }
                 // Get known associations for this image (currently unused)
-                $found['associations'] = xarMod::apiFunc(
-                    'uploads',
-                    'user',
-                    'db_get_associations',
-                    ['fileId' => $found['fileId']]
-                );
+                $found['associations'] = $uploadsapi->dbGetAssociations([
+                    'fileId' => $found['fileId'],
+                ]);
                 $found['moditems'] = [];
                 if (!empty($found['associations'])) {
                     $modlist = [];
@@ -380,7 +380,7 @@ class UploadsMethod extends MethodClass
                         }
                         // delete the uploaded image now
                         $fileList = [$fileId => $found];
-                        $result = xarMod::apiFunc('uploads', 'user', 'purge_files', ['fileList' => $fileList]);
+                        $result = $uploadsapi->purgeFiles(['fileList' => $fileList]);
                         if (!$result) {
                             return;
                         }

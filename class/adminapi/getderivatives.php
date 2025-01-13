@@ -12,6 +12,7 @@
 namespace Xaraya\Modules\Images\AdminApi;
 
 use Xaraya\Modules\Images\AdminApi;
+use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
 use xarMod;
@@ -164,31 +165,29 @@ class GetderivativesMethod extends MethodClass
                     $filenames[$matches[1]] = 1;
                 }
             }
+            $adminapi = $this->getParent();
 
             // CHECKME: keep track of originals for server images too ?
 
             if (empty($fileName) && xarMod::isAvailable('uploads')) {
+                /** @var UploadsApi $uploadsapi */
+                $uploadsapi = $adminapi->getUploadsAPI();
+
                 $fileinfo = [];
                 foreach (array_keys($filenames) as $file) {
                     // CHECKME: verify this once derivatives can be created in sub-directories of thumbsdir
                     // this is probably the file id for some uploaded/imported file stored in the database
                     if (preg_match('/^(.*\/)?(\d+)$/', $file, $matches)) {
-                        $fileinfo[$file] = xarMod::apiFunc(
-                            'uploads',
-                            'user',
-                            'db_get_file',
-                            ['fileId' => $matches[2]]
-                        );
+                        $fileinfo[$file] = $uploadsapi->dbGetFile([
+                            'fileId' => $matches[2],
+                        ]);
 
                         // this may be the md5 hash of the file location for some uploaded/imported file
                     } elseif (preg_match('/^(.*\/)?([0-9a-f]{32})$/i', $file, $matches)) {
                         // CHECKME: watch out for duplicates here too
-                        $fileinfo[$file] = xarMod::apiFunc(
-                            'uploads',
-                            'user',
-                            'db_get_file',
-                            ['fileLocationMD5' => $matches[2]]
-                        );
+                        $fileinfo[$file] = $uploadsapi->dbGetFile([
+                            'fileLocationMD5' => $matches[2],
+                        ]);
                     }
                 }
                 if (count($fileinfo) > 0) {

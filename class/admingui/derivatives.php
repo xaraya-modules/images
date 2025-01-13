@@ -43,7 +43,7 @@ class DerivativesMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security check
-        if (!xarSecurity::check('AdminImages')) {
+        if (!$this->checkAccess('AdminImages')) {
             return;
         }
         $admingui = $this->getParent();

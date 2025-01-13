@@ -12,6 +12,8 @@
 namespace Xaraya\Modules\Images\AdminApi;
 
 use Xaraya\Modules\Images\AdminApi;
+use Xaraya\Modules\Mime\UserApi as MimeApi;
+use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use sys;
@@ -39,12 +41,19 @@ class CountuploadsMethod extends MethodClass
         if (empty($typeName)) {
             $typeName = 'image';
         }
+        $adminapi = $this->getParent();
+
+        /** @var MimeApi $mimeapi */
+        $mimeapi = $adminapi->getMimeAPI();
 
         // Get all uploaded files of mimetype 'image' (cfr. uploads admin view)
-        $typeinfo = xarMod::apiFunc('mime', 'user', 'get_type', ['typeName' => $typeName]);
+        $typeinfo = $mimeapi->getType(['typeName' => $typeName]);
         if (empty($typeinfo)) {
             return;
         }
+
+        /** @var UploadsApi $uploadsapi */
+        $uploadsapi = $adminapi->getUploadsAPI();
 
         $filters = [];
         $filters['mimetype'] = $typeinfo['typeId'];
@@ -52,10 +61,10 @@ class CountuploadsMethod extends MethodClass
         $filters['status']   = null;
         $filters['inverse']  = null;
 
-        $options  = xarMod::apiFunc('uploads', 'user', 'process_filters', $filters);
+        $options  = $uploadsapi->processFilters($filters);
         $filter   = $options['filter'];
 
-        $numimages = xarMod::apiFunc('uploads', 'user', 'db_count', $filter);
+        $numimages = $uploadsapi->dbCount($filter);
 
         return $numimages;
     }

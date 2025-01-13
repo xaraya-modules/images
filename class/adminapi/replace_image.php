@@ -12,6 +12,7 @@
 namespace Xaraya\Modules\Images\AdminApi;
 
 use Xaraya\Modules\Images\AdminApi;
+use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use sys;
@@ -43,8 +44,13 @@ class ReplaceImageMethod extends MethodClass
     {
         extract($args);
 
+        $adminapi = $this->getParent();
+
+        /** @var UploadsApi $uploadsapi */
+        $uploadsapi = $adminapi->getUploadsAPI();
+
         if (!empty($fileId) && empty($fileLocation)) {
-            $fileInfos = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $fileId]);
+            $fileInfos = $uploadsapi->dbGetFile(['fileId' => $fileId]);
             $fileInfo = end($fileInfos);
             if (empty($fileInfo)) {
                 return;
@@ -60,7 +66,7 @@ class ReplaceImageMethod extends MethodClass
             $checkwrite = dirname($fileLocation);
         }
         if (!is_writable($checkwrite)) {
-            $mesg = xarML(
+            $mesg = $this->translate(
                 'Unable to replace #(1) - please check your file permissions',
                 $fileLocation
             );
@@ -87,15 +93,12 @@ class ReplaceImageMethod extends MethodClass
         }
 
         // Update the uploads database information
-        if (!xarMod::apiFunc(
-            'uploads',
-            'user',
-            'db_modify_file',
-            ['fileId'   => $fileId,
-                // FIXME: resize() always uses JPEG format for now
-                'fileType' => 'image/jpeg',
-                'fileSize' => filesize($fileLocation), ]
-        )) {
+        if (!$uploadsapi->dbModifyFile([
+            'fileId'   => $fileId,
+            // FIXME: resize() always uses JPEG format for now
+            'fileType' => 'image/jpeg',
+            'fileSize' => filesize($fileLocation),
+        ])) {
             return;
         }
 

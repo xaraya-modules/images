@@ -13,6 +13,8 @@ namespace Xaraya\Modules\Images\AdminApi;
 
 use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\Images\UserApi;
+use Xaraya\Modules\Mime\UserApi as MimeApi;
+use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use sys;
@@ -43,6 +45,12 @@ class GetuploadsMethod extends MethodClass
         /** @var UserApi $userapi */
         $userapi = $adminapi->getAPI();
 
+        /** @var MimeApi $mimeapi */
+        $mimeapi = $adminapi->getMimeAPI();
+
+        /** @var UploadsApi $uploadsapi */
+        $uploadsapi = $adminapi->getUploadsAPI();
+
         if (!empty($fileId)) {
             $filter = ['fileId' => $fileId];
         } else {
@@ -50,7 +58,7 @@ class GetuploadsMethod extends MethodClass
                 $typeName = 'image';
             }
             // Get all uploaded files of mimetype 'image' (cfr. uploads admin view)
-            $typeinfo = xarMod::apiFunc('mime', 'user', 'get_type', ['typeName' => $typeName]);
+            $typeinfo = $mimeapi->getType(['typeName' => $typeName]);
             if (empty($typeinfo)) {
                 return;
             }
@@ -61,7 +69,7 @@ class GetuploadsMethod extends MethodClass
             $filters['status']   = null;  // @todo show APPROVED images only here?
             $filters['inverse']  = null;
 
-            $options  = xarMod::apiFunc('uploads', 'user', 'process_filters', $filters);
+            $options  = $uploadsapi->processFilters($filters);
             $filter   = $options['filter'];
 
             if (!empty($getnext)) {
@@ -83,7 +91,7 @@ class GetuploadsMethod extends MethodClass
             }
         }
 
-        $imagelist = xarMod::apiFunc('uploads', 'user', 'db_get_file', $filter);
+        $imagelist = $uploadsapi->dbGetFile($filter);
 
         foreach ($imagelist as $id => $image) {
             if (!empty($image['fileLocation'])) {

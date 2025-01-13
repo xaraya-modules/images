@@ -15,6 +15,7 @@ use Xaraya\Modules\AdminApiClass;
 use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use xarMod;
+use xarModVars;
 use sys;
 
 sys::import('xaraya.modules.adminapi');
@@ -64,5 +65,27 @@ class AdminApi extends AdminApiClass
         /** @var UploadsApi $uploadsapi */
         $uploadsapi = xarMod::getAPI('uploads');
         return $uploadsapi;
+    }
+
+    /**
+     * @deprecated 2.0.0 phpThumb() is seriously dated and doesn't play nice as a library
+     */
+    public function getPhpThumb()
+    {
+        // @todo moved to its own subdirectory
+        sys::import('modules.images.class.phpthumb.phpthumb_class');
+        $phpThumb = new \phpthumb();
+        $phpThumb->config_document_root = sys::web();
+        $phpThumb->config_cache_directory = sys::varpath() . '/cache/images/';
+        //$phpThumb->config_additional_allowed_dirs = [];
+
+        $imagemagick = xarModVars::get('images', 'file.imagemagick');
+        if (!empty($imagemagick) && file_exists($imagemagick)) {
+            $phpThumb->config_imagemagick_path = realpath($imagemagick);
+        }
+
+        // CHECKME: document root may be incorrect in some cases
+
+        return $phpThumb;
     }
 }

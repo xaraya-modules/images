@@ -12,6 +12,7 @@
 namespace Xaraya\Modules\Images\UserApi;
 
 use Xaraya\Modules\Images\UserApi;
+use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
 use xarVar;
 use xarMod;
@@ -44,6 +45,10 @@ class EncodeShorturlMethod extends MethodClass
         if (!isset($func)) {
             return;
         }
+        $userapi = $this->getParent();
+
+        /** @var UploadsApi $uploadsapi */
+        $uploadsapi = $userapi->getUploadsAPI();
 
         // if we don't have a numeric fileId, can't do too much
         if (empty($fileId) || !is_numeric($fileId)) {
@@ -61,7 +66,7 @@ class EncodeShorturlMethod extends MethodClass
                 // get the mime type from the database (urgh)
             } else {
                 // Bug 5410 Make a two step process
-                $imageinfo = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $fileId]);
+                $imageinfo = $uploadsapi->dbGetFile(['fileId' => $fileId]);
                 $image = end($imageinfo);
 
                 if (empty($image)) {

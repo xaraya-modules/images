@@ -2,6 +2,7 @@
 
 namespace Xaraya\Modules\Images;
 
+use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use xarMod;
 use sys;
 
@@ -58,8 +59,10 @@ class Image_GD extends Image_Properties
         $origImage = null;
 
         if (!file_exists($this->fileLocation) && !empty($this->_fileId)) {
+            /** @var UploadsApi $uploadsapi */
+            $uploadsapi = xarMod::getAPI('uploads');
             // get the image data from the database
-            $data = xarMod::apiFunc('uploads', 'user', 'db_get_file_data', ['fileId' => $this->_fileId]);
+            $data = $uploadsapi->dbGetFileData(['fileId' => $this->_fileId]);
             if (!empty($data)) {
                 $src = implode('', $data);
                 unset($data);

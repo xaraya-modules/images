@@ -42,15 +42,4 @@ class UserGui extends UserGuiClass
         $args['context'] ??= $this->getContext();
         return $args;
     }
-
-    /**
-     * Get Uploads UserApi class
-     * @return UploadsApi
-     */
-    public function getUploadsAPI()
-    {
-        /** @var UploadsApi $uploadsapi */
-        $uploadsapi = xarMod::getAPI('uploads');
-        return $uploadsapi;
-    }
 }

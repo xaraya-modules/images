@@ -45,17 +45,6 @@ sys::import('xaraya.modules.userapi');
 class UserApi extends UserApiClass
 {
     /**
-     * Get Mime UserApi class
-     * @return MimeApi
-     */
-    public function getMimeAPI()
-    {
-        /** @var MimeApi $mimeapi */
-        $mimeapi = xarMod::getAPI('mime');
-        return $mimeapi;
-    }
-
-    /**
      * Get Uploads UserApi class
      * @return UploadsApi
      */

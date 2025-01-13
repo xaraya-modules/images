@@ -62,7 +62,7 @@ class ResizeMethod extends MethodClass
         }
 
         if (!isset($width) && !isset($height) && !isset($setting) && !isset($params)) {
-            $msg = xarML(
+            $msg = $this->translate(
                 "Required parameters '#(1)', '#(2)', '#(3)' or '#(4)' for tag <xar:image> are missing. See tag documentation.",
                 'width',
                 'height',
@@ -109,7 +109,7 @@ class ResizeMethod extends MethodClass
             $notSupported = true;
         }
         if ($notSupported) {
-            $errorMsg = xarML('Image type for file: #(1) is not supported for resizing', $src);
+            $errorMsg = $this->translate('Image type for file: #(1) is not supported for resizing', $src);
             return '<img src="" alt="' . $errorMsg . '" />';
         }
 
@@ -249,7 +249,7 @@ class ResizeMethod extends MethodClass
         $image = $userapi->loadImage($imageInfo);
 
         if (!is_object($image)) {
-            return sprintf('<img src="" alt="%s" %s />', xarML('File not found.'), $attribs);
+            return sprintf('<img src="" alt="%s" %s />', $this->translate('File not found.'), $attribs);
         }
 
         if (isset($width)) {
@@ -293,11 +293,11 @@ class ResizeMethod extends MethodClass
             if ($image->resize()) {
                 $location = $image->saveDerivative();
                 if (!$location) {
-                    $msg = xarML('Unable to save resized image !');
+                    $msg = $this->translate('Unable to save resized image !');
                     return sprintf('<img src="%s" alt="%s" %s />', '', $msg, $attribs);
                 }
             } else {
-                $msg = xarML("Unable to resize image '#(1)'!", $image->fileLocation);
+                $msg = $this->translate("Unable to resize image '#(1)'!", $image->fileLocation);
                 return sprintf('<img src="%s" alt="%s" %s />', '', $msg, $attribs);
             }
         }

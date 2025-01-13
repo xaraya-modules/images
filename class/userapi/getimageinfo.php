@@ -12,6 +12,7 @@
 namespace Xaraya\Modules\Images\UserApi;
 
 use Xaraya\Modules\Images\UserApi;
+use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use sys;
@@ -42,7 +43,7 @@ class GetimageinfoMethod extends MethodClass
         extract($args);
 
         if (empty($fileId) && empty($fileLocation)) {
-            $mesg = xarML(
+            $mesg = $this->translate(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 '',
                 'getimageinfo',
@@ -50,7 +51,7 @@ class GetimageinfoMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         } elseif (!empty($fileId) && !is_numeric($fileId)) {
-            $mesg = xarML(
+            $mesg = $this->translate(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 'fileId',
                 'getimageinfo',
@@ -58,7 +59,7 @@ class GetimageinfoMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         } elseif (!empty($fileLocation) && !is_string($fileLocation)) {
-            $mesg = xarML(
+            $mesg = $this->translate(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 'fileLocation',
                 'getimageinfo',
@@ -69,8 +70,11 @@ class GetimageinfoMethod extends MethodClass
         $userapi = $this->getParent();
 
         if (!empty($fileId) && is_numeric($fileId)) {
+            /** @var UploadsApi $uploadsapi */
+            $uploadsapi = $userapi->getUploadsAPI();
+
             // Get file information from the uploads module
-            $imageInfoArray = xarMod::apiFunc('uploads', 'user', 'db_get_file', ['fileId' => $fileId]);
+            $imageInfoArray = $uploadsapi->dbGetFile(['fileId' => $fileId]);
             $imageInfo = end($imageInfoArray);
             if (!empty($imageInfo)) {
                 // Check the modified and writable
