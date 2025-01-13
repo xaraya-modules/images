@@ -11,8 +11,8 @@
 
 namespace Xaraya\Modules\Images\AdminApi;
 
-
 use Xaraya\Modules\Images\AdminApi;
+use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use sys;
@@ -32,10 +32,16 @@ class GetuploadsMethod extends MethodClass
      * get the list of uploaded images (managed by the uploads module)
      * @return array|null containing the list of uploads
      * @todo add cache for large # of images ?
+     * @see AdminApi::getuploads()
      */
     public function __invoke(array $args = [])
     {
         extract($args);
+
+        $adminapi = $this->getParent();
+
+        /** @var UserApi $userapi */
+        $userapi = $adminapi->getAPI();
 
         if (!empty($fileId)) {
             $filter = ['fileId' => $fileId];
@@ -52,7 +58,7 @@ class GetuploadsMethod extends MethodClass
             $filters = [];
             $filters['mimetype'] = $typeinfo['typeId'];
             $filters['subtype']  = null;
-            $filters['status']   = null;
+            $filters['status']   = null;  // @todo show APPROVED images only here?
             $filters['inverse']  = null;
 
             $options  = xarMod::apiFunc('uploads', 'user', 'process_filters', $filters);
@@ -81,10 +87,10 @@ class GetuploadsMethod extends MethodClass
 
         foreach ($imagelist as $id => $image) {
             if (!empty($image['fileLocation'])) {
-                $imageInfo = xarMod::apiFunc('images', 'user', 'getimagesize', $image);
+                $imageInfo = $userapi->getimageinfo($image);
                 if (!empty($imageInfo)) {
-                    $imagelist[$id]['width']  = $imageInfo[0];
-                    $imagelist[$id]['height'] = $imageInfo[1];
+                    $imagelist[$id]['width']  = $imageInfo['imageWidth'];
+                    $imagelist[$id]['height'] = $imageInfo['imageHeight'];
                 } else {
                     $imagelist[$id]['width']  = '';
                     $imagelist[$id]['height'] = '';

@@ -11,8 +11,9 @@
 
 namespace Xaraya\Modules\Images\AdminGui;
 
-
 use Xaraya\Modules\Images\AdminGui;
+use Xaraya\Modules\Images\AdminApi;
+use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarMod;
@@ -37,6 +38,7 @@ class UploadsMethod extends MethodClass
     /**
      * View a list of uploaded images (managed by the uploads module)
      * @todo add startnum and numitems support
+     * @see AdminGui::uploads()
      */
     public function __invoke(array $args = [])
     {
@@ -78,6 +80,12 @@ class UploadsMethod extends MethodClass
         if (!xarVar::fetch('getprev', 'str:1:', $getprev, null, xarVar::DONT_SET)) {
             return;
         }
+        $admingui = $this->getParent();
+
+        /** @var UserApi $userapi */
+        $userapi = $admingui->getAPI();
+        /** @var AdminApi $adminapi */
+        $adminapi = $admingui->getModule()->getAdminAPI();
 
         $data = [];
         $data['startnum'] = $startnum;
@@ -90,19 +98,13 @@ class UploadsMethod extends MethodClass
 
         $data['pager'] = '';
         if (!empty($fileId)) {
-            $data['images'] = xarMod::apiFunc(
-                'images',
-                'admin',
-                'getuploads',
-                ['fileId'   => $fileId]
-            );
+            $data['images'] = $adminapi->getuploads([
+                'fileId'   => $fileId,
+            ]);
         } elseif (!empty($getnext)) {
-            $data['images'] = xarMod::apiFunc(
-                'images',
-                'admin',
-                'getuploads',
-                ['getnext'  => $getnext]
-            );
+            $data['images'] = $adminapi->getuploads([
+                'getnext'  => $getnext,
+            ]);
             if (!empty($data['images']) && count($data['images']) == 1) {
                 $image = array_pop($data['images']);
                 xarController::redirect(xarController::URL(
@@ -115,12 +117,9 @@ class UploadsMethod extends MethodClass
                 return true;
             }
         } elseif (!empty($getprev)) {
-            $data['images'] = xarMod::apiFunc(
-                'images',
-                'admin',
-                'getuploads',
-                ['getprev'  => $getprev]
-            );
+            $data['images'] = $adminapi->getuploads([
+                'getprev'  => $getprev,
+            ]);
             if (!empty($data['images']) && count($data['images']) == 1) {
                 $image = array_pop($data['images']);
                 xarController::redirect(xarController::URL(
@@ -133,18 +132,16 @@ class UploadsMethod extends MethodClass
                 return true;
             }
         } else {
-            $data['images'] = xarMod::apiFunc(
-                'images',
-                'admin',
-                'getuploads',
-                ['startnum' => $startnum,
-                    'numitems' => $numitems,
-                    'sort'     => $sort, ]
-            );
-            $countitems = xarMod::apiFunc('images', 'admin', 'countuploads');
+            $data['images'] = $adminapi->getuploads([
+                'startnum' => $startnum,
+                'numitems' => $numitems,
+                'sort'     => $sort,
+            ]);
+            $countitems = $adminapi->countuploads();
 
             // Add pager
             if (!empty($numitems) && $countitems > $numitems) {
+                sys::import('modules.base.class.pager');
                 $data['pager'] = xarTplPager::getPager(
                     $startnum,
                     $countitems,
@@ -162,7 +159,7 @@ class UploadsMethod extends MethodClass
         }
 
         // Get the pre-defined settings for phpThumb
-        $data['settings'] = xarMod::apiFunc('images', 'user', 'getsettings');
+        $data['settings'] = $userapi->getsettings();
 
         // Check if we need to do anything special here
         if (!xarVar::fetch('processlist', 'str:1:', $processlist, '', xarVar::NOT_REQUIRED)) {
@@ -199,20 +196,14 @@ class UploadsMethod extends MethodClass
                 // Get derivative images for this image
                 if (!empty($found['fileHash'])) {
                     if (file_exists($found['fileLocation'])) {
-                        $found['derivatives'] = xarMod::apiFunc(
-                            'images',
-                            'admin',
-                            'getderivatives',
-                            ['fileLocation' => $found['fileLocation']]
-                        );
+                        $found['derivatives'] = $adminapi->getderivatives([
+                            'fileLocation' => $found['fileLocation'],
+                        ]);
                     } else {
-                        // the file is probably stored in the database, so we pass the fileId here
-                        $found['derivatives'] = xarMod::apiFunc(
-                            'images',
-                            'admin',
-                            'getderivatives',
-                            ['fileLocation' => $found['fileId']]
-                        );
+                        // @todo use fileId? - the file is probably stored in the database, so we pass the fileId here
+                        $found['derivatives'] = $adminapi->getderivatives([
+                            'fileLocation' => $found['fileId'],
+                        ]);
                     }
                 }
                 // Get known associations for this image (currently unused)
@@ -326,14 +317,11 @@ class UploadsMethod extends MethodClass
                             return;
                         }
                         if (!empty($replace) && !empty($found['fileLocation'])) {
-                            $location = xarMod::apiFunc(
-                                'images',
-                                'admin',
-                                'replace_image',
-                                ['fileId' => $found['fileId'],
-                                    'width'  => (!empty($width) ? $width . 'px' : null),
-                                    'height' => (!empty($height) ? $height . 'px' : null), ]
-                            );
+                            $location = $adminapi->replaceImage([
+                                'fileId' => $found['fileId'],
+                                'width'  => (!empty($width) ? $width . 'px' : null),
+                                'height' => (!empty($height) ? $height . 'px' : null),
+                            ]);
                             if (!$location) {
                                 return;
                             }
@@ -346,14 +334,11 @@ class UploadsMethod extends MethodClass
                                     'fileId' => $found['fileId'], ]
                             ), null, $this->getContext());
                         } else {
-                            $location = xarMod::apiFunc(
-                                'images',
-                                'admin',
-                                'resize_image',
-                                ['fileId' => $found['fileId'],
-                                    'width'  => (!empty($width) ? $width . 'px' : null),
-                                    'height' => (!empty($height) ? $height . 'px' : null), ]
-                            );
+                            $location = $adminapi->resizeImage([
+                                'fileId' => $found['fileId'],
+                                'width'  => (!empty($width) ? $width . 'px' : null),
+                                'height' => (!empty($height) ? $height . 'px' : null),
+                            ]);
                             if (!$location) {
                                 return;
                             }
@@ -445,14 +430,11 @@ class UploadsMethod extends MethodClass
                     }
                     if (!empty($replace)) {
                         foreach ($found as $id) {
-                            $location = xarMod::apiFunc(
-                                'images',
-                                'admin',
-                                'replace_image',
-                                ['fileId' => $id,
-                                    'width'  => (!empty($width) ? $width . 'px' : null),
-                                    'height' => (!empty($height) ? $height . 'px' : null), ]
-                            );
+                            $location = $adminapi->replaceImage([
+                                'fileId' => $id,
+                                'width'  => (!empty($width) ? $width . 'px' : null),
+                                'height' => (!empty($height) ? $height . 'px' : null),
+                            ]);
                             if (!$location) {
                                 return;
                             }
@@ -466,14 +448,11 @@ class UploadsMethod extends MethodClass
                         ), null, $this->getContext());
                     } else {
                         foreach ($found as $id) {
-                            $location = xarMod::apiFunc(
-                                'images',
-                                'admin',
-                                'resize_image',
-                                ['fileId' => $id,
-                                    'width'  => (!empty($width) ? $width . 'px' : null),
-                                    'height' => (!empty($height) ? $height . 'px' : null), ]
-                            );
+                            $location = $adminapi->resizeImage([
+                                'fileId' => $id,
+                                'width'  => (!empty($width) ? $width . 'px' : null),
+                                'height' => (!empty($height) ? $height . 'px' : null),
+                            ]);
                             if (!$location) {
                                 return;
                             }
@@ -527,14 +506,11 @@ class UploadsMethod extends MethodClass
                         if (empty($data['images'][$id])) {
                             continue;
                         }
-                        $location = xarMod::apiFunc(
-                            'images',
-                            'admin',
-                            'process_image',
-                            ['image'   => $data['images'][$id],
-                                'saveas'  => $saveas,
-                                'setting' => $setting, ]
-                        );
+                        $location = $adminapi->processImage([
+                            'image'   => $data['images'][$id],
+                            'saveas'  => $saveas,
+                            'setting' => $setting,
+                        ]);
                         if (!$location) {
                             return;
                         }

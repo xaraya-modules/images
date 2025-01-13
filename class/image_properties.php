@@ -41,6 +41,9 @@ class Image_Properties
         } else {
             $this->_thumbsdir = $thumbsdir;
         }
+        /** @var UserApi $userapi */
+        $userapi = xarMod::getAPI('images');
+
         if (is_array($fileInfo)) {
             $this->fileLocation = $fileInfo['fileLocation'];
             $this->fileName = $fileInfo['fileName'];
@@ -52,7 +55,7 @@ class Image_Properties
                 $this->setMime($this->_getMimeType($fileInfo['imageType']));
                 return;
             }
-            $imageInfo = xarMod::apiFunc('images', 'user', 'getimagesize', $fileInfo);
+            $imageInfo = $userapi->getimagesize($fileInfo);
         } elseif (file_exists($fileInfo)) {
             $this->fileLocation = $fileInfo;
             $this->fileName = basename($fileInfo);

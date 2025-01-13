@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Images\UserApi;
 
-
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
@@ -34,6 +33,7 @@ class TransformhookMethod extends MethodClass
      * @param array<mixed> $args
      * @var mixed $extrainfo
      * @return mixed
+     * @see UserApi::transformhook()
      */
     public function __invoke(array $args = [])
     {
@@ -59,6 +59,8 @@ class TransformhookMethod extends MethodClass
 
     public function transform($body)
     {
+        $userapi = $this->getParent();
+
         while (preg_match('/#(image-resize):([0-9]+):([^#]*)#/i', $body, $parts)) {
             // first argument is always the complete haystack
             // get rid of it
@@ -96,7 +98,7 @@ class TransformhookMethod extends MethodClass
                     $args['label'] = 'empty';
                     $args['src']   = $id;
 
-                    if (!xarMod::apiFunc('images', 'user', 'resize', $args)) {
+                    if (!$userapi->resize($args)) {
                         return;
                     } else {
                         unset($args['label']);
@@ -104,9 +106,6 @@ class TransformhookMethod extends MethodClass
                         unset($args['src']);
 
                         $args['fileId'] = $id;
-
-                        $args['width']  = $args['width'];
-                        $args['height'] = $args['height'];
 
                         $replacement = xarController::URL('images', 'user', 'display', $args);
                     }

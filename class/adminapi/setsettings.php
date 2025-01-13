@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Images\AdminApi;
 
-
 use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
@@ -31,8 +30,9 @@ class SetsettingsMethod extends MethodClass
     /**
      * Set the predefined settings for image processing
      * @author mikespub
-     * @param mixed $args array containing the predefined settings for image processing
+     * @param array<mixed> $args array containing the predefined settings for image processing
      * @return void
+     * @see AdminApi::setsettings()
      */
     public function __invoke(array $args = [])
     {

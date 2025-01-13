@@ -22,8 +22,9 @@ sys::import('modules.images.class.userapi');
 /**
  * Handle the images user GUI
  *
- * @method mixed display(array $args)
- * @method mixed main(array $args)
+ * @method mixed display(array $args) Pushes an image to the client browser
+ *  array{fileId: string}
+ * @method mixed main(array $args = []) Empty main user function.
  * @extends UserGuiClass<Module>
  */
 class UserGui extends UserGuiClass

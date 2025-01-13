@@ -11,8 +11,8 @@
 
 namespace Xaraya\Modules\Images\UserApi;
 
-
 use Xaraya\Modules\Images\UserApi;
+use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarVar;
@@ -36,9 +36,15 @@ class DropdownlistMethod extends MethodClass
      * @var mixed $bid (optional) baseId for server images, otherwise uploads images
      * @var mixed $field field to use in the dropdown list (default 'fileName')
      * @return array|void of images, or false on failure
+     * @see UserApi::dropdownlist()
      */
     public function __invoke($args = [])
     {
+        $userapi = $this->getParent();
+
+        /** @var AdminApi $adminapi */
+        $adminapi = $userapi->getModule()->getAdminAPI();
+
         // Add default arguments
         if (!isset($args['sort'])) {
             $args['sort'] = 'name';
@@ -48,16 +54,16 @@ class DropdownlistMethod extends MethodClass
         }
         if (!isset($args['bid'])) {
             // Get the uploads images
-            $images = xarMod::apiFunc('images', 'admin', 'getuploads', $args);
+            $images = $adminapi->getuploads($args);
         } else {
             // Get the base directories configured for server images
-            $basedirs = xarMod::apiFunc('images', 'user', 'getbasedirs');
+            $basedirs = $userapi->getbasedirs();
             if (empty($args['bid']) || empty($basedirs[$args['bid']])) {
                 $args['bid'] = 0; // themes directory
             }
             $args = array_merge($basedirs[$args['bid']], $args);
             // Get the server images
-            $images = xarMod::apiFunc('images', 'admin', 'getimages', $args);
+            $images = $adminapi->getimages($args);
         }
         if (!$images) {
             return;

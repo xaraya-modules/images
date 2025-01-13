@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Images\AdminGui;
 
-
 use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
@@ -32,6 +31,7 @@ class MainMethod extends MethodClass
     /**
      * the main administration function
      * @return bool|null true on succes of redirect
+     * @see AdminGui::main()
      */
     public function __invoke(array $args = [])
     {

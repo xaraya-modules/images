@@ -22,17 +22,24 @@ sys::import('xaraya.modules.adminapi');
 /**
  * Handle the images admin API
  *
- * @method mixed countderivatives(array $args)
- * @method mixed countimages(array $args)
- * @method mixed countuploads(array $args)
- * @method mixed getderivatives(array $args)
- * @method mixed getimages(array $args)
- * @method mixed getmenulinks(array $args)
- * @method mixed getuploads(array $args)
- * @method mixed processImage(array $args)
- * @method mixed replaceImage(array $args)
- * @method mixed resizeImage(array $args)
- * @method mixed setsettings(array $args)
+ * @method mixed countderivatives(array $args = []) count the number of derivative images
+ *  array{fileId?: mixed, fileName?: string, thumbsdir?: string, filematch?: string}
+ * @method mixed countimages(array $args) count the number of server images
+ *  array{basedir: string, baseurl?: string, filetypes?: string, recursive?: bool, fileId?: mixed, fileName?: string, filematch?: string}
+ * @method mixed countuploads(array $args = []) count the number of uploaded images (managed by the uploads module)
+ * @method mixed getderivatives(array $args = []) get the list of derivative images (thumbnails and resized)
+ *  array{fileId?: mixed, fileName?: string, fileLocation?: string, thumbsdir?: string, filematch?: string, cacheExpire?: int, cacheRefresh?: bool}
+ * @method mixed getimages(array $args) get the list of server images
+ *  array{basedir: string, baseurl?: string, filetypes?: string, recursive?: bool, fileId?: mixed, fileName?: string, filematch?: string, cacheExpire?: int, cacheRefresh?: bool}
+ * @method mixed getmenulinks(array $args = []) utility function pass individual menu items to the main menu
+ * @method mixed getuploads(array $args = []) get the list of uploaded images (managed by the uploads module)
+ * @method mixed processImage(array $args) Process an image using phpThumb
+ *  array{image: array, saveas: int, setting: string, params: array, iscached: bool}
+ * @method mixed replaceImage(array $args) Replaces an image with a resized image to the given dimensions
+ *  array{fileId: int, fileLocation: string, height: string, width: string, constrain: bool}
+ * @method mixed resizeImage(array $args) Resizes an image to the given dimensions
+ *  array{fileId: int, fileLocation: string, height: string, width: string, constrain: bool, thumbsdir?: string, derivName?: string, forceResize?: bool}
+ * @method mixed setsettings(array $args = []) Set the predefined settings for image processing
  * @extends AdminApiClass<Module>
  */
 class AdminApi extends AdminApiClass

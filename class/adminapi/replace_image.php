@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Images\AdminApi;
 
-
 use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
@@ -31,12 +30,14 @@ class ReplaceImageMethod extends MethodClass
     /**
      * Replaces an image with a resized image to the given dimensions
      * @author mikespub
-     * @param int $fileId The (uploads) file id of the image to load, or
-     * @param string $fileLocation The file location of the image to load
-     * @param string $height The new height (in pixels or percent) ([0-9]+)(px|%)
-     * @param string $width The new width (in pixels or percent)  ([0-9]+)(px|%)
-     * @param bool $constrain if height XOR width, then constrain the missing value to the given one
+     * @param array<mixed> $args
+     * @var int $fileId The (uploads) file id of the image to load, or
+     * @var string $fileLocation The file location of the image to load
+     * @var string $height The new height (in pixels or percent) ([0-9]+)(px|%)
+     * @var string $width The new width (in pixels or percent)  ([0-9]+)(px|%)
+     * @var bool $constrain if height XOR width, then constrain the missing value to the given one
      * @return string|void the location of the newly resized image
+     * @see AdminApi::replaceImage()
      */
     public function __invoke(array $args = [])
     {
@@ -65,19 +66,17 @@ class ReplaceImageMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         }
+        $adminapi = $this->getParent();
 
         // TODO: replace files stored in xar_file_data too
 
-        $location = xarMod::apiFunc(
-            'images',
-            'admin',
-            'resize_image',
-            ['fileLocation' => $fileLocation,
-                'width'  => (!empty($width) ? $width : null),
-                'height' => (!empty($height) ? $height : null),
-                'derivName'   => $fileLocation,
-                'forceResize' => true, ]
-        );
+        $location = $adminapi->resizeImage([
+            'fileLocation' => $fileLocation,
+            'width'  => (!empty($width) ? $width : null),
+            'height' => (!empty($height) ? $height : null),
+            'derivName'   => $fileLocation,
+            'forceResize' => true,
+        ]);
         if (!$location) {
             return;
         }

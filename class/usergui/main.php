@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Images\UserGui;
 
-
 use Xaraya\Modules\Images\UserGui;
 use Xaraya\Modules\MethodClass;
 use sys;
@@ -29,6 +28,7 @@ class MainMethod extends MethodClass
 
     /**
      * Empty main user function.
+     * @see UserGui::main()
      */
     public function __invoke(array $args = [])
     {

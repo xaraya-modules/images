@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Images\AdminApi;
 
-
 use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
@@ -32,6 +31,7 @@ class CountuploadsMethod extends MethodClass
      * count the number of uploaded images (managed by the uploads module)
      * @author mikespub
      * @return int|void the number of uploaded images
+     * @see AdminApi::countuploads()
      */
     public function __invoke(array $args = [])
     {

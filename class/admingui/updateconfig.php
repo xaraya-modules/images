@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Images\AdminGui;
 
-
 use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\MethodClass;
 use xarVar;
@@ -35,6 +34,7 @@ class UpdateconfigMethod extends MethodClass
     /**
      * Update configuration
      * @return bool|void true on success of update
+     * @see AdminGui::updateconfig()
      */
     public function __invoke(array $args = [])
     {

@@ -32,10 +32,12 @@ class LoadImageMethod extends MethodClass
 
     /**
      * Load an image object for further manipulation
-     * @param int $fileId The (uploads) file id of the image to load, or
-     * @param string $fileLocation The file location of the image to load
-     * @param string $thumbsdir (optional) The directory where derivative images are stored
+     * @param array<mixed> $args
+     * @var int $fileId The (uploads) file id of the image to load, or
+     * @var string $fileLocation The file location of the image to load
+     * @var string $thumbsdir (optional) The directory where derivative images are stored
      * @return object|null Image_GD (or other) object
+     * @see UserApi::loadImage()
      */
     public function __invoke(array $args = [])
     {

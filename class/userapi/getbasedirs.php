@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Images\UserApi;
 
-
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
@@ -31,6 +30,7 @@ class GetbasedirsMethod extends MethodClass
     /**
      * Get the configured base directories for server images
      * @return array containing the base directories for server images
+     * @see UserApi::getbasedirs()
      */
     public function __invoke(array $args = [])
     {

@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Images\UserApi;
 
-
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use sys;
@@ -31,9 +30,10 @@ class DecodeShorturlMethod extends MethodClass
      * extract function and arguments from short URLs for this module, and pass
      * them back to xarGetRequestInfo()
      * @author the Images module development team
-     * @param mixed $params array containing the different elements of the virtual path
+     * @param array<mixed> $params array containing the different elements of the virtual path
      * @return array|void containing func the function to be called and args the query
      * string arguments, or empty if it failed
+     * @see UserApi::decodeShorturl()
      */
     public function __invoke(array $params = [])
     {

@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Images\UserApi;
 
 use Xaraya\Modules\Images\Defines;
 use Xaraya\Modules\Images\UserApi;
+use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarVar;
 use xarMod;
@@ -33,18 +34,20 @@ class ResizeMethod extends MethodClass
 
     /**
      * Resizes an image to the given dimensions and returns an img tag for the image
-     * @param mixed $src The (uploads) id or filename of the image to resize
-     * @param string $basedir (optional) Base directory for the given filename
-     * @param string $height The new height (in pixels or percent) ([0-9]+)(px|%)
-     * @param string $width The new width (in pixels or percent)  ([0-9]+)(px|%)
-     * @param bool $constrain if height XOR width, then constrain the missing value to the given one
-     * @param string $label Text to be used in the ALT attribute for the <img> tag
-     * @param string $setting The predefined settings to apply for processing
-     * @param string $params The array of parameters to apply for processing
-     * @param bool $static Use static link instead of dynamic one where possible (default FALSE)
-     * @param string $baseurl (optional) Base URL for the static links
-     * @param bool $returnpath (optional) Flag to return the image path instead of the image tag
+     * @param array<mixed> $args
+     * @var mixed $src The (uploads) id or filename of the image to resize
+     * @var string $basedir (optional) Base directory for the given filename
+     * @var string $height The new height (in pixels or percent) ([0-9]+)(px|%)
+     * @var string $width The new width (in pixels or percent)  ([0-9]+)(px|%)
+     * @var bool $constrain if height XOR width, then constrain the missing value to the given one
+     * @var string $label Text to be used in the ALT attribute for the <img> tag
+     * @var string $setting The predefined settings to apply for processing
+     * @var string $params The array of parameters to apply for processing
+     * @var bool $static Use static link instead of dynamic one where possible (default FALSE)
+     * @var string $baseurl (optional) Base URL for the static links
+     * @var bool $returnpath (optional) Flag to return the image path instead of the image tag
      * @return string An <img> tag for the newly resized image
+     * @see UserApi::resize()
      */
     public function __invoke(array $args = [])
     {
@@ -72,6 +75,10 @@ class ResizeMethod extends MethodClass
         } elseif (isset($width) && !xarVar::validate('regexp:/[0-9]+(px|%)/:', $width)) {
             throw new BadParameterException(['width'], "'#(1)' parameter is incorrectly formatted.");
         }
+        $userapi = $this->getParent();
+
+        /** @var AdminApi $adminapi */
+        $adminapi = $userapi->getModule()->getAdminAPI();
 
         if (!isset($returnpath)) {
             $returnpath = false;
@@ -85,21 +92,16 @@ class ResizeMethod extends MethodClass
         }
 
         if (is_numeric($src)) {
-            $imageInfo = xarMod::apiFunc('images', 'user', 'getimageinfo', ['fileId' => $src]);
+            $imageInfo = $userapi->getimageinfo(['fileId' => $src]);
         } else {
             if (isset($basedir)) {
                 $src = $basedir . '/' . $src;
             }
-            $imageInfo = xarMod::apiFunc(
-                'images',
-                'user',
-                'getimageinfo',
-                ['fileLocation' => $src]
-            );
+            $imageInfo = $userapi->getimageinfo(['fileLocation' => $src]);
         }
         if (!empty($imageInfo)) {
             // TODO: refactor to support other libraries (ImageMagick/NetPBM)
-            $gd_info = xarMod::apiFunc('images', 'user', 'gd_info');
+            $gd_info = $userapi->gdInfo();
             if (empty($imageInfo['imageType']) || (!$imageInfo['imageType'] & $gd_info['typesBitmask'])) {
                 $notSupported = true;
             }
@@ -123,18 +125,15 @@ class ResizeMethod extends MethodClass
 
         // use predefined setting for processing
         if (!empty($setting)) {
-            $settings = xarMod::apiFunc('images', 'user', 'getsettings');
+            $settings = $userapi->getsettings();
             if (!empty($settings[$setting])) {
-                $location = xarMod::apiFunc(
-                    'images',
-                    'admin',
-                    'process_image',
-                    ['image'    => $imageInfo,
-                        'saveas'   => 0, // derivative
-                        'setting'  => $setting,
-                        // don't process the image again if it already exists
-                        'iscached' => true, ]
-                );
+                $location = $adminapi->processImage([
+                    'image'    => $imageInfo,
+                    'saveas'   => 0, // derivative
+                    'setting'  => $setting,
+                    // don't process the image again if it already exists
+                    'iscached' => true,
+                ]);
                 if (empty($location)) {
                     $msg = 'Oops with process_image';
                     return sprintf('<img src="" alt="%s" %s />', $msg, $attribs);
@@ -178,16 +177,13 @@ class ResizeMethod extends MethodClass
 
             // use parameters for processing
         } elseif (!empty($params)) {
-            $location = xarMod::apiFunc(
-                'images',
-                'admin',
-                'process_image',
-                ['image'    => $imageInfo,
-                    'saveas'   => 0, // derivative
-                    'params'   => $params,
-                    // don't process the image again if it already exists
-                    'iscached' => true, ]
-            );
+            $location = $adminapi->processImage([
+                'image'    => $imageInfo,
+                'saveas'   => 0, // derivative
+                'params'   => $params,
+                // don't process the image again if it already exists
+                'iscached' => true,
+            ]);
             if (empty($location)) {
                 $msg = 'Oops with process_image';
                 return sprintf('<img src="" alt="%s" %s />', $msg, $attribs);
@@ -250,7 +246,7 @@ class ResizeMethod extends MethodClass
         }
 
         // Load Image Properties based on $imageInfo
-        $image = xarMod::apiFunc('images', 'user', 'load_image', $imageInfo);
+        $image = $userapi->loadImage($imageInfo);
 
         if (!is_object($image)) {
             return sprintf('<img src="" alt="%s" %s />', xarML('File not found.'), $attribs);

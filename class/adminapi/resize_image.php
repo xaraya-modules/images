@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Images\AdminApi;
 
 use Xaraya\Modules\Images\Defines;
 use Xaraya\Modules\Images\AdminApi;
+use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarVar;
 use xarMod;
@@ -33,15 +34,17 @@ class ResizeImageMethod extends MethodClass
     /**
      * Resizes an image to the given dimensions
      * @author mikespub
-     * @param int $fileId The (uploads) file id of the image to load, or
-     * @param string $fileLocation The file location of the image to load
-     * @param string $height The new height (in pixels or percent) ([0-9]+)(px|%)
-     * @param string $width The new width (in pixels or percent)  ([0-9]+)(px|%)
-     * @param bool $constrain if height XOR width, then constrain the missing value to the given one
-     * @param string $thumbsdir (optional) The directory where derivative images are stored
-     * @param string $derivName (optional) The name of the derivative image to be saved
-     * @param bool $forceResize (optional) Force resizing the image even if it already exists
+     * @param array<mixed> $args
+     * @var int $fileId The (uploads) file id of the image to load, or
+     * @var string $fileLocation The file location of the image to load
+     * @var string $height The new height (in pixels or percent) ([0-9]+)(px|%)
+     * @var string $width The new width (in pixels or percent)  ([0-9]+)(px|%)
+     * @var bool $constrain if height XOR width, then constrain the missing value to the given one
+     * @var string $thumbsdir (optional) The directory where derivative images are stored
+     * @var string $derivName (optional) The name of the derivative image to be saved
+     * @var bool $forceResize (optional) Force resizing the image even if it already exists
      * @return string|void the location of the newly resized image
+     * @see AdminApi::resizeImage()
      */
     public function __invoke(array $args = [])
     {
@@ -83,6 +86,10 @@ class ResizeImageMethod extends MethodClass
             $msg = xarML("'#(1)' parameter is incorrectly formatted.", 'width');
             throw new BadParameterException(null, $msg);
         }
+        $adminapi = $this->getParent();
+
+        /** @var UserApi $userapi */
+        $userapi = $adminapi->getAPI();
 
         // just a flag for later
         $constrain_both = false;
@@ -123,14 +130,14 @@ class ResizeImageMethod extends MethodClass
 
         // TODO: refactor to support other libraries (ImageMagick/NetPBM)
         if (!empty($fileInfo['fileLocation'])) {
-            $imageInfo = xarMod::apiFunc('images', 'user', 'getimagesize', $fileInfo);
-            $gd_info = xarMod::apiFunc('images', 'user', 'gd_info');
+            $imageInfo = $userapi->getimagesize($fileInfo);
+            $gd_info = $userapi->gdInfo();
             if (empty($imageInfo) || (!$imageInfo[2] & $gd_info['typesBitmask'])) {
                 $notSupported = true;
             }
         } elseif (!empty($fileLocation) && file_exists($fileLocation)) {
             $imageInfo = @getimagesize($fileLocation);
-            $gd_info = xarMod::apiFunc('images', 'user', 'gd_info');
+            $gd_info = $userapi->gdInfo();
             if (empty($imageInfo) || (!$imageInfo[2] & $gd_info['typesBitmask'])) {
                 $notSupported = true;
             }
@@ -147,9 +154,11 @@ class ResizeImageMethod extends MethodClass
             $thumbsdir = xarModVars::get('images', 'path.derivative-store');
         }
 
-        $image = xarMod::apiFunc('images', 'user', 'load_image', ['fileId' => $fileId,
+        $image = $userapi->loadImage([
+            'fileId' => $fileId,
             'fileLocation' => $location,
-            'thumbsdir' => $thumbsdir, ]);
+            'thumbsdir' => $thumbsdir,
+        ]);
 
         if (!is_object($image)) {
             $msg = xarML('File not found.');

@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Images\UserGui;
 
 use Xaraya\Modules\Images\Defines;
 use Xaraya\Modules\Images\UserGui;
+use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarVar;
 use xarMod;
@@ -36,8 +37,9 @@ class DisplayMethod extends MethodClass
      *  @author   Carl P. Corliss
      * @access public
      * @param array<mixed> $args
-     *     string    fileId          The id (from the uploads module) of the image to push
+     * @var string    $fileId              The id (from the uploads module) of the image to push
      * @return   bool|null|never           This function will exit upon succes and, returns False and throws an exception otherwise
+     * @see UserGui::display()
      */
     public function __invoke(array $args = [])
     {
@@ -52,6 +54,10 @@ class DisplayMethod extends MethodClass
         if (!xarVar::fetch('height', 'str:1:', $height, '', xarVar::NOT_REQUIRED)) {
             return;
         }
+        $usergui = $this->getParent();
+
+        /** @var UserApi $userapi */
+        $userapi = $usergui->getAPI();
 
         if (is_numeric($fileId)) {
             $data = ['fileId' => $fileId];
@@ -63,7 +69,7 @@ class DisplayMethod extends MethodClass
             $data = ['fileLocation' => $fileLocation];
         }
 
-        $image = xarMod::apiFunc('images', 'user', 'load_image', $data);
+        $image = $userapi->loadImage($data);
 
         if (!is_object($image)) {
             xarController::redirect('modules/images/xarimages/admin.gif', null, $this->getContext());

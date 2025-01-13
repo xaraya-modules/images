@@ -11,8 +11,8 @@
 
 namespace Xaraya\Modules\Images\AdminGui;
 
-
 use Xaraya\Modules\Images\AdminGui;
+use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarVar;
@@ -38,6 +38,7 @@ class DerivativesMethod extends MethodClass
      * View a list of derivative images (thumbnails, resized etc.)
      * @author mikespub
      * @todo add startnum and numitems support
+     * @see AdminGui::derivatives()
      */
     public function __invoke(array $args = [])
     {
@@ -45,6 +46,10 @@ class DerivativesMethod extends MethodClass
         if (!xarSecurity::check('AdminImages')) {
             return;
         }
+        $admingui = $this->getParent();
+
+        /** @var AdminApi $adminapi */
+        $adminapi = $admingui->getModule()->getAdminAPI();
 
         $data = [];
 
@@ -76,12 +81,7 @@ class DerivativesMethod extends MethodClass
         $data['pager'] = '';
         if (!empty($fileId)) {
             $params = $data;
-            $data['images'] = xarMod::apiFunc(
-                'images',
-                'admin',
-                'getderivatives',
-                $params
-            );
+            $data['images'] = $adminapi->getderivatives($params);
         } else {
             $params = $data;
             if (!isset($numitems)) {
@@ -93,23 +93,14 @@ class DerivativesMethod extends MethodClass
             }
             $params['cacheRefresh'] = $refresh;
 
-            $data['images'] = xarMod::apiFunc(
-                'images',
-                'admin',
-                'getderivatives',
-                $params
-            );
+            $data['images'] = $adminapi->getderivatives($params);
 
             // Note: this must be called *after* getderivatives() to benefit from caching
-            $countitems = xarMod::apiFunc(
-                'images',
-                'admin',
-                'countderivatives',
-                $params
-            );
+            $countitems = $adminapi->countderivatives($params);
 
             // Add pager
             if (!empty($params['numitems']) && $countitems > $params['numitems']) {
+                sys::import('modules.base.class.pager');
                 $data['pager'] = xarTplPager::getPager(
                     $startnum,
                     $countitems,

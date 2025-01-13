@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Images\AdminGui;
 
-
 use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
@@ -34,6 +33,7 @@ class OverviewMethod extends MethodClass
      * @return array|string|null xarTpl::module with $data containing template data
      * containing the menulinks for the overview item on the main manu
      * @since 14 Oct 2005
+     * @see AdminGui::overview()
      */
     public function __invoke(array $args = [])
     {

@@ -11,8 +11,9 @@
 
 namespace Xaraya\Modules\Images\AdminGui;
 
-
 use Xaraya\Modules\Images\AdminGui;
+use Xaraya\Modules\Images\AdminApi;
+use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarVar;
@@ -37,6 +38,7 @@ class BrowseMethod extends MethodClass
     /**
      * View a list of server images
      * @todo add startnum and numitems support
+     * @see AdminGui::browse()
      */
     public function __invoke(array $args = [])
     {
@@ -55,9 +57,13 @@ class BrowseMethod extends MethodClass
         if (empty($fileId)) {
             $fileId = null;
         }
+        $admingui = $this->getParent();
+
+        /** @var UserApi $userapi */
+        $userapi = $admingui->getAPI();
 
         // Get the base directories configured for server images
-        $basedirs = xarMod::apiFunc('images', 'user', 'getbasedirs');
+        $basedirs = $userapi->getbasedirs();
 
         if (!xarVar::fetch('bid', 'isset', $baseId, '', xarVar::NOT_REQUIRED)) {
             return;
@@ -89,6 +95,8 @@ class BrowseMethod extends MethodClass
         if (!xarVar::fetch('getprev', 'str:1:', $getprev, null, xarVar::DONT_SET)) {
             return;
         }
+        /** @var AdminApi $adminapi */
+        $adminapi = $admingui->getModule()->getAdminAPI();
 
         $data['startnum'] = $startnum;
         $data['numitems'] = $numitems;
@@ -101,12 +109,7 @@ class BrowseMethod extends MethodClass
 
         $data['pager'] = '';
         if (!empty($fileId)) {
-            $data['images'] = xarMod::apiFunc(
-                'images',
-                'admin',
-                'getimages',
-                $data
-            );
+            $data['images'] = $adminapi->getimages($data);
         } else {
             $params = $data;
             if (!isset($numitems)) {
@@ -118,12 +121,7 @@ class BrowseMethod extends MethodClass
             }
             $params['cacheRefresh'] = $refresh;
 
-            $data['images'] = xarMod::apiFunc(
-                'images',
-                'admin',
-                'getimages',
-                $params
-            );
+            $data['images'] = $adminapi->getimages($params);
 
             if ((!empty($getnext) || !empty($getprev)) &&
                 !empty($data['images']) && count($data['images']) == 1) {
@@ -140,15 +138,11 @@ class BrowseMethod extends MethodClass
             }
 
             // Note: this must be called *after* getimages() to benefit from caching
-            $countitems = xarMod::apiFunc(
-                'images',
-                'admin',
-                'countimages',
-                $params
-            );
+            $countitems = $adminapi->countimages($params);
 
             // Add pager
             if (!empty($params['numitems']) && $countitems > $params['numitems']) {
+                sys::import('modules.base.class.pager');
                 $data['pager'] = xarTplPager::getPager(
                     $startnum,
                     $countitems,
@@ -169,7 +163,7 @@ class BrowseMethod extends MethodClass
         $data['basedirs'] = $basedirs;
 
         // Get the pre-defined settings for phpThumb
-        $data['settings'] = xarMod::apiFunc('images', 'user', 'getsettings');
+        $data['settings'] = $userapi->getsettings();
 
         // Check if we need to do anything special here
         if (!xarVar::fetch('processlist', 'str:1:', $processlist, '', xarVar::NOT_REQUIRED)) {
@@ -205,12 +199,9 @@ class BrowseMethod extends MethodClass
                 $found = $data['images'][$fileId];
                 // Get derivative images for this image
                 if (file_exists($found['fileLocation'])) {
-                    $found['derivatives'] = xarMod::apiFunc(
-                        'images',
-                        'admin',
-                        'getderivatives',
-                        ['fileLocation' => $found['fileLocation']]
-                    );
+                    $found['derivatives'] = $adminapi->getderivatives([
+                        'fileLocation' => $found['fileLocation'],
+                    ]);
                 }
             }
         }
@@ -240,14 +231,11 @@ class BrowseMethod extends MethodClass
                             return;
                         }
                         if (!empty($replace) && !empty($found['fileLocation'])) {
-                            $location = xarMod::apiFunc(
-                                'images',
-                                'admin',
-                                'replace_image',
-                                ['fileLocation' => $found['fileLocation'],
-                                    'width'  => (!empty($width) ? $width . 'px' : null),
-                                    'height' => (!empty($height) ? $height . 'px' : null), ]
-                            );
+                            $location = $adminapi->replaceImage([
+                                'fileLocation' => $found['fileLocation'],
+                                'width'  => (!empty($width) ? $width . 'px' : null),
+                                'height' => (!empty($height) ? $height . 'px' : null),
+                            ]);
                             if (!$location) {
                                 return;
                             }
@@ -261,14 +249,11 @@ class BrowseMethod extends MethodClass
                                     'fid' => $found['fileId'], ]
                             ), null, $this->getContext());
                         } else {
-                            $location = xarMod::apiFunc(
-                                'images',
-                                'admin',
-                                'resize_image',
-                                ['fileLocation' => $found['fileLocation'],
-                                    'width'  => (!empty($width) ? $width . 'px' : null),
-                                    'height' => (!empty($height) ? $height . 'px' : null), ]
-                            );
+                            $location = $adminapi->resizeImage([
+                                'fileLocation' => $found['fileLocation'],
+                                'width'  => (!empty($width) ? $width . 'px' : null),
+                                'height' => (!empty($height) ? $height . 'px' : null),
+                            ]);
                             if (!$location) {
                                 return;
                             }
@@ -359,14 +344,11 @@ class BrowseMethod extends MethodClass
                             if (empty($info['fileLocation'])) {
                                 continue;
                             }
-                            $location = xarMod::apiFunc(
-                                'images',
-                                'admin',
-                                'replace_image',
-                                ['fileLocation' => $info['fileLocation'],
-                                    'width'  => (!empty($width) ? $width . 'px' : null),
-                                    'height' => (!empty($height) ? $height . 'px' : null), ]
-                            );
+                            $location = $adminapi->replaceImage([
+                                'fileLocation' => $info['fileLocation'],
+                                'width'  => (!empty($width) ? $width . 'px' : null),
+                                'height' => (!empty($height) ? $height . 'px' : null),
+                            ]);
                             if (!$location) {
                                 return;
                             }
@@ -386,14 +368,11 @@ class BrowseMethod extends MethodClass
                             if (empty($info['fileLocation'])) {
                                 continue;
                             }
-                            $location = xarMod::apiFunc(
-                                'images',
-                                'admin',
-                                'resize_image',
-                                ['fileLocation' => $info['fileLocation'],
-                                    'width'  => (!empty($width) ? $width . 'px' : null),
-                                    'height' => (!empty($height) ? $height . 'px' : null), ]
-                            );
+                            $location = $adminapi->resizeImage([
+                                'fileLocation' => $info['fileLocation'],
+                                'width'  => (!empty($width) ? $width . 'px' : null),
+                                'height' => (!empty($height) ? $height . 'px' : null),
+                            ]);
                             if (!$location) {
                                 return;
                             }
@@ -447,14 +426,11 @@ class BrowseMethod extends MethodClass
                         if (empty($info['fileLocation'])) {
                             continue;
                         }
-                        $location = xarMod::apiFunc(
-                            'images',
-                            'admin',
-                            'process_image',
-                            ['image'   => $info,
-                                'saveas'  => $saveas,
-                                'setting' => $setting, ]
-                        );
+                        $location = $adminapi->processImage([
+                            'image'   => $info,
+                            'saveas'  => $saveas,
+                            'setting' => $setting,
+                        ]);
                         if (!$location) {
                             return;
                         }

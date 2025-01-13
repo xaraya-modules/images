@@ -11,8 +11,8 @@
 
 namespace Xaraya\Modules\Images\AdminApi;
 
-
 use Xaraya\Modules\Images\AdminApi;
+use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
 use xarModVars;
@@ -34,11 +34,11 @@ class ProcessImageMethod extends MethodClass
      * Process an image using phpThumb
      * @author mikespub
      * @param array<mixed> $args
-     * @param array $image The image info array (e.g. coming from getimageinfo or getimages/getuploads/getderivatives)
-     * @param int $saveas How to save the processed image (0 = derivative, 1 = [image]_new.[ext], 2 = replace, 3 = output)
-     * @param string $setting The predefined setting to use, or
-     * @param array $params The phpThumb parameters to use
-     * @param bool $iscached Check if the processed file already exists (default FALSE)
+     * @var array $image The image info array (e.g. coming from getimageinfo or getimages/getuploads/getderivatives)
+     * @var int $saveas How to save the processed image (0 = derivative, 1 = [image]_new.[ext], 2 = replace, 3 = output)
+     * @var string $setting The predefined setting to use, or
+     * @var array $params The phpThumb parameters to use
+     * @var bool $iscached Check if the processed file already exists (default FALSE)
      * @return string the location of the newly processed image
      * @deprecated 2.0.0 phpThumb() is seriously dated and doesn't play nice as a library
      */
@@ -46,7 +46,12 @@ class ProcessImageMethod extends MethodClass
     {
         extract($args);
 
-        $settings = xarMod::apiFunc('images', 'user', 'getsettings');
+        $adminapi = $this->getParent();
+
+        /** @var UserApi $userapi */
+        $userapi = $adminapi->getAPI();
+
+        $settings = $userapi->getsettings();
         if (!empty($setting) && !empty($settings[$setting])) {
             $params = $settings[$setting];
         } elseif (!empty($params)) {
@@ -299,6 +304,7 @@ class ProcessImageMethod extends MethodClass
 
     /**
      * @deprecated 2.0.0 phpThumb() is seriously dated and doesn't play nice as a library
+     * @see AdminApi::processImage()
      */
     protected function get_thumb(array $args = [], $context = null)
     {

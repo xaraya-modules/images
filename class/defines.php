@@ -19,7 +19,7 @@ class Defines
     public const LIBRARY_GD = 1;
     public const LIBRARY_IMAGEMAGICK = 2;
     public const LIBRARY_NETPBM = 3;
-    
+
     public const UNIT_TYPE_PERCENT = 1;
     public const UNIT_TYPE_PIXELS = 2;
 }

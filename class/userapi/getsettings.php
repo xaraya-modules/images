@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Images\UserApi;
 
-
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
@@ -31,6 +30,7 @@ class GetsettingsMethod extends MethodClass
     /**
      * Get the predefined settings for image processing
      * @return array containing the predefined settings for image processing
+     * @see UserApi::getsettings()
      */
     public function __invoke(array $args = [])
     {

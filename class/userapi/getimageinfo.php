@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Images\UserApi;
 
-
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
@@ -30,11 +29,13 @@ class GetimageinfoMethod extends MethodClass
 
     /**
      * Get information about an image (from file or database)
-     * @param int $fileId The (uploads) file id of the image, or
-     * @param string $fileLocation The file location of the image
-     * @param string $basedir (optional) The directory where images are stored
-     * @param string $baseurl (optional) The corresponding base URL for the images
-     * @return array An array containing the image information if available or false if not available
+     * @param array<mixed> $args
+     * @var int $fileId The (uploads) file id of the image, or
+     * @var string $fileLocation The file location of the image
+     * @var string $basedir (optional) The directory where images are stored
+     * @var string $baseurl (optional) The corresponding base URL for the images
+     * @return array|false|void An array containing the image information if available or false if not available
+     * @see UserApi::getimageinfo()
      */
     public function __invoke(array $args = [])
     {
@@ -65,6 +66,7 @@ class GetimageinfoMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         }
+        $userapi = $this->getParent();
 
         if (!empty($fileId) && is_numeric($fileId)) {
             // Get file information from the uploads module
@@ -80,7 +82,7 @@ class GetimageinfoMethod extends MethodClass
                     $imageInfo['isWritable']   = false;
                 }
                 // Get image size and type information
-                $sizeinfo = xarMod::apiFunc('images', 'user', 'getimagesize', $imageInfo);
+                $sizeinfo = $userapi->getimagesize($imageInfo);
                 if (!empty($sizeinfo)) {
                     $imageInfo['imageWidth']  = $sizeinfo[0];
                     $imageInfo['imageHeight'] = $sizeinfo[1];

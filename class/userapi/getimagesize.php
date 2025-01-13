@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Images\UserApi;
 
-
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarMod;
@@ -30,11 +29,13 @@ class GetimagesizeMethod extends MethodClass
 
     /**
      * Get the size of an image (from file or database)
-     * @param string $fileLocation The file location of the image, or
-     * @param int $fileId The (uploads) file id of the image
-     * @param int $fileType The (uploads) mime type for the image
-     * @param int $storeType The (uploads) store type for the image
+     * @param array<mixed> $args
+     * @var string $fileLocation The file location of the image, or
+     * @var int $fileId The (uploads) file id of the image
+     * @var int $fileType The (uploads) mime type for the image
+     * @var int $storeType The (uploads) store type for the image
      * @return array|void Array containing the width, height and gd_info if available
+     * @see UserApi::getimagesize()
      */
     public function __invoke(array $args = [])
     {

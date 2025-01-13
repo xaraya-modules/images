@@ -13,6 +13,7 @@ namespace Xaraya\Modules\Images\AdminGui;
 
 use Xaraya\Modules\Images\Defines;
 use Xaraya\Modules\Images\AdminGui;
+use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarMod;
@@ -33,14 +34,7 @@ class ModifyconfigMethod extends MethodClass
     /** functions imported by bermuda_cleanup */
 
     /**
-     * Images module
-     * @package modules
-     * @copyright (C) 2002-2007 The Digital Development Foundation
-     * @license GPL {@link http://www.gnu.org/licenses/gpl.html}
-     * @link http://www.xaraya.com
-     * @subpackage Images Module
-     * @link http://xaraya.com/index.php/release/152.html
-     * @author Images Module Development Team
+     * @see AdminGui::modifyconfig()
      */
     public function __invoke(array $args = [])
     {
@@ -48,6 +42,10 @@ class ModifyconfigMethod extends MethodClass
         if (!xarSecurity::check('AdminImages')) {
             return;
         }
+        $admingui = $this->getParent();
+
+        /** @var UserApi $userapi */
+        $userapi = $admingui->getAPI();
 
         xarMod::apiLoad('images');
         // Generate a one-time authorisation code for this operation
@@ -75,7 +73,7 @@ class ModifyconfigMethod extends MethodClass
 
         $data['shortURLs'] = empty($shortURLs) ? 0 : 1;
 
-        $data['basedirs'] = xarMod::apiFunc('images', 'user', 'getbasedirs');
+        $data['basedirs'] = $userapi->getbasedirs();
         $data['basedirs'][] = ['basedir' => '',
             'baseurl' => '',
             'filetypes' => '',

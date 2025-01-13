@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Images\AdminApi;
 
-
 use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
@@ -33,11 +32,13 @@ class CountderivativesMethod extends MethodClass
     /**
      * count the number of derivative images
      * @author mikespub
-     * @param mixed $fileId (optional) The file id(s) of the image(s) we're looking for
-     * @param string $fileName (optional) The name of the image we're getting derivatives for
-     * @param string $thumbsdir (optional) The directory where derivative images are stored
-     * @param string $filematch (optional) Specific file match for derivative images
+     * @param array<mixed> $args
+     * @var mixed $fileId (optional) The file id(s) of the image(s) we're looking for
+     * @var string $fileName (optional) The name of the image we're getting derivatives for
+     * @var string $thumbsdir (optional) The directory where derivative images are stored
+     * @var string $filematch (optional) Specific file match for derivative images
      * @return int|void the number of images
+     * @see AdminApi::countderivatives()
      */
     public function __invoke(array $args = [])
     {
@@ -93,7 +94,5 @@ class CountderivativesMethod extends MethodClass
 
             return count($files);
         }
-
-        return 0;
     }
 }

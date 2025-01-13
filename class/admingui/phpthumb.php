@@ -11,8 +11,9 @@
 
 namespace Xaraya\Modules\Images\AdminGui;
 
-
 use Xaraya\Modules\Images\AdminGui;
+use Xaraya\Modules\Images\AdminApi;
+use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarSecurity;
 use xarVar;
@@ -36,6 +37,7 @@ class PhpthumbMethod extends MethodClass
     /**
      *
      * @deprecated 2.0.0 phpThumb() is seriously dated and doesn't play nice as a library
+     * @see AdminGui::phpthumb()
      */
     public function __invoke(array $args = [])
     {
@@ -52,9 +54,15 @@ class PhpthumbMethod extends MethodClass
         if (!empty($fileId) && is_array($fileId)) {
             $fileId = array_keys($fileId);
         }
+        $admingui = $this->getParent();
+
+        /** @var UserApi $userapi */
+        $userapi = $admingui->getAPI();
+        /** @var AdminApi $adminapi */
+        $adminapi = $admingui->getModule()->getAdminAPI();
 
         // Get the base directories configured for server images
-        $basedirs = xarMod::apiFunc('images', 'user', 'getbasedirs');
+        $basedirs = $userapi->getbasedirs();
 
         if (!xarVar::fetch('bid', 'isset', $baseId, '', xarVar::NOT_REQUIRED)) {
             return;
@@ -74,12 +82,9 @@ class PhpthumbMethod extends MethodClass
 
             // we're dealing with an uploads file here
         } elseif (is_numeric($fileId)) {
-            $data['images'] = xarMod::apiFunc(
-                'images',
-                'admin',
-                'getuploads',
-                ['fileId'   => $fileId]
-            );
+            $data['images'] = $adminapi->getuploads([
+                'fileId'   => $fileId,
+            ]);
             if (!empty($data['images'][$fileId])) {
                 $data['selimage'] = $data['images'][$fileId];
             }
@@ -87,13 +92,10 @@ class PhpthumbMethod extends MethodClass
             // we're dealing with a derivative image here
         } elseif (preg_match('/^[0-9a-f]{32}$/i', $fileId)) {
             $data['thumbsdir'] = xarModVars::get('images', 'path.derivative-store');
-            $data['images'] = xarMod::apiFunc(
-                'images',
-                'admin',
-                'getderivatives',
-                ['thumbsdir' => $data['thumbsdir'],
-                    'fileId'    => $fileId, ]
-            );
+            $data['images'] = $adminapi->getderivatives([
+                'thumbsdir' => $data['thumbsdir'],
+                'fileId'    => $fileId,
+            ]);
             foreach ($data['images'] as $image) {
                 if ($image['fileId'] == $fileId) {
                     $data['selimage'] = $image;
@@ -103,19 +105,14 @@ class PhpthumbMethod extends MethodClass
 
             // we're dealing with a server image here
         } else {
-            $data['images'] = xarMod::apiFunc(
-                'images',
-                'admin',
-                'getimages',
-                $data
-            );
+            $data['images'] = $adminapi->getimages($data);
             if (!empty($data['images'][$fileId])) {
                 $data['selimage'] = $data['images'][$fileId];
             }
         }
 
         // Get the pre-defined settings for phpThumb
-        $data['settings'] = xarMod::apiFunc('images', 'user', 'getsettings');
+        $data['settings'] = $userapi->getsettings();
 
         if (!xarVar::fetch('setting', 'str:1:', $setting, null, xarVar::DONT_SET)) {
             return;
@@ -458,17 +455,14 @@ class PhpthumbMethod extends MethodClass
                     unset($data['settings'][$setting]['fid']);
                 }
 
-                xarMod::apiFunc('images', 'admin', 'setsettings', $data['settings']);
+                $adminapi->setsettings($data['settings']);
 
                 // Note: processed images are named md5(filelocation)-[setting].[ext] - see process_image() function
                 $add = xarVar::prepForOS($setting);
                 $add = strtr($add, [' ' => '']);
-                $affected = xarMod::apiFunc(
-                    'images',
-                    'admin',
-                    'getderivatives',
-                    ['filematch' => '^\w+-' . $add]
-                );
+                $affected = $adminapi->getderivatives([
+                    'filematch' => '^\w+-' . $add,
+                ]);
                 // Delete any derivative image using this setting earlier
                 if (!empty($affected)) {
                     foreach ($affected as $info) {

@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Images\AdminApi;
 
-
 use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\MethodClass;
 use xarModVars;
@@ -33,16 +32,18 @@ class GetimagesMethod extends MethodClass
     /**
      * get the list of server images
      * @author mikespub
-     * @param string $basedir The directory where images are stored
-     * @param string $baseurl (optional) The corresponding base URL for the images
-     * @param string $filetypes (optional) The list of file extensions to look for
-     * @param bool $recursive (optional) Recurse into sub-directories or not (default TRUE)
-     * @param mixed $fileId (optional) The file id(s) of the image(s) we're looking for
-     * @param string $fileName (optional) The name of the image we're looking for
-     * @param string $filematch (optional) Specific file match for images
-     * @param int $cacheExpire (optional) Cache the result for a number of seconds
-     * @param bool $cacheRefresh (optional) Force refresh of the cache
+     * @param array<mixed> $args
+     * @var string $basedir The directory where images are stored
+     * @var string $baseurl (optional) The corresponding base URL for the images
+     * @var string $filetypes (optional) The list of file extensions to look for
+     * @var bool $recursive (optional) Recurse into sub-directories or not (default TRUE)
+     * @var mixed $fileId (optional) The file id(s) of the image(s) we're looking for
+     * @var string $fileName (optional) The name of the image we're looking for
+     * @var string $filematch (optional) Specific file match for images
+     * @var int $cacheExpire (optional) Cache the result for a number of seconds
+     * @var bool $cacheRefresh (optional) Force refresh of the cache
      * @return array|null containing the list of images
+     * @see AdminApi::getimages()
      */
     public function __invoke(array $args = [])
     {

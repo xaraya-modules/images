@@ -11,7 +11,6 @@
 
 namespace Xaraya\Modules\Images\UserApi;
 
-
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use sys;
@@ -36,6 +35,7 @@ class GdInfoMethod extends MethodClass
      * @subpackage Images Module
      * @link http://xaraya.com/index.php/release/152.html
      * @author Images Module Development Team
+     * @see UserApi::gdInfo()
      */
     public function __invoke(array $args = [])
     {
