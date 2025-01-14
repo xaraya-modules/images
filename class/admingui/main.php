@@ -39,7 +39,7 @@ class MainMethod extends MethodClass
         if (!$this->checkAccess('AdminImages')) {
             return;
         }
-        xarController::redirect(xarController::URL('images', 'admin', 'modifyconfig'), null, $this->getContext());
+        $this->redirect($this->getUrl('admin', 'modifyconfig'));
         // success
         return true;
     }

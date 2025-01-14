@@ -125,7 +125,7 @@ class ProcessImageMethod extends MethodClass
 
                 case 0: // derivative
                 default:
-                    $thumbsdir = xarModVars::get('images', 'path.derivative-store');
+                    $thumbsdir = $this->getModVar('path.derivative-store');
                     // Use MD5 hash of file location here
                     $save = realpath($thumbsdir) . '/' . md5($image['fileLocation']);
                     // Add the setting to the filename
@@ -170,7 +170,7 @@ class ProcessImageMethod extends MethodClass
 
                 case 0: // derivative
                 default:
-                    $thumbsdir = xarModVars::get('images', 'path.derivative-store');
+                    $thumbsdir = $this->getModVar('path.derivative-store');
                     // Use file id here
                     $save = realpath($thumbsdir) . '/' . $image['fileId'];
                     // Add the setting to the filename

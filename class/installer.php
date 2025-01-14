@@ -70,11 +70,11 @@ class Installer extends InstallerClass
 
 
         // Set up module variables
-        xarModVars::set('images', 'type.graphics-library', Defines::LIBRARY_GD);
-        xarModVars::set('images', 'path.derivative-store', 'Put a real directory in here...!');
-        xarModVars::set('images', 'view.itemsperpage', 200);
-        xarModVars::set('images', 'file.cache-expire', 60);
-        xarModVars::set('images', 'file.imagemagick', '');
+        $this->setModVar('type.graphics-library', Defines::LIBRARY_GD);
+        $this->setModVar('path.derivative-store', 'Put a real directory in here...!');
+        $this->setModVar('view.itemsperpage', 200);
+        $this->setModVar('file.cache-expire', 60);
+        $this->setModVar('file.imagemagick', '');
 
         /*
             xarMasks::register('ViewUploads',  'All','images','Image','All','ACCESS_READ');
@@ -113,9 +113,9 @@ class Installer extends InstallerClass
         switch ($oldversion) {
             case '1.0.0':
                 // Code to upgrade from version 1.0.0 goes here
-                $thumbsdir = xarModVars::get('images', 'path.derivative-store');
+                $thumbsdir = $this->getModVar('path.derivative-store');
                 if (!empty($thumbsdir) && is_dir($thumbsdir)) {
-                    xarModVars::set('images', 'upgrade-1.0.0', 1);
+                    $this->setModVar('upgrade-1.0.0', 1);
                     // remove all old-style derivatives
                     /* skip this - too risky depending on site config
                         $images = $adminapi->getderivatives();

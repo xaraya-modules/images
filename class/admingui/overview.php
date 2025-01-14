@@ -38,7 +38,7 @@ class OverviewMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         /* Security Check */
-        if (!xarSecurity::check('AdminImages', 0)) {
+        if (!$this->checkAccess('AdminImages', 0)) {
             return;
         }
 

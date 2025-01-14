@@ -54,18 +54,18 @@ class DerivativesMethod extends MethodClass
         $data = [];
 
         // Note: fileId is an MD5 hash of the derivative image location here
-        if (!xarVar::fetch('fileId', 'str:1:', $fileId, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('fileId', 'str:1:', $fileId, '', xarVar::NOT_REQUIRED)) {
             return;
         }
         $data['fileId'] = $fileId;
 
-        if (!xarVar::fetch('startnum', 'int:0:', $startnum, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('startnum', 'int:0:', $startnum, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('numitems', 'int:0:', $numitems, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('numitems', 'int:0:', $numitems, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('sort', 'enum:name:width:height:size:time', $sort, 'name', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('sort', 'enum:name:width:height:size:time', $sort, 'name', xarVar::NOT_REQUIRED)) {
             return;
         }
 
@@ -74,9 +74,9 @@ class DerivativesMethod extends MethodClass
         $data['sort'] = ($sort != 'name') ? $sort : null;
 
         // Check if we can cache the image list
-        $data['cacheExpire'] = xarModVars::get('images', 'file.cache-expire');
+        $data['cacheExpire'] = $this->getModVar('file.cache-expire');
 
-        $data['thumbsdir'] = xarModVars::get('images', 'path.derivative-store');
+        $data['thumbsdir'] = $this->getModVar('path.derivative-store');
 
         $data['pager'] = '';
         if (!empty($fileId)) {
@@ -85,10 +85,10 @@ class DerivativesMethod extends MethodClass
         } else {
             $params = $data;
             if (!isset($numitems)) {
-                $params['numitems'] = xarModVars::get('images', 'view.itemsperpage');
+                $params['numitems'] = $this->getModVar('view.itemsperpage');
             }
             // Check if we need to refresh the cache anyway
-            if (!xarVar::fetch('refresh', 'int:0:', $refresh, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('refresh', 'int:0:', $refresh, null, xarVar::DONT_SET)) {
                 return;
             }
             $params['cacheRefresh'] = $refresh;
@@ -104,8 +104,7 @@ class DerivativesMethod extends MethodClass
                 $data['pager'] = xarTplPager::getPager(
                     $startnum,
                     $countitems,
-                    xarController::URL(
-                        'images',
+                    $this->getUrl(
                         'admin',
                         'derivatives',
                         ['startnum' => '%%',
@@ -118,7 +117,7 @@ class DerivativesMethod extends MethodClass
         }
 
         // Check if we need to do anything special here
-        if (!xarVar::fetch('action', 'str:1:', $action, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('action', 'str:1:', $action, '', xarVar::NOT_REQUIRED)) {
             return;
         }
 
@@ -141,21 +140,21 @@ class DerivativesMethod extends MethodClass
                     return $data;
 
                 case 'delete':
-                    if (!xarVar::fetch('confirm', 'str:1:', $confirm, '', xarVar::NOT_REQUIRED)) {
+                    if (!$this->fetch('confirm', 'str:1:', $confirm, '', xarVar::NOT_REQUIRED)) {
                         return;
                     }
                     if (!empty($confirm)) {
-                        if (!xarSec::confirmAuthKey()) {
+                        if (!$this->confirmAuthKey()) {
                             return;
                         }
                         // delete the derivative image now
                         @unlink($found['fileLocation']);
-                        xarController::redirect(xarController::URL('images', 'admin', 'derivatives'), null, $this->getContext());
+                        $this->redirect($this->getUrl('admin', 'derivatives'));
                         return true;
                     }
                     $data['selimage'] = $found;
                     $data['action'] = 'delete';
-                    $data['authid'] = xarSec::genAuthKey();
+                    $data['authid'] = $this->genAuthKey();
                     return $data;
 
                 default:

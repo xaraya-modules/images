@@ -40,6 +40,6 @@ class SetsettingsMethod extends MethodClass
             $args = [];
         }
 
-        xarModVars::set('images', 'phpthumb-settings', serialize($args));
+        $this->setModVar('phpthumb-settings', serialize($args));
     }
 }

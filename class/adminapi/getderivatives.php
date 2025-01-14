@@ -49,7 +49,7 @@ class GetderivativesMethod extends MethodClass
     {
         extract($args);
         if (empty($thumbsdir)) {
-            $thumbsdir = xarModVars::get('images', 'path.derivative-store');
+            $thumbsdir = $this->getModVar('path.derivative-store');
         }
         if (empty($thumbsdir)) {
             return [];
@@ -87,7 +87,7 @@ class GetderivativesMethod extends MethodClass
         } else {
             $cachekey = md5(serialize($params));
             if (!empty($cacheExpire) && is_numeric($cacheExpire) && empty($cacheRefresh)) {
-                $cacheinfo = xarModVars::get('images', 'file.cachederiv.' . $cachekey);
+                $cacheinfo = $this->getModVar('file.cachederiv.' . $cachekey);
                 if (!empty($cacheinfo)) {
                     $cacheinfo = @unserialize($cacheinfo);
                     if (!empty($cacheinfo['time']) && $cacheinfo['time'] > time() - $cacheExpire) {
@@ -122,8 +122,7 @@ class GetderivativesMethod extends MethodClass
                     }
                     $info = stat($thumbsdir . '/' . $file);
                     $imagelist[] = ['fileLocation' => $thumbsdir . '/' . $file,
-                        'fileDownload' => xarController::URL(
-                            'images',
+                        'fileDownload' => $this->getUrl(
                             'user',
                             'display',
                             ['fileId' => base64_encode($thumbsdir . '/' . $file)]
@@ -148,8 +147,7 @@ class GetderivativesMethod extends MethodClass
                     $statinfo = stat($thumbsdir . '/' . $file);
                     $sizeinfo = getimagesize($thumbsdir . '/' . $file);
                     $imagelist[] = ['fileLocation' => $thumbsdir . '/' . $file,
-                        'fileDownload' => xarController::URL(
-                            'images',
+                        'fileDownload' => $this->getUrl(
                             'user',
                             'display',
                             ['fileId' => base64_encode($thumbsdir . '/' . $file)]
@@ -211,7 +209,7 @@ class GetderivativesMethod extends MethodClass
                 $cacheinfo = ['time' => time(),
                     'list' => $imagelist, ];
                 $cacheinfo = serialize($cacheinfo);
-                xarModVars::set('images', 'file.cachederiv.' . $cachekey, $cacheinfo);
+                $this->setModVar('file.cachederiv.' . $cachekey, $cacheinfo);
                 unset($cacheinfo);
             }
         }

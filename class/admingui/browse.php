@@ -48,7 +48,7 @@ class BrowseMethod extends MethodClass
         }
 
         // Note: fileId is a base 64 encode of the image location here, or an array of fileId's
-        if (!xarVar::fetch('fid', 'isset', $fileId, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('fid', 'isset', $fileId, '', xarVar::NOT_REQUIRED)) {
             return;
         }
         if (!empty($fileId) && is_array($fileId)) {
@@ -65,7 +65,7 @@ class BrowseMethod extends MethodClass
         // Get the base directories configured for server images
         $basedirs = $userapi->getbasedirs();
 
-        if (!xarVar::fetch('bid', 'isset', $baseId, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('bid', 'isset', $baseId, '', xarVar::NOT_REQUIRED)) {
             return;
         }
         if (empty($baseId) || empty($basedirs[$baseId])) {
@@ -77,22 +77,22 @@ class BrowseMethod extends MethodClass
         $data['baseId'] = $baseId;
         $data['fileId'] = $fileId;
 
-        if (!xarVar::fetch('startnum', 'int:0:', $startnum, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('startnum', 'int:0:', $startnum, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('numitems', 'int:0:', $numitems, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('numitems', 'int:0:', $numitems, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('sort', 'enum:name:type:width:height:size:time', $sort, 'name', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('sort', 'enum:name:type:width:height:size:time', $sort, 'name', xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch('action', 'str:1:', $action, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('action', 'str:1:', $action, '', xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch('getnext', 'str:1:', $getnext, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('getnext', 'str:1:', $getnext, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('getprev', 'str:1:', $getprev, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('getprev', 'str:1:', $getprev, null, xarVar::DONT_SET)) {
             return;
         }
         /** @var AdminApi $adminapi */
@@ -105,7 +105,7 @@ class BrowseMethod extends MethodClass
         $data['getprev'] = $getprev;
 
         // Check if we can cache the image list
-        $data['cacheExpire'] = xarModVars::get('images', 'file.cache-expire');
+        $data['cacheExpire'] = $this->getModVar('file.cache-expire');
 
         $data['pager'] = '';
         if (!empty($fileId)) {
@@ -113,10 +113,10 @@ class BrowseMethod extends MethodClass
         } else {
             $params = $data;
             if (!isset($numitems)) {
-                $params['numitems'] = xarModVars::get('images', 'view.itemsperpage');
+                $params['numitems'] = $this->getModVar('view.itemsperpage');
             }
             // Check if we need to refresh the cache anyway
-            if (!xarVar::fetch('refresh', 'int:0:', $refresh, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('refresh', 'int:0:', $refresh, null, xarVar::DONT_SET)) {
                 return;
             }
             $params['cacheRefresh'] = $refresh;
@@ -126,14 +126,13 @@ class BrowseMethod extends MethodClass
             if ((!empty($getnext) || !empty($getprev)) &&
                 !empty($data['images']) && count($data['images']) == 1) {
                 $image = array_pop($data['images']);
-                xarController::redirect(xarController::URL(
-                    'images',
+                $this->redirect($this->getUrl(
                     'admin',
                     'browse',
                     ['action' => empty($action) ? 'view' : $action,
                         'bid' => $baseId,
                         'fid' => $image['fileId'], ]
-                ), null, $this->getContext());
+                ));
                 return true;
             }
 
@@ -146,8 +145,7 @@ class BrowseMethod extends MethodClass
                 $data['pager'] = xarTplPager::getPager(
                     $startnum,
                     $countitems,
-                    xarController::URL(
-                        'images',
+                    $this->getUrl(
                         'admin',
                         'browse',
                         ['bid'      => $baseId,
@@ -166,10 +164,10 @@ class BrowseMethod extends MethodClass
         $data['settings'] = $userapi->getsettings();
 
         // Check if we need to do anything special here
-        if (!xarVar::fetch('processlist', 'str:1:', $processlist, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('processlist', 'str:1:', $processlist, '', xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch('resizelist', 'str:1:', $resizelist, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('resizelist', 'str:1:', $resizelist, '', xarVar::NOT_REQUIRED)) {
             return;
         }
         if (!empty($processlist)) {
@@ -214,20 +212,20 @@ class BrowseMethod extends MethodClass
                     return $data;
 
                 case 'resize':
-                    if (!xarVar::fetch('width', 'int:1:', $width, null, xarVar::NOT_REQUIRED)) {
+                    if (!$this->fetch('width', 'int:1:', $width, null, xarVar::NOT_REQUIRED)) {
                         return;
                     }
-                    if (!xarVar::fetch('height', 'int:1:', $height, null, xarVar::NOT_REQUIRED)) {
+                    if (!$this->fetch('height', 'int:1:', $height, null, xarVar::NOT_REQUIRED)) {
                         return;
                     }
-                    if (!xarVar::fetch('replace', 'int:0:1', $replace, 0, xarVar::NOT_REQUIRED)) {
+                    if (!$this->fetch('replace', 'int:0:1', $replace, 0, xarVar::NOT_REQUIRED)) {
                         return;
                     }
-                    if (!xarVar::fetch('confirm', 'str:1:', $confirm, '', xarVar::NOT_REQUIRED)) {
+                    if (!$this->fetch('confirm', 'str:1:', $confirm, '', xarVar::NOT_REQUIRED)) {
                         return;
                     }
                     if (!empty($confirm) && (!empty($width) || !empty($height))) {
-                        if (!xarSec::confirmAuthKey()) {
+                        if (!$this->confirmAuthKey()) {
                             return;
                         }
                         if (!empty($replace) && !empty($found['fileLocation'])) {
@@ -240,14 +238,13 @@ class BrowseMethod extends MethodClass
                                 return;
                             }
                             // Redirect to viewing the original image here (for now)
-                            xarController::redirect(xarController::URL(
-                                'images',
+                            $this->redirect($this->getUrl(
                                 'admin',
                                 'browse',
                                 ['action' => 'view',
                                     'bid' => $baseId,
                                     'fid' => $found['fileId'], ]
-                            ), null, $this->getContext());
+                            ));
                         } else {
                             $location = $adminapi->resizeImage([
                                 'fileLocation' => $found['fileLocation'],
@@ -258,13 +255,12 @@ class BrowseMethod extends MethodClass
                                 return;
                             }
                             // Redirect to viewing the derivative image here (for now)
-                            xarController::redirect(xarController::URL(
-                                'images',
+                            $this->redirect($this->getUrl(
                                 'admin',
                                 'derivatives',
                                 ['action' => 'view',
                                     'fileId' => md5($location), ]
-                            ), null, $this->getContext());
+                            ));
                         }
                         return true;
                     }
@@ -282,38 +278,38 @@ class BrowseMethod extends MethodClass
                         $data['replace'] = 1;
                     }
                     $data['action'] = 'resize';
-                    $data['authid'] = xarSec::genAuthKey();
+                    $data['authid'] = $this->genAuthKey();
                     return $data;
 
                 case 'delete':
-                    if (!xarVar::fetch('confirm', 'str:1:', $confirm, '', xarVar::NOT_REQUIRED)) {
+                    if (!$this->fetch('confirm', 'str:1:', $confirm, '', xarVar::NOT_REQUIRED)) {
                         return;
                     }
                     if (!empty($confirm)) {
-                        if (!xarSec::confirmAuthKey()) {
+                        if (!$this->confirmAuthKey()) {
                             return;
                         }
                         // delete the server image now
                         @unlink($found['fileLocation']);
-                        xarController::redirect(xarController::URL('images', 'admin', 'browse'), null, $this->getContext());
+                        $this->redirect($this->getUrl('admin', 'browse'));
                         return true;
                     }
                     $data['selimage'] = $found;
                     $data['action'] = 'delete';
-                    $data['authid'] = xarSec::genAuthKey();
+                    $data['authid'] = $this->genAuthKey();
                     return $data;
 
                 case 'resizelist':
-                    if (!xarVar::fetch('width', 'int:1:', $width, null, xarVar::NOT_REQUIRED)) {
+                    if (!$this->fetch('width', 'int:1:', $width, null, xarVar::NOT_REQUIRED)) {
                         return;
                     }
-                    if (!xarVar::fetch('height', 'int:1:', $height, null, xarVar::NOT_REQUIRED)) {
+                    if (!$this->fetch('height', 'int:1:', $height, null, xarVar::NOT_REQUIRED)) {
                         return;
                     }
-                    if (!xarVar::fetch('replace', 'int:0:1', $replace, 0, xarVar::NOT_REQUIRED)) {
+                    if (!$this->fetch('replace', 'int:0:1', $replace, 0, xarVar::NOT_REQUIRED)) {
                         return;
                     }
-                    if (!xarVar::fetch('confirm', 'str:1:', $confirm, '', xarVar::NOT_REQUIRED)) {
+                    if (!$this->fetch('confirm', 'str:1:', $confirm, '', xarVar::NOT_REQUIRED)) {
                         return;
                     }
                     if (empty($confirm) || (empty($width) && empty($height))) {
@@ -332,11 +328,11 @@ class BrowseMethod extends MethodClass
                         } else {
                             $data['replace'] = '1';
                         }
-                        $data['authid'] = xarSec::genAuthKey();
+                        $data['authid'] = $this->genAuthKey();
                         return $data;
                     }
 
-                    if (!xarSec::confirmAuthKey()) {
+                    if (!$this->confirmAuthKey()) {
                         return;
                     }
                     if (!empty($replace)) {
@@ -354,15 +350,14 @@ class BrowseMethod extends MethodClass
                             }
                         }
                         // Redirect to viewing the server images here (for now)
-                        xarController::redirect(xarController::URL(
-                            'images',
+                        $this->redirect($this->getUrl(
                             'admin',
                             'browse',
                             ['bid'     => $baseId,
                                 'sort'    => 'time',
                                 // we need to refresh the cache here
                                 'refresh' => 1, ]
-                        ), null, $this->getContext());
+                        ));
                     } else {
                         foreach ($found as $id => $info) {
                             if (empty($info['fileLocation'])) {
@@ -378,25 +373,24 @@ class BrowseMethod extends MethodClass
                             }
                         }
                         // Redirect to viewing the derivative images here (for now)
-                        xarController::redirect(xarController::URL(
-                            'images',
+                        $this->redirect($this->getUrl(
                             'admin',
                             'derivatives',
                             ['sort'    => 'time',
                                 // we need to refresh the cache here
                                 'refresh' => 1, ]
-                        ), null, $this->getContext());
+                        ));
                     }
                     return true;
 
                 case 'processlist':
-                    if (!xarVar::fetch('saveas', 'int:0:2', $saveas, 0, xarVar::NOT_REQUIRED)) {
+                    if (!$this->fetch('saveas', 'int:0:2', $saveas, 0, xarVar::NOT_REQUIRED)) {
                         return;
                     }
-                    if (!xarVar::fetch('setting', 'str:1:', $setting, null, xarVar::NOT_REQUIRED)) {
+                    if (!$this->fetch('setting', 'str:1:', $setting, null, xarVar::NOT_REQUIRED)) {
                         return;
                     }
-                    if (!xarVar::fetch('confirm', 'str:1:', $confirm, '', xarVar::NOT_REQUIRED)) {
+                    if (!$this->fetch('confirm', 'str:1:', $confirm, '', xarVar::NOT_REQUIRED)) {
                         return;
                     }
                     if (empty($confirm) || empty($setting) || empty($data['settings'][$setting])) {
@@ -413,11 +407,11 @@ class BrowseMethod extends MethodClass
                         } else {
                             $data['saveas'] = $saveas;
                         }
-                        $data['authid'] = xarSec::genAuthKey();
+                        $data['authid'] = $this->genAuthKey();
                         return $data;
                     }
 
-                    if (!xarSec::confirmAuthKey()) {
+                    if (!$this->confirmAuthKey()) {
                         return;
                     }
 
@@ -439,41 +433,38 @@ class BrowseMethod extends MethodClass
                     switch ($saveas) {
                         case 1: // [image]_new.[ext]
                             // Redirect to viewing the server images here (for now)
-                            xarController::redirect(xarController::URL(
-                                'images',
+                            $this->redirect($this->getUrl(
                                 'admin',
                                 'browse',
                                 ['bid'     => $baseId,
                                     'sort'    => 'time',
                                     // we need to refresh the cache here
                                     'refresh' => 1, ]
-                            ), null, $this->getContext());
+                            ));
                             break;
 
                         case 2: // replace
                             // Redirect to viewing the server images here (for now)
-                            xarController::redirect(xarController::URL(
-                                'images',
+                            $this->redirect($this->getUrl(
                                 'admin',
                                 'browse',
                                 ['bid'     => $baseId,
                                     'sort'    => 'time',
                                     // we need to refresh the cache here
                                     'refresh' => 1, ]
-                            ), null, $this->getContext());
+                            ));
                             break;
 
                         case 0: // derivative
                         default:
                             // Redirect to viewing the derivative images here (for now)
-                            xarController::redirect(xarController::URL(
-                                'images',
+                            $this->redirect($this->getUrl(
                                 'admin',
                                 'derivatives',
                                 ['sort'    => 'time',
                                     // we need to refresh the cache here
                                     'refresh' => 1, ]
-                            ), null, $this->getContext());
+                            ));
                             break;
                     }
                     return true;
@@ -484,7 +475,7 @@ class BrowseMethod extends MethodClass
         }
 
         $data['thumbsonly'] = false;
-        $data['thumbsdir'] = xarModVars::get('images', 'path.derivative-store');
+        $data['thumbsdir'] = $this->getModVar('path.derivative-store');
         if (is_writable($data['thumbsdir']) && !is_writable($data['basedir'])) {
             $data['thumbsonly'] = true;
         }

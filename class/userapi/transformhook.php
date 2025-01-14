@@ -107,7 +107,7 @@ class TransformhookMethod extends MethodClass
 
                         $args['fileId'] = $id;
 
-                        $replacement = xarController::URL('images', 'user', 'display', $args);
+                        $replacement = $this->getUrl( 'user', 'display', $args);
                     }
                     break;
             }

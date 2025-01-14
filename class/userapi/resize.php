@@ -151,7 +151,7 @@ class ResizeMethod extends MethodClass
 
                         // or if it's an absolute URL, try to get rid of it
                     } elseif (substr($location, 0, 1) == '/' || substr($location, 1, 1) == ':') {
-                        $thumbsdir = xarModVars::get('images', 'path.derivative-store');
+                        $thumbsdir = $this->getModVar('path.derivative-store');
                         $url = $thumbsdir . '/' . basename($location);
                     }
                     // if it's an absolute URL, try to get rid of it
@@ -160,8 +160,7 @@ class ResizeMethod extends MethodClass
                     }
                 } else {
                     // use the location of the processed image here
-                    $url = xarController::URL(
-                        'images',
+                    $url = $this->getUrl(
                         'user',
                         'display',
                         ['fileId' => base64_encode($location)]
@@ -201,7 +200,7 @@ class ResizeMethod extends MethodClass
 
                     // or if it's an absolute URL, try to get rid of it
                 } elseif (substr($location, 0, 1) == '/' || substr($location, 1, 1) == ':') {
-                    $thumbsdir = xarModVars::get('images', 'path.derivative-store');
+                    $thumbsdir = $this->getModVar('path.derivative-store');
                     $url = $thumbsdir . '/' . basename($location);
                 }
                 if (empty($url)) {
@@ -209,8 +208,7 @@ class ResizeMethod extends MethodClass
                 }
             } else {
                 // use the location of the processed image here
-                $url = xarController::URL(
-                    'images',
+                $url = $this->getUrl(
                     'user',
                     'display',
                     ['fileId' => base64_encode($location)]
@@ -309,7 +307,7 @@ class ResizeMethod extends MethodClass
 
                 // or if it's an absolute URL, try to get rid of it
             } elseif (substr($location, 0, 1) == '/' || substr($location, 1, 1) == ':') {
-                $thumbsdir = xarModVars::get('images', 'path.derivative-store');
+                $thumbsdir = $this->getModVar('path.derivative-store');
                 $url = $thumbsdir . '/' . basename($location);
             }
             if (empty($url)) {
@@ -323,8 +321,7 @@ class ResizeMethod extends MethodClass
             } else {
                 xarVar::setCached('Module.Images', 'imagemime.' . $src, $mime);
             }
-            $url = xarController::URL(
-                'images',
+            $url = $this->getUrl(
                 'user',
                 'display',
                 ['fileId' => is_numeric($src) ? $src : base64_encode($src),

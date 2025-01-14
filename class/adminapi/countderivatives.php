@@ -52,7 +52,7 @@ class CountderivativesMethod extends MethodClass
         }
 
         if (empty($thumbsdir)) {
-            $thumbsdir = xarModVars::get('images', 'path.derivative-store');
+            $thumbsdir = $this->getModVar('path.derivative-store');
         }
         if (empty($thumbsdir)) {
             return 0;

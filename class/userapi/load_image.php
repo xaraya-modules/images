@@ -111,12 +111,12 @@ class LoadImageMethod extends MethodClass
         }
 
         if (empty($thumbsdir)) {
-            $thumbsdir = xarModVars::get('images', 'path.derivative-store');
+            $thumbsdir = $this->getModVar('path.derivative-store');
         }
 
         sys::import('modules.images.class.image_properties');
 
-        switch (xarModVars::get('images', 'type.graphics-library')) {
+        switch ($this->getModVar('type.graphics-library')) {
             /**
             case Defines::LIBRARY_IMAGEMAGICK:
                 sys::import('modules.images.class.image_ImageMagick');

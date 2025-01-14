@@ -50,7 +50,7 @@ class PhpthumbMethod extends MethodClass
 
         extract($args);
 
-        if (!xarVar::fetch('fid', 'isset', $fileId, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('fid', 'isset', $fileId, '', xarVar::NOT_REQUIRED)) {
             return;
         }
         if (!empty($fileId) && is_array($fileId)) {
@@ -68,7 +68,7 @@ class PhpthumbMethod extends MethodClass
         // Get the base directories configured for server images
         $basedirs = $userapi->getbasedirs();
 
-        if (!xarVar::fetch('bid', 'isset', $baseId, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('bid', 'isset', $baseId, '', xarVar::NOT_REQUIRED)) {
             return;
         }
         if (empty($baseId) || empty($basedirs[$baseId])) {
@@ -95,7 +95,7 @@ class PhpthumbMethod extends MethodClass
 
             // we're dealing with a derivative image here
         } elseif (preg_match('/^[0-9a-f]{32}$/i', $fileId)) {
-            $data['thumbsdir'] = xarModVars::get('images', 'path.derivative-store');
+            $data['thumbsdir'] = $this->getModVar('path.derivative-store');
             $data['images'] = $adminapi->getderivatives([
                 'thumbsdir' => $data['thumbsdir'],
                 'fileId'    => $fileId,
@@ -118,10 +118,10 @@ class PhpthumbMethod extends MethodClass
         // Get the pre-defined settings for phpThumb
         $data['settings'] = $userapi->getsettings();
 
-        if (!xarVar::fetch('setting', 'str:1:', $setting, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('setting', 'str:1:', $setting, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('load', 'str:1:', $load, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('load', 'str:1:', $load, null, xarVar::DONT_SET)) {
             return;
         }
         //$data['setting'] = $setting;
@@ -136,65 +136,65 @@ class PhpthumbMethod extends MethodClass
 
         if (empty($skipinput)) {
             // URL parameters for phpThumb() - cfr. xardocs/phpthumb.readme.txt
-            if (!xarVar::fetch('w', 'int:1:', $w, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('w', 'int:1:', $w, null, xarVar::DONT_SET)) {
                 return;
             }
-            if (!xarVar::fetch('h', 'int:1:', $h, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('h', 'int:1:', $h, null, xarVar::DONT_SET)) {
                 return;
             }
-            if (!xarVar::fetch('f', 'enum:jpeg:png:gif', $f, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('f', 'enum:jpeg:png:gif', $f, null, xarVar::DONT_SET)) {
                 return;
             }
-            if (!xarVar::fetch('q', 'int:1:', $q, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('q', 'int:1:', $q, null, xarVar::DONT_SET)) {
                 return;
             }
-            if (!xarVar::fetch('sx', 'float:0:', $sx, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('sx', 'float:0:', $sx, null, xarVar::DONT_SET)) {
                 return;
             }
-            if (!xarVar::fetch('sy', 'float:0:', $sy, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('sy', 'float:0:', $sy, null, xarVar::DONT_SET)) {
                 return;
             }
-            if (!xarVar::fetch('sw', 'float:0:', $sw, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('sw', 'float:0:', $sw, null, xarVar::DONT_SET)) {
                 return;
             }
-            if (!xarVar::fetch('sh', 'float:0:', $sh, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('sh', 'float:0:', $sh, null, xarVar::DONT_SET)) {
                 return;
             }
-            if (!xarVar::fetch('zc', 'checkbox', $zc, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('zc', 'checkbox', $zc, null, xarVar::DONT_SET)) {
                 return;
             }
-            if (!xarVar::fetch('bg', 'str:6:6', $bg, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('bg', 'str:6:6', $bg, null, xarVar::DONT_SET)) {
                 return;
             }
-            if (!xarVar::fetch('bc', 'str:6:6', $bc, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('bc', 'str:6:6', $bc, null, xarVar::DONT_SET)) {
                 return;
             }
-            if (!xarVar::fetch('fltr', 'isset', $fltr, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('fltr', 'isset', $fltr, null, xarVar::DONT_SET)) {
                 return;
             }
-            if (!xarVar::fetch('xto', 'checkbox', $xto, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('xto', 'checkbox', $xto, null, xarVar::DONT_SET)) {
                 return;
             }
-            if (!xarVar::fetch('ra', 'int', $ra, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('ra', 'int', $ra, null, xarVar::DONT_SET)) {
                 return;
             }
-            if (!xarVar::fetch('ar', 'enum:p:P:L:l:x', $ar, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('ar', 'enum:p:P:L:l:x', $ar, null, xarVar::DONT_SET)) {
                 return;
             }
-            if (!xarVar::fetch('aoe', 'checkbox', $aoe, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('aoe', 'checkbox', $aoe, null, xarVar::DONT_SET)) {
                 return;
             }
-            if (!xarVar::fetch('iar', 'checkbox', $iar, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('iar', 'checkbox', $iar, null, xarVar::DONT_SET)) {
                 return;
             }
-            if (!xarVar::fetch('far', 'checkbox', $far, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('far', 'checkbox', $far, null, xarVar::DONT_SET)) {
                 return;
             }
-            if (!xarVar::fetch('maxb', 'int:1:', $maxb, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('maxb', 'int:1:', $maxb, null, xarVar::DONT_SET)) {
                 return;
             }
             // Process filters via input form
-            if (!xarVar::fetch('filter', 'isset', $filter, null, xarVar::DONT_SET)) {
+            if (!$this->fetch('filter', 'isset', $filter, null, xarVar::DONT_SET)) {
                 return;
             }
         }
@@ -229,7 +229,7 @@ class PhpthumbMethod extends MethodClass
             $filter['wmt'][3] = substr($filter['wmt'][3], 1);
         }
 
-        if (!xarVar::fetch('save', 'str:1:', $save, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('save', 'str:1:', $save, null, xarVar::DONT_SET)) {
             return;
         }
         if (empty($save) && !empty($data['selimage']['fileLocation'])) {
@@ -241,15 +241,15 @@ class PhpthumbMethod extends MethodClass
         }
         $data['save'] = $save;
 
-        if (!xarVar::fetch('preview', 'str:1:', $preview, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('preview', 'str:1:', $preview, '', xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch('confirm', 'str:1:', $confirm, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('confirm', 'str:1:', $confirm, '', xarVar::NOT_REQUIRED)) {
             return;
         }
         if (!empty($preview) || !empty($confirm)) {
             if (!empty($confirm)) {
-                if (!xarSec::confirmAuthKey()) {
+                if (!$this->confirmAuthKey()) {
                     return;
                 }
             }
@@ -344,34 +344,31 @@ class PhpthumbMethod extends MethodClass
                                     }
                                 }
                                 // Redirect to viewing the updated image here (for now)
-                                xarController::redirect(xarController::URL(
-                                    'images',
+                                $this->redirect($this->getUrl(
                                     'admin',
                                     'uploads',
                                     ['action' => 'view',
                                         'fileId' => $fileId, ]
-                                ), null, $this->getContext());
+                                ));
                                 return true;
                             } elseif (preg_match('/^[0-9a-f]{32}$/i', $fileId)) {
                                 // Redirect to viewing the updated image here (for now)
-                                xarController::redirect(xarController::URL(
-                                    'images',
+                                $this->redirect($this->getUrl(
                                     'admin',
                                     'derivatives',
                                     ['action' => 'view',
                                         'fileId' => $fileId, ]
-                                ), null, $this->getContext());
+                                ));
                                 return true;
                             } else {
                                 // Redirect to viewing the updated image here (for now)
-                                xarController::redirect(xarController::URL(
-                                    'images',
+                                $this->redirect($this->getUrl(
                                     'admin',
                                     'browse',
                                     ['action' => 'view',
                                         'bid'    => $baseId,
                                         'fid'    => $fileId, ]
-                                ), null, $this->getContext());
+                                ));
                                 return true;
                             }
                         }
@@ -381,7 +378,8 @@ class PhpthumbMethod extends MethodClass
                     $phpThumb->OutputThumbnail();
                     xarLog::message('Images Phpthumb failed to generate thumbnail:' . $msg, xarLog::LEVEL_INFO);
                     // Stop processing here
-                    exit;
+                    $this->exit();
+                    return;
                 }
             } else {
                 $msg = implode("\n\n", $phpThumb->debugmessages);
@@ -389,7 +387,8 @@ class PhpthumbMethod extends MethodClass
                 if (!empty($preview)) {
                     $phpThumb->ErrorImage($msg);
                     // Stop processing here
-                    exit;
+                    $this->exit();
+                    return;
                 } else {
                     throw new BadParameterException(null, $msg);
                 }
@@ -427,10 +426,10 @@ class PhpthumbMethod extends MethodClass
             }
         }
 
-        if (!xarVar::fetch('newset', 'str:1:', $newset, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('newset', 'str:1:', $newset, null, xarVar::DONT_SET)) {
             return;
         }
-        if (!xarVar::fetch('store', 'str:1:', $store, null, xarVar::DONT_SET)) {
+        if (!$this->fetch('store', 'str:1:', $store, null, xarVar::DONT_SET)) {
             return;
         }
         if (!empty($store)) {
@@ -470,8 +469,7 @@ class PhpthumbMethod extends MethodClass
             if (!empty($baseId)) {
                 $previewargs['bid'] = $baseId;
             }
-            $previewurl = xarController::URL(
-                'images',
+            $previewurl = $this->getUrl(
                 'admin',
                 'phpthumb',
                 $previewargs
@@ -547,7 +545,7 @@ class PhpthumbMethod extends MethodClass
             $data['fltr'][] = '';
         }
 
-        $data['authid'] = xarSec::genAuthKey('images');
+        $data['authid'] = $this->genAuthKey();
         return $data;
     }
 }

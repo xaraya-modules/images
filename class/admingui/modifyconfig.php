@@ -54,22 +54,22 @@ class ModifyconfigMethod extends MethodClass
         // *********************************************
         // Global
         $data['gdextension'] = extension_loaded('gd'); // True or false
-        $data['libtype']['graphics-library']    = xarModVars::get('images', 'type.graphics-library'); // return gd
-        $data['path']['derivative-store']       = xarModVars::get('images', 'path.derivative-store');
-        $data['file']['cache-expire']           = xarModVars::get('images', 'file.cache-expire');
+        $data['libtype']['graphics-library']    = $this->getModVar('type.graphics-library'); // return gd
+        $data['path']['derivative-store']       = $this->getModVar('path.derivative-store');
+        $data['file']['cache-expire']           = $this->getModVar('file.cache-expire');
         if (!isset($data['file']['cache-expire'])) {
-            xarModVars::set('images', 'file.cache-expire', 60);
+            $this->setModVar('file.cache-expire', 60);
         }
-        $data['file']['imagemagick']            = xarModVars::get('images', 'file.imagemagick');
+        $data['file']['imagemagick']            = $this->getModVar('file.imagemagick');
         if (!isset($data['file']['imagemagick'])) {
-            xarModVars::set('images', 'file.imagemagick', '');
+            $this->setModVar('file.imagemagick', '');
         }
-        $data['authid']                         = xarSec::genAuthKey();
+        $data['authid']                         = $this->genAuthKey();
         $data['library']   = ['GD'          => Defines::LIBRARY_GD,
             'ImageMagick' => Defines::LIBRARY_IMAGEMAGICK,
             'NetPBM'      => Defines::LIBRARY_NETPBM, ];
 
-        $shortURLs = xarModVars::get('images', 'SupportShortURLs');
+        $shortURLs = $this->getModVar('SupportShortURLs');
 
         $data['shortURLs'] = empty($shortURLs) ? 0 : 1;
 

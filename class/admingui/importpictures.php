@@ -141,7 +141,7 @@ class ImportpicturesMethod extends MethodClass
 
             echo "Article Created :: ID :: $aid<br/>";
         }
-        exit();
+        $this->exit();
     }
 
     protected function getFileList($import_directory)

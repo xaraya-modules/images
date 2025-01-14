@@ -39,20 +39,20 @@ class DisplayMethod extends MethodClass
      * @access public
      * @param array<mixed> $args
      * @var string    $fileId              The id (from the uploads module) of the image to push
-     * @return   bool|null|never           This function will exit upon succes and, returns False and throws an exception otherwise
+     * @return   bool|void|never           This function will exit upon succes and, returns False and throws an exception otherwise
      * @see UserGui::display()
      */
     public function __invoke(array $args = [])
     {
         extract($args);
 
-        if (!xarVar::fetch('fileId', 'str:1:', $fileId)) {
+        if (!$this->fetch('fileId', 'str:1:', $fileId)) {
             return;
         }
-        if (!xarVar::fetch('width', 'str:1:', $width, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('width', 'str:1:', $width, '', xarVar::NOT_REQUIRED)) {
             return;
         }
-        if (!xarVar::fetch('height', 'str:1:', $height, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->fetch('height', 'str:1:', $height, '', xarVar::NOT_REQUIRED)) {
             return;
         }
         $usergui = $this->getParent();
@@ -73,7 +73,7 @@ class DisplayMethod extends MethodClass
         $image = $userapi->loadImage($data);
 
         if (!is_object($image)) {
-            xarController::redirect('modules/images/xarimages/admin.gif', null, $this->getContext());
+            $this->redirect('modules/images/xarimages/admin.gif');
             return true;
         }
 
@@ -165,7 +165,7 @@ class DisplayMethod extends MethodClass
                 unset($data);
             }
         } else {
-            xarController::redirect('modules/images/xarimages/admin.gif', null, $this->getContext());
+            $this->redirect('modules/images/xarimages/admin.gif');
             return true;
         }
 
@@ -191,6 +191,6 @@ class DisplayMethod extends MethodClass
         }
         // TODO: evaluate registering shutdown functions to take care of
         //       ending Xaraya in a safe manner
-        exit();
+        $this->exit();
     }
 }

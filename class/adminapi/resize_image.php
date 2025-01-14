@@ -155,7 +155,7 @@ class ResizeImageMethod extends MethodClass
         }
 
         if (empty($thumbsdir)) {
-            $thumbsdir = xarModVars::get('images', 'path.derivative-store');
+            $thumbsdir = $this->getModVar('path.derivative-store');
         }
 
         $image = $userapi->loadImage([

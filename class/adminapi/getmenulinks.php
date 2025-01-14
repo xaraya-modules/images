@@ -37,43 +37,23 @@ class GetmenulinksMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         if ($this->checkAccess('AdminImages')) {
-            if (xarMod::isAvailable('uploads') && xarSecurity::check('AdminUploads', 0)) {
-                $menulinks[] = ['url'   => xarController::URL(
-                    'images',
-                    'admin',
-                    'uploads'
-                ),
+            if (xarMod::isAvailable('uploads') && $this->checkAccess('AdminUploads', 0)) {
+                $menulinks[] = ['url'   => $this->getUrl('admin', 'uploads'),
                     'title' => $this->translate('View Uploaded Images'),
                     'label' => $this->translate('View Uploaded Images'), ];
             }
-            $menulinks[] = ['url'   => xarController::URL(
-                'images',
-                'admin',
-                'derivatives'
-            ),
+            $menulinks[] = ['url'   => $this->getUrl('admin', 'derivatives'),
                 'title' => $this->translate('View Derivative Images'),
                 'label' => $this->translate('View Derivative Images'), ];
-            $menulinks[] = ['url'   => xarController::URL(
-                'images',
-                'admin',
-                'browse'
-            ),
+            $menulinks[] = ['url'   => $this->getUrl('admin', 'browse'),
                 'title' => $this->translate('Browse Server Images'),
                 'label' => $this->translate('Browse Server Images'), ];
             /**
-            $menulinks[] = ['url'   => xarController::URL(
-                'images',
-                'admin',
-                'phpthumb'
-            ),
+            $menulinks[] = ['url'   => $this->getUrl('admin', 'phpthumb'),
             'title' => $this->translate('Define Settings for Image Processing'),
             'label' => $this->translate('Image Processing'), ];
              */
-            $menulinks[] = ['url'   => xarController::URL(
-                'images',
-                'admin',
-                'modifyconfig'
-            ),
+            $menulinks[] = ['url'   => $this->getUrl('admin', 'modifyconfig'),
                 'title' => $this->translate('Edit the Images Configuration'),
                 'label' => $this->translate('Modify Config'), ];
         }
