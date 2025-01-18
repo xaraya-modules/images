@@ -34,7 +34,7 @@ class GetbasedirsMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        $basedirs = $this->getModVar('basedirs');
+        $basedirs = $this->mod()->getVar('basedirs');
         if (!empty($basedirs)) {
             $basedirs = unserialize($basedirs);
         }
@@ -44,7 +44,7 @@ class GetbasedirsMethod extends MethodClass
                 'baseurl'   => 'themes',
                 'filetypes' => 'gif|jpg|png',
                 'recursive' => true, ];
-            $this->setModVar('basedirs', serialize($basedirs));
+            $this->mod()->setVar('basedirs', serialize($basedirs));
         }
 
         return $basedirs;

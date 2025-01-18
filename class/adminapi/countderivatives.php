@@ -52,7 +52,7 @@ class CountderivativesMethod extends MethodClass
         }
 
         if (empty($thumbsdir)) {
-            $thumbsdir = $this->getModVar('path.derivative-store');
+            $thumbsdir = $this->mod()->getVar('path.derivative-store');
         }
         if (empty($thumbsdir)) {
             return 0;
@@ -79,8 +79,8 @@ class CountderivativesMethod extends MethodClass
 
         $cachekey = md5(serialize($params));
         // get the number of images from temporary cache - see getderivatives()
-        if (xarVar::isCached('Modules.Images', 'countderivatives.' . $cachekey)) {
-            return xarVar::getCached('Modules.Images', 'countderivatives.' . $cachekey);
+        if ($this->var()->isCached('Modules.Images', 'countderivatives.' . $cachekey)) {
+            return $this->var()->getCached('Modules.Images', 'countderivatives.' . $cachekey);
         } else {
             $files = xarMod::apiFunc(
                 'dynamicdata',

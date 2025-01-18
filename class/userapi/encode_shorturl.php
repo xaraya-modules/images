@@ -59,8 +59,8 @@ class EncodeShorturlMethod extends MethodClass
                 $type = explode('/', $fileType);
 
                 // get the mime type from cache for resize()
-            } elseif (xarVar::isCached('Module.Images', 'imagemime.' . $fileId)) {
-                $fileType = xarVar::getCached('Module.Images', 'imagemime.' . $fileId);
+            } elseif ($this->var()->isCached('Module.Images', 'imagemime.' . $fileId)) {
+                $fileType = $this->var()->getCached('Module.Images', 'imagemime.' . $fileId);
                 $type = explode('/', $fileType);
 
                 // get the mime type from the database (urgh)

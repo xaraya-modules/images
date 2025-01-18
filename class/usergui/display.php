@@ -46,13 +46,13 @@ class DisplayMethod extends MethodClass
     {
         extract($args);
 
-        if (!$this->fetch('fileId', 'str:1:', $fileId)) {
+        if (!$this->var()->get('fileId', $fileId), 'str:1:') {
             return;
         }
-        if (!$this->fetch('width', 'str:1:', $width, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('width', $width, 'str:1:', '')) {
             return;
         }
-        if (!$this->fetch('height', 'str:1:', $height, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('height', $height, 'str:1:', '')) {
             return;
         }
         $usergui = $this->getParent();
@@ -73,7 +73,7 @@ class DisplayMethod extends MethodClass
         $image = $userapi->loadImage($data);
 
         if (!is_object($image)) {
-            $this->redirect('modules/images/xarimages/admin.gif');
+            $this->ctl()->redirect('modules/images/xarimages/admin.gif');
             return true;
         }
 
@@ -165,7 +165,7 @@ class DisplayMethod extends MethodClass
                 unset($data);
             }
         } else {
-            $this->redirect('modules/images/xarimages/admin.gif');
+            $this->ctl()->redirect('modules/images/xarimages/admin.gif');
             return true;
         }
 

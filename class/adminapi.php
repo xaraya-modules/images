@@ -79,7 +79,7 @@ class AdminApi extends AdminApiClass
         $phpThumb->config_cache_directory = sys::varpath() . '/cache/images/';
         //$phpThumb->config_additional_allowed_dirs = [];
 
-        $imagemagick = $this->getModVar('file.imagemagick');
+        $imagemagick = $this->mod()->getVar('file.imagemagick');
         if (!empty($imagemagick) && file_exists($imagemagick)) {
             $phpThumb->config_imagemagick_path = realpath($imagemagick);
         }

@@ -14,7 +14,7 @@
 $modversion['name']         = 'Images';
 $modversion['id']           = '152';
 $modversion['version']      = '2.5.7';
-$modversion['displayname']  = xarML('Images');
+$modversion['displayname']  = xarMLS::translate('Images');
 $modversion['description']  = 'Handles image manipulation with resizing/cropping/scaling/rotating and various filters';
 $modversion['credits']      = 'docs/credits.txt';
 $modversion['help']         = 'docs/help.txt';

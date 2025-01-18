@@ -66,7 +66,7 @@ class ReplaceImageMethod extends MethodClass
             $checkwrite = dirname($fileLocation);
         }
         if (!is_writable($checkwrite)) {
-            $mesg = $this->translate(
+            $mesg = $this->ml(
                 'Unable to replace #(1) - please check your file permissions',
                 $fileLocation
             );

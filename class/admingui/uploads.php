@@ -46,39 +46,39 @@ class UploadsMethod extends MethodClass
         extract($args);
 
         // Security check for images
-        if (!$this->checkAccess('AdminImages')) {
+        if (!$this->sec()->checkAccess('AdminImages')) {
             return;
         }
 
         // Security check for uploads
-        if (!xarMod::isAvailable('uploads') || !$this->checkAccess('AdminUploads')) {
+        if (!$this->mod()->isAvailable('uploads') || !$this->sec()->checkAccess('AdminUploads')) {
             return;
         }
 
         // Note: fileId is the uploads fileId here, or an array of uploads fileId's
-        if (!$this->fetch('fileId', 'isset', $fileId, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('fileId', $fileId)) {
             return;
         }
         if (!empty($fileId) && is_array($fileId)) {
             $fileId = array_keys($fileId);
         }
 
-        if (!$this->fetch('startnum', 'int:0:', $startnum, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('startnum', $startnum, 'int:0:')) {
             return;
         }
-        if (!$this->fetch('numitems', 'int:0:', $numitems, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('numitems', $numitems, 'int:0:')) {
             return;
         }
-        if (!$this->fetch('sort', 'enum:name:type:width:height:size:time', $sort, 'name', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('sort', $sort, 'enum:name:type:width:height:size:time', 'name')) {
             return;
         }
-        if (!$this->fetch('action', 'str:1:', $action, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('action', $action, 'str:1:', '')) {
             return;
         }
-        if (!$this->fetch('getnext', 'str:1:', $getnext, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('getnext', $getnext, 'str:1:')) {
             return;
         }
-        if (!$this->fetch('getprev', 'str:1:', $getprev, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('getprev', $getprev, 'str:1:')) {
             return;
         }
         $admingui = $this->getParent();
@@ -96,7 +96,7 @@ class UploadsMethod extends MethodClass
         $data['sort'] = ($sort != 'name') ? $sort : null;
 
         if (!isset($numitems)) {
-            $numitems = $this->getModVar('view.itemsperpage');
+            $numitems = $this->mod()->getVar('view.itemsperpage');
         }
 
         $data['pager'] = '';
@@ -110,7 +110,7 @@ class UploadsMethod extends MethodClass
             ]);
             if (!empty($data['images']) && count($data['images']) == 1) {
                 $image = array_pop($data['images']);
-                $this->redirect($this->getUrl(
+                $this->ctl()->redirect($this->mod()->getURL(
                     'admin',
                     'uploads',
                     ['action' => empty($action) ? 'view' : $action,
@@ -124,7 +124,7 @@ class UploadsMethod extends MethodClass
             ]);
             if (!empty($data['images']) && count($data['images']) == 1) {
                 $image = array_pop($data['images']);
-                $this->redirect($this->getUrl(
+                $this->ctl()->redirect($this->mod()->getURL(
                     'admin',
                     'uploads',
                     ['action' => empty($action) ? 'view' : $action,
@@ -146,7 +146,7 @@ class UploadsMethod extends MethodClass
                 $data['pager'] = xarTplPager::getPager(
                     $startnum,
                     $countitems,
-                    $this->getUrl(
+                    $this->mod()->getURL(
                         'admin',
                         'uploads',
                         ['startnum' => '%%',
@@ -162,10 +162,10 @@ class UploadsMethod extends MethodClass
         $data['settings'] = $userapi->getsettings();
 
         // Check if we need to do anything special here
-        if (!$this->fetch('processlist', 'str:1:', $processlist, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('processlist', $processlist, 'str:1:', '')) {
             return;
         }
-        if (!$this->fetch('resizelist', 'str:1:', $resizelist, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('resizelist', $resizelist, 'str:1:', '')) {
             return;
         }
         if (!empty($processlist)) {
@@ -297,20 +297,20 @@ class UploadsMethod extends MethodClass
                     return $data;
 
                 case 'resize':
-                    if (!$this->fetch('width', 'int:1:', $width, null, xarVar::NOT_REQUIRED)) {
+                    if (!$this->var()->find('width', $width, 'int:1:')) {
                         return;
                     }
-                    if (!$this->fetch('height', 'int:1:', $height, null, xarVar::NOT_REQUIRED)) {
+                    if (!$this->var()->find('height', $height, 'int:1:')) {
                         return;
                     }
-                    if (!$this->fetch('replace', 'int:0:1', $replace, 0, xarVar::NOT_REQUIRED)) {
+                    if (!$this->var()->find('replace', $replace, 'int:0:1', 0)) {
                         return;
                     }
-                    if (!$this->fetch('confirm', 'str:1:', $confirm, '', xarVar::NOT_REQUIRED)) {
+                    if (!$this->var()->find('confirm', $confirm, 'str:1:', '')) {
                         return;
                     }
                     if (!empty($confirm) && (!empty($width) || !empty($height))) {
-                        if (!$this->confirmAuthKey()) {
+                        if (!$this->sec()->confirmAuthKey()) {
                             return;
                         }
                         if (!empty($replace) && !empty($found['fileLocation'])) {
@@ -323,7 +323,7 @@ class UploadsMethod extends MethodClass
                                 return;
                             }
                             // Redirect to viewing the original image here (for now)
-                            $this->redirect($this->getUrl(
+                            $this->ctl()->redirect($this->mod()->getURL(
                                 'admin',
                                 'uploads',
                                 ['action' => 'view',
@@ -339,7 +339,7 @@ class UploadsMethod extends MethodClass
                                 return;
                             }
                             // Redirect to viewing the derivative image here (for now)
-                            $this->redirect($this->getUrl(
+                            $this->ctl()->redirect($this->mod()->getURL(
                                 'admin',
                                 'derivatives',
                                 ['action' => 'view',
@@ -362,15 +362,15 @@ class UploadsMethod extends MethodClass
                         $data['replace'] = 1;
                     }
                     $data['action'] = 'resize';
-                    $data['authid'] = $this->genAuthKey();
+                    $data['authid'] = $this->sec()->genAuthKey();
                     return $data;
 
                 case 'delete':
-                    if (!$this->fetch('confirm', 'str:1:', $confirm, '', xarVar::NOT_REQUIRED)) {
+                    if (!$this->var()->find('confirm', $confirm, 'str:1:', '')) {
                         return;
                     }
                     if (!empty($confirm)) {
-                        if (!$this->confirmAuthKey()) {
+                        if (!$this->sec()->confirmAuthKey()) {
                             return;
                         }
                         // delete the uploaded image now
@@ -379,25 +379,25 @@ class UploadsMethod extends MethodClass
                         if (!$result) {
                             return;
                         }
-                        $this->redirect($this->getUrl('admin', 'uploads'));
+                        $this->ctl()->redirect($this->mod()->getURL('admin', 'uploads'));
                         return true;
                     }
                     $data['selimage'] = $found;
                     $data['action'] = 'delete';
-                    $data['authid'] = $this->genAuthKey();
+                    $data['authid'] = $this->sec()->genAuthKey();
                     return $data;
 
                 case 'resizelist':
-                    if (!$this->fetch('width', 'int:1:', $width, null, xarVar::NOT_REQUIRED)) {
+                    if (!$this->var()->find('width', $width, 'int:1:')) {
                         return;
                     }
-                    if (!$this->fetch('height', 'int:1:', $height, null, xarVar::NOT_REQUIRED)) {
+                    if (!$this->var()->find('height', $height, 'int:1:')) {
                         return;
                     }
-                    if (!$this->fetch('replace', 'int:0:1', $replace, 0, xarVar::NOT_REQUIRED)) {
+                    if (!$this->var()->find('replace', $replace, 'int:0:1', 0)) {
                         return;
                     }
-                    if (!$this->fetch('confirm', 'str:1:', $confirm, '', xarVar::NOT_REQUIRED)) {
+                    if (!$this->var()->find('confirm', $confirm, 'str:1:', '')) {
                         return;
                     }
                     if (empty($confirm) || (empty($width) && empty($height))) {
@@ -416,11 +416,11 @@ class UploadsMethod extends MethodClass
                         } else {
                             $data['replace'] = '1';
                         }
-                        $data['authid'] = $this->genAuthKey();
+                        $data['authid'] = $this->sec()->genAuthKey();
                         return $data;
                     }
 
-                    if (!$this->confirmAuthKey()) {
+                    if (!$this->sec()->confirmAuthKey()) {
                         return;
                     }
                     if (!empty($replace)) {
@@ -435,7 +435,7 @@ class UploadsMethod extends MethodClass
                             }
                         }
                         // Redirect to viewing the uploaded images here (for now)
-                        $this->redirect($this->getUrl(
+                        $this->ctl()->redirect($this->mod()->getURL(
                             'admin',
                             'uploads',
                             ['sort' => 'time']
@@ -452,7 +452,7 @@ class UploadsMethod extends MethodClass
                             }
                         }
                         // Redirect to viewing the derivative images here (for now)
-                        $this->redirect($this->getUrl(
+                        $this->ctl()->redirect($this->mod()->getURL(
                             'admin',
                             'derivatives',
                             ['sort'    => 'time',
@@ -463,13 +463,13 @@ class UploadsMethod extends MethodClass
                     return true;
 
                 case 'processlist':
-                    if (!$this->fetch('saveas', 'int:0:2', $saveas, 0, xarVar::NOT_REQUIRED)) {
+                    if (!$this->var()->find('saveas', $saveas, 'int:0:2', 0)) {
                         return;
                     }
-                    if (!$this->fetch('setting', 'str:1:', $setting, null, xarVar::NOT_REQUIRED)) {
+                    if (!$this->var()->find('setting', $setting, 'str:1:')) {
                         return;
                     }
-                    if (!$this->fetch('confirm', 'str:1:', $confirm, '', xarVar::NOT_REQUIRED)) {
+                    if (!$this->var()->find('confirm', $confirm, 'str:1:', '')) {
                         return;
                     }
                     if (empty($confirm) || empty($setting) || empty($data['settings'][$setting])) {
@@ -486,11 +486,11 @@ class UploadsMethod extends MethodClass
                         } else {
                             $data['saveas'] = $saveas;
                         }
-                        $data['authid'] = $this->genAuthKey();
+                        $data['authid'] = $this->sec()->genAuthKey();
                         return $data;
                     }
 
-                    if (!$this->confirmAuthKey()) {
+                    if (!$this->sec()->confirmAuthKey()) {
                         return;
                     }
 
@@ -512,7 +512,7 @@ class UploadsMethod extends MethodClass
                     switch ($saveas) {
                         case 1: // [image]_new.[ext]
                             // Redirect to viewing the uploaded images here (for now)
-                            $this->redirect($this->getUrl(
+                            $this->ctl()->redirect($this->mod()->getURL(
                                 'admin',
                                 'uploads',
                                 ['sort' => 'time']
@@ -521,7 +521,7 @@ class UploadsMethod extends MethodClass
 
                         case 2: // replace
                             // Redirect to viewing the uploaded images here (for now)
-                            $this->redirect($this->getUrl(
+                            $this->ctl()->redirect($this->mod()->getURL(
                                 'admin',
                                 'uploads',
                                 ['sort' => 'time']
@@ -531,7 +531,7 @@ class UploadsMethod extends MethodClass
                         case 0: // derivative
                         default:
                             // Redirect to viewing the derivative images here (for now)
-                            $this->redirect($this->getUrl(
+                            $this->ctl()->redirect($this->mod()->getURL(
                                 'admin',
                                 'derivatives',
                                 ['sort'    => 'time',

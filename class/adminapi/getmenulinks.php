@@ -36,26 +36,26 @@ class GetmenulinksMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        if ($this->checkAccess('AdminImages')) {
-            if (xarMod::isAvailable('uploads') && $this->checkAccess('AdminUploads', 0)) {
-                $menulinks[] = ['url'   => $this->getUrl('admin', 'uploads'),
-                    'title' => $this->translate('View Uploaded Images'),
-                    'label' => $this->translate('View Uploaded Images'), ];
+        if ($this->sec()->checkAccess('AdminImages')) {
+            if ($this->mod()->isAvailable('uploads') && $this->sec()->checkAccess('AdminUploads', 0)) {
+                $menulinks[] = ['url'   => $this->mod()->getURL('admin', 'uploads'),
+                    'title' => $this->ml('View Uploaded Images'),
+                    'label' => $this->ml('View Uploaded Images'), ];
             }
-            $menulinks[] = ['url'   => $this->getUrl('admin', 'derivatives'),
-                'title' => $this->translate('View Derivative Images'),
-                'label' => $this->translate('View Derivative Images'), ];
-            $menulinks[] = ['url'   => $this->getUrl('admin', 'browse'),
-                'title' => $this->translate('Browse Server Images'),
-                'label' => $this->translate('Browse Server Images'), ];
+            $menulinks[] = ['url'   => $this->mod()->getURL('admin', 'derivatives'),
+                'title' => $this->ml('View Derivative Images'),
+                'label' => $this->ml('View Derivative Images'), ];
+            $menulinks[] = ['url'   => $this->mod()->getURL('admin', 'browse'),
+                'title' => $this->ml('Browse Server Images'),
+                'label' => $this->ml('Browse Server Images'), ];
             /**
-            $menulinks[] = ['url'   => $this->getUrl('admin', 'phpthumb'),
-            'title' => $this->translate('Define Settings for Image Processing'),
-            'label' => $this->translate('Image Processing'), ];
+            $menulinks[] = ['url'   => $this->mod()->getURL('admin', 'phpthumb'),
+            'title' => $this->ml('Define Settings for Image Processing'),
+            'label' => $this->ml('Image Processing'), ];
              */
-            $menulinks[] = ['url'   => $this->getUrl('admin', 'modifyconfig'),
-                'title' => $this->translate('Edit the Images Configuration'),
-                'label' => $this->translate('Modify Config'), ];
+            $menulinks[] = ['url'   => $this->mod()->getURL('admin', 'modifyconfig'),
+                'title' => $this->ml('Edit the Images Configuration'),
+                'label' => $this->ml('Modify Config'), ];
         }
         if (empty($menulinks)) {
             $menulinks = '';

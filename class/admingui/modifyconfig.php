@@ -39,7 +39,7 @@ class ModifyconfigMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security check
-        if (!$this->checkAccess('AdminImages')) {
+        if (!$this->sec()->checkAccess('AdminImages')) {
             return;
         }
         $admingui = $this->getParent();
@@ -54,22 +54,22 @@ class ModifyconfigMethod extends MethodClass
         // *********************************************
         // Global
         $data['gdextension'] = extension_loaded('gd'); // True or false
-        $data['libtype']['graphics-library']    = $this->getModVar('type.graphics-library'); // return gd
-        $data['path']['derivative-store']       = $this->getModVar('path.derivative-store');
-        $data['file']['cache-expire']           = $this->getModVar('file.cache-expire');
+        $data['libtype']['graphics-library']    = $this->mod()->getVar('type.graphics-library'); // return gd
+        $data['path']['derivative-store']       = $this->mod()->getVar('path.derivative-store');
+        $data['file']['cache-expire']           = $this->mod()->getVar('file.cache-expire');
         if (!isset($data['file']['cache-expire'])) {
-            $this->setModVar('file.cache-expire', 60);
+            $this->mod()->setVar('file.cache-expire', 60);
         }
-        $data['file']['imagemagick']            = $this->getModVar('file.imagemagick');
+        $data['file']['imagemagick']            = $this->mod()->getVar('file.imagemagick');
         if (!isset($data['file']['imagemagick'])) {
-            $this->setModVar('file.imagemagick', '');
+            $this->mod()->setVar('file.imagemagick', '');
         }
-        $data['authid']                         = $this->genAuthKey();
+        $data['authid']                         = $this->sec()->genAuthKey();
         $data['library']   = ['GD'          => Defines::LIBRARY_GD,
             'ImageMagick' => Defines::LIBRARY_IMAGEMAGICK,
             'NetPBM'      => Defines::LIBRARY_NETPBM, ];
 
-        $shortURLs = $this->getModVar('SupportShortURLs');
+        $shortURLs = $this->mod()->getVar('SupportShortURLs');
 
         $data['shortURLs'] = empty($shortURLs) ? 0 : 1;
 

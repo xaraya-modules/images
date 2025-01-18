@@ -52,7 +52,7 @@ class ResizeImageMethod extends MethodClass
         extract($args);
         // Check the conditions
         if (empty($fileId) && empty($fileLocation)) {
-            $mesg = $this->translate(
+            $mesg = $this->ml(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 '',
                 'resize_image',
@@ -60,7 +60,7 @@ class ResizeImageMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         } elseif (!empty($fileId) && !is_numeric($fileId)) {
-            $mesg = $this->translate(
+            $mesg = $this->ml(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 'fileId',
                 'resize_image',
@@ -68,7 +68,7 @@ class ResizeImageMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         } elseif (!empty($fileLocation) && !is_string($fileLocation)) {
-            $mesg = $this->translate(
+            $mesg = $this->ml(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 'fileLocation',
                 'resize_image',
@@ -78,13 +78,13 @@ class ResizeImageMethod extends MethodClass
         }
 
         if (!isset($width) && !isset($height)) {
-            $msg = $this->translate("Required parameters '#(1)' and '#(2)' are missing.", 'width', 'height');
+            $msg = $this->ml("Required parameters '#(1)' and '#(2)' are missing.", 'width', 'height');
             throw new BadParameterException(null, $msg);
-        } elseif (!isset($width) && !xarVar::validate('regexp:/[0-9]+(px|%)/:', $height)) {
-            $msg = $this->translate("'#(1)' parameter is incorrectly formatted.", 'height');
+        } elseif (!isset($width) && !$this->var()->validate('regexp:/[0-9]+(px|%)/:', $height)) {
+            $msg = $this->ml("'#(1)' parameter is incorrectly formatted.", 'height');
             throw new BadParameterException(null, $msg);
-        } elseif (!isset($height) && !xarVar::validate('regexp:/[0-9]+(px|%)/:', $width)) {
-            $msg = $this->translate("'#(1)' parameter is incorrectly formatted.", 'width');
+        } elseif (!isset($height) && !$this->var()->validate('regexp:/[0-9]+(px|%)/:', $width)) {
+            $msg = $this->ml("'#(1)' parameter is incorrectly formatted.", 'width');
             throw new BadParameterException(null, $msg);
         }
         $adminapi = $this->getParent();
@@ -150,12 +150,12 @@ class ResizeImageMethod extends MethodClass
         }
         // Raise a user error when the format is not supported
         if ($notSupported) {
-            $msg = $this->translate('Image type for file: #(1) is not supported for resizing', $location);
+            $msg = $this->ml('Image type for file: #(1) is not supported for resizing', $location);
             throw new BadParameterException(null, $msg);
         }
 
         if (empty($thumbsdir)) {
-            $thumbsdir = $this->getModVar('path.derivative-store');
+            $thumbsdir = $this->mod()->getVar('path.derivative-store');
         }
 
         $image = $userapi->loadImage([
@@ -165,7 +165,7 @@ class ResizeImageMethod extends MethodClass
         ]);
 
         if (!is_object($image)) {
-            $msg = $this->translate('File not found.');
+            $msg = $this->ml('File not found.');
             throw new BadParameterException(null, $msg);
         }
 
@@ -218,11 +218,11 @@ class ResizeImageMethod extends MethodClass
             if ($image->resize($forceResize)) {
                 $location = $image->saveDerivative($derivName);
                 if (!$location) {
-                    $msg = $this->translate('Unable to save resized image !');
+                    $msg = $this->ml('Unable to save resized image !');
                     throw new BadParameterException(null, $msg);
                 }
             } else {
-                $msg = $this->translate("Unable to resize image '#(1)'!", $image->fileLocation);
+                $msg = $this->ml("Unable to resize image '#(1)'!", $image->fileLocation);
                 throw new BadParameterException(null, $msg);
             }
         }

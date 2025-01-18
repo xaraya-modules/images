@@ -36,10 +36,10 @@ class MainMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security Check
-        if (!$this->checkAccess('AdminImages')) {
+        if (!$this->sec()->checkAccess('AdminImages')) {
             return;
         }
-        $this->redirect($this->getUrl('admin', 'modifyconfig'));
+        $this->ctl()->redirect($this->mod()->getURL('admin', 'modifyconfig'));
         // success
         return true;
     }

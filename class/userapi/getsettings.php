@@ -34,13 +34,13 @@ class GetsettingsMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        $settings = $this->getModVar('phpthumb-settings');
+        $settings = $this->mod()->getVar('phpthumb-settings');
         if (empty($settings)) {
             $settings = [];
             $settings['JPEG 800 x 600'] = ['w' => 800,
                 'h' => 600,
                 'f' => 'jpg', ];
-            $this->setModVar('phpthumb-settings', serialize($settings));
+            $this->mod()->setVar('phpthumb-settings', serialize($settings));
         } else {
             $settings = unserialize($settings);
         }

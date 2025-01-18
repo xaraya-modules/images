@@ -61,7 +61,7 @@ class ImportpicturesMethod extends MethodClass
 
         // Kick mod available
         echo "Checking mod avaliable (dynamicdata): ";
-        $avail = xarMod::isAvailable("dynamicdata");
+        $avail = $this->mod()->isAvailable("dynamicdata");
         if ($avail) {
             echo "yes<br/>";
         } else {

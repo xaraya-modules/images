@@ -107,7 +107,7 @@ class TransformhookMethod extends MethodClass
 
                         $args['fileId'] = $id;
 
-                        $replacement = $this->getUrl( 'user', 'display', $args);
+                        $replacement = $this->mod()->getURL( 'user', 'display', $args);
                     }
                     break;
             }

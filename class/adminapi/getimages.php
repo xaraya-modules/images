@@ -92,7 +92,7 @@ class GetimagesMethod extends MethodClass
 
             $cachekey = md5(serialize($params));
             if (!empty($cacheExpire) && is_numeric($cacheExpire) && empty($cacheRefresh)) {
-                $cacheinfo = $this->getModVar('file.cachelist.' . $cachekey);
+                $cacheinfo = $this->mod()->getVar('file.cachelist.' . $cachekey);
                 if (!empty($cacheinfo)) {
                     $cacheinfo = @unserialize($cacheinfo);
                     if (!empty($cacheinfo['time']) && $cacheinfo['time'] > time() - $cacheExpire) {
@@ -146,13 +146,13 @@ class GetimagesMethod extends MethodClass
                 $cacheinfo = ['time' => time(),
                     'list' => $imagelist, ];
                 $cacheinfo = serialize($cacheinfo);
-                $this->setModVar('file.cachelist.' . $cachekey, $cacheinfo);
+                $this->mod()->setVar('file.cachelist.' . $cachekey, $cacheinfo);
                 unset($cacheinfo);
             }
         }
 
         // save the number of images in temporary cache for countimages()
-        xarVar::setCached('Modules.Images', 'countimages.' . $cachekey, count($imagelist));
+        $this->var()->setCached('Modules.Images', 'countimages.' . $cachekey, count($imagelist));
 
         if (empty($sort)) {
             $sort = '';

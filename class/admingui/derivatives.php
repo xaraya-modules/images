@@ -43,7 +43,7 @@ class DerivativesMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Security check
-        if (!$this->checkAccess('AdminImages')) {
+        if (!$this->sec()->checkAccess('AdminImages')) {
             return;
         }
         $admingui = $this->getParent();
@@ -54,18 +54,18 @@ class DerivativesMethod extends MethodClass
         $data = [];
 
         // Note: fileId is an MD5 hash of the derivative image location here
-        if (!$this->fetch('fileId', 'str:1:', $fileId, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('fileId', $fileId, 'str:1:', '')) {
             return;
         }
         $data['fileId'] = $fileId;
 
-        if (!$this->fetch('startnum', 'int:0:', $startnum, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('startnum', $startnum, 'int:0:')) {
             return;
         }
-        if (!$this->fetch('numitems', 'int:0:', $numitems, null, xarVar::DONT_SET)) {
+        if (!$this->var()->check('numitems', $numitems, 'int:0:')) {
             return;
         }
-        if (!$this->fetch('sort', 'enum:name:width:height:size:time', $sort, 'name', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('sort', $sort, 'enum:name:width:height:size:time', 'name')) {
             return;
         }
 
@@ -74,9 +74,9 @@ class DerivativesMethod extends MethodClass
         $data['sort'] = ($sort != 'name') ? $sort : null;
 
         // Check if we can cache the image list
-        $data['cacheExpire'] = $this->getModVar('file.cache-expire');
+        $data['cacheExpire'] = $this->mod()->getVar('file.cache-expire');
 
-        $data['thumbsdir'] = $this->getModVar('path.derivative-store');
+        $data['thumbsdir'] = $this->mod()->getVar('path.derivative-store');
 
         $data['pager'] = '';
         if (!empty($fileId)) {
@@ -85,10 +85,10 @@ class DerivativesMethod extends MethodClass
         } else {
             $params = $data;
             if (!isset($numitems)) {
-                $params['numitems'] = $this->getModVar('view.itemsperpage');
+                $params['numitems'] = $this->mod()->getVar('view.itemsperpage');
             }
             // Check if we need to refresh the cache anyway
-            if (!$this->fetch('refresh', 'int:0:', $refresh, null, xarVar::DONT_SET)) {
+            if (!$this->var()->check('refresh', $refresh, 'int:0:')) {
                 return;
             }
             $params['cacheRefresh'] = $refresh;
@@ -104,7 +104,7 @@ class DerivativesMethod extends MethodClass
                 $data['pager'] = xarTplPager::getPager(
                     $startnum,
                     $countitems,
-                    $this->getUrl(
+                    $this->mod()->getURL(
                         'admin',
                         'derivatives',
                         ['startnum' => '%%',
@@ -117,7 +117,7 @@ class DerivativesMethod extends MethodClass
         }
 
         // Check if we need to do anything special here
-        if (!$this->fetch('action', 'str:1:', $action, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('action', $action, 'str:1:', '')) {
             return;
         }
 
@@ -140,21 +140,21 @@ class DerivativesMethod extends MethodClass
                     return $data;
 
                 case 'delete':
-                    if (!$this->fetch('confirm', 'str:1:', $confirm, '', xarVar::NOT_REQUIRED)) {
+                    if (!$this->var()->find('confirm', $confirm, 'str:1:', '')) {
                         return;
                     }
                     if (!empty($confirm)) {
-                        if (!$this->confirmAuthKey()) {
+                        if (!$this->sec()->confirmAuthKey()) {
                             return;
                         }
                         // delete the derivative image now
                         @unlink($found['fileLocation']);
-                        $this->redirect($this->getUrl('admin', 'derivatives'));
+                        $this->ctl()->redirect($this->mod()->getURL('admin', 'derivatives'));
                         return true;
                     }
                     $data['selimage'] = $found;
                     $data['action'] = 'delete';
-                    $data['authid'] = $this->genAuthKey();
+                    $data['authid'] = $this->sec()->genAuthKey();
                     return $data;
 
                 default:

@@ -45,7 +45,7 @@ class LoadImageMethod extends MethodClass
         extract($args);
 
         if (empty($fileId) && empty($fileLocation)) {
-            $mesg = $this->translate(
+            $mesg = $this->ml(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 '',
                 'load_image',
@@ -53,7 +53,7 @@ class LoadImageMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         } elseif (!empty($fileId) && !is_string($fileId)) {
-            $mesg = $this->translate(
+            $mesg = $this->ml(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 'fileId',
                 'load_image',
@@ -61,7 +61,7 @@ class LoadImageMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         } elseif (!empty($fileLocation) && !is_string($fileLocation)) {
-            $mesg = $this->translate(
+            $mesg = $this->ml(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 'fileLocation',
                 'load_image',
@@ -98,7 +98,7 @@ class LoadImageMethod extends MethodClass
                 // pass the whole array to Image_Properties
                 $location = $args;
             } else {
-                $mesg = $this->translate(
+                $mesg = $this->ml(
                     "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                     'fileLocation',
                     'load_image',
@@ -111,12 +111,12 @@ class LoadImageMethod extends MethodClass
         }
 
         if (empty($thumbsdir)) {
-            $thumbsdir = $this->getModVar('path.derivative-store');
+            $thumbsdir = $this->mod()->getVar('path.derivative-store');
         }
 
         sys::import('modules.images.class.image_properties');
 
-        switch ($this->getModVar('type.graphics-library')) {
+        switch ($this->mod()->getVar('type.graphics-library')) {
             /**
             case Defines::LIBRARY_IMAGEMAGICK:
                 sys::import('modules.images.class.image_ImageMagick');

@@ -49,7 +49,7 @@ class GetderivativesMethod extends MethodClass
     {
         extract($args);
         if (empty($thumbsdir)) {
-            $thumbsdir = $this->getModVar('path.derivative-store');
+            $thumbsdir = $this->mod()->getVar('path.derivative-store');
         }
         if (empty($thumbsdir)) {
             return [];
@@ -87,7 +87,7 @@ class GetderivativesMethod extends MethodClass
         } else {
             $cachekey = md5(serialize($params));
             if (!empty($cacheExpire) && is_numeric($cacheExpire) && empty($cacheRefresh)) {
-                $cacheinfo = $this->getModVar('file.cachederiv.' . $cachekey);
+                $cacheinfo = $this->mod()->getVar('file.cachederiv.' . $cachekey);
                 if (!empty($cacheinfo)) {
                     $cacheinfo = @unserialize($cacheinfo);
                     if (!empty($cacheinfo['time']) && $cacheinfo['time'] > time() - $cacheExpire) {
@@ -122,7 +122,7 @@ class GetderivativesMethod extends MethodClass
                     }
                     $info = stat($thumbsdir . '/' . $file);
                     $imagelist[] = ['fileLocation' => $thumbsdir . '/' . $file,
-                        'fileDownload' => $this->getUrl(
+                        'fileDownload' => $this->mod()->getURL(
                             'user',
                             'display',
                             ['fileId' => base64_encode($thumbsdir . '/' . $file)]
@@ -147,7 +147,7 @@ class GetderivativesMethod extends MethodClass
                     $statinfo = stat($thumbsdir . '/' . $file);
                     $sizeinfo = getimagesize($thumbsdir . '/' . $file);
                     $imagelist[] = ['fileLocation' => $thumbsdir . '/' . $file,
-                        'fileDownload' => $this->getUrl(
+                        'fileDownload' => $this->mod()->getURL(
                             'user',
                             'display',
                             ['fileId' => base64_encode($thumbsdir . '/' . $file)]
@@ -167,7 +167,7 @@ class GetderivativesMethod extends MethodClass
 
             // CHECKME: keep track of originals for server images too ?
 
-            if (empty($fileName) && xarMod::isAvailable('uploads')) {
+            if (empty($fileName) && $this->mod()->isAvailable('uploads')) {
                 /** @var UploadsApi $uploadsapi */
                 $uploadsapi = $adminapi->getUploadsAPI();
 
@@ -209,13 +209,13 @@ class GetderivativesMethod extends MethodClass
                 $cacheinfo = ['time' => time(),
                     'list' => $imagelist, ];
                 $cacheinfo = serialize($cacheinfo);
-                $this->setModVar('file.cachederiv.' . $cachekey, $cacheinfo);
+                $this->mod()->setVar('file.cachederiv.' . $cachekey, $cacheinfo);
                 unset($cacheinfo);
             }
         }
 
         // save the number of images in temporary cache for countderivatives()
-        xarVar::setCached('Modules.Images', 'countderivatives.' . $cachekey, count($imagelist));
+        $this->var()->setCached('Modules.Images', 'countderivatives.' . $cachekey, count($imagelist));
 
         if (empty($sort)) {
             $sort = '';

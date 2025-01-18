@@ -43,7 +43,7 @@ class GetimageinfoMethod extends MethodClass
         extract($args);
 
         if (empty($fileId) && empty($fileLocation)) {
-            $mesg = $this->translate(
+            $mesg = $this->ml(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 '',
                 'getimageinfo',
@@ -51,7 +51,7 @@ class GetimageinfoMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         } elseif (!empty($fileId) && !is_numeric($fileId)) {
-            $mesg = $this->translate(
+            $mesg = $this->ml(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 'fileId',
                 'getimageinfo',
@@ -59,7 +59,7 @@ class GetimageinfoMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         } elseif (!empty($fileLocation) && !is_string($fileLocation)) {
-            $mesg = $this->translate(
+            $mesg = $this->ml(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 'fileLocation',
                 'getimageinfo',

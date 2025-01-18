@@ -71,7 +71,7 @@ class ProcessImageMethod extends MethodClass
         }
 
         if (empty($image) || empty($params)) {
-            $msg = $this->translate(
+            $msg = $this->ml(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 '',
                 'process_image',
@@ -125,7 +125,7 @@ class ProcessImageMethod extends MethodClass
 
                 case 0: // derivative
                 default:
-                    $thumbsdir = $this->getModVar('path.derivative-store');
+                    $thumbsdir = $this->mod()->getVar('path.derivative-store');
                     // Use MD5 hash of file location here
                     $save = realpath($thumbsdir) . '/' . md5($image['fileLocation']);
                     // Add the setting to the filename
@@ -146,7 +146,7 @@ class ProcessImageMethod extends MethodClass
             // If the image is stored in the database (uploads module)
             // NOTE: the next line is the *only* place i could find which suppresses exceptions through the 0 parameter at the end
             // NOTE: in the 2.x branch that parameter does not exist anymore, so the next code needs to be changed.
-        } elseif (is_numeric($image['fileId']) && xarMod::isAvailable('uploads') && xarMod::apiLoad('uploads', 'user') &&
+        } elseif (is_numeric($image['fileId']) && $this->mod()->isAvailable('uploads') && xarMod::apiLoad('uploads', 'user') &&
                   defined('\Xaraya\Modules\Uploads\Defines::STORE_DB_DATA') && ($image['storeType'] & \Xaraya\Modules\Uploads\Defines::STORE_DB_DATA)) {
             $uploadsdir = xarModVars::get('uploads', 'path.uploads-directory');
             switch ($saveas) {
@@ -170,7 +170,7 @@ class ProcessImageMethod extends MethodClass
 
                 case 0: // derivative
                 default:
-                    $thumbsdir = $this->getModVar('path.derivative-store');
+                    $thumbsdir = $this->mod()->getVar('path.derivative-store');
                     // Use file id here
                     $save = realpath($thumbsdir) . '/' . $image['fileId'];
                     // Add the setting to the filename
@@ -187,7 +187,7 @@ class ProcessImageMethod extends MethodClass
             // get the image data from the database
             $data = $uploadsapi->dbGetFileData(['fileId' => $image['fileId']]);
             if (empty($data)) {
-                $msg = $this->translate(
+                $msg = $this->ml(
                     "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                     'image',
                     'process_image',
@@ -209,7 +209,7 @@ class ProcessImageMethod extends MethodClass
             $phpThumb = $adminapi->getPhpThumb();
             $phpThumb->setSourceData($src);
         } else {
-            $msg = $this->translate(
+            $msg = $this->ml(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 'image',
                 'process_image',
@@ -258,7 +258,7 @@ class ProcessImageMethod extends MethodClass
 
         // Save it to file
         if (empty($save)) {
-            $msg = $this->translate(
+            $msg = $this->ml(
                 "Invalid parameter '#(1)' to API function '#(2)' in module '#(3)'",
                 'save',
                 'process_image',

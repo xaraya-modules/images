@@ -70,11 +70,11 @@ class Installer extends InstallerClass
 
 
         // Set up module variables
-        $this->setModVar('type.graphics-library', Defines::LIBRARY_GD);
-        $this->setModVar('path.derivative-store', 'Put a real directory in here...!');
-        $this->setModVar('view.itemsperpage', 200);
-        $this->setModVar('file.cache-expire', 60);
-        $this->setModVar('file.imagemagick', '');
+        $this->mod()->setVar('type.graphics-library', Defines::LIBRARY_GD);
+        $this->mod()->setVar('path.derivative-store', 'Put a real directory in here...!');
+        $this->mod()->setVar('view.itemsperpage', 200);
+        $this->mod()->setVar('file.cache-expire', 60);
+        $this->mod()->setVar('file.imagemagick', '');
 
         /*
             xarMasks::register('ViewUploads',  'All','images','Image','All','ACCESS_READ');
@@ -85,7 +85,7 @@ class Installer extends InstallerClass
         xarMasks::register('AdminImages', 'All', 'images', 'Image', 'All', 'ACCESS_ADMIN');
 
         if (!xarModHooks::register('item', 'transform', 'API', 'images', 'user', 'transformhook')) {
-            $msg = $this->translate('Could not register hook.');
+            $msg = $this->ml('Could not register hook.');
             throw new BadParameterException(null, $msg);
         }
         /*
@@ -113,9 +113,9 @@ class Installer extends InstallerClass
         switch ($oldversion) {
             case '1.0.0':
                 // Code to upgrade from version 1.0.0 goes here
-                $thumbsdir = $this->getModVar('path.derivative-store');
+                $thumbsdir = $this->mod()->getVar('path.derivative-store');
                 if (!empty($thumbsdir) && is_dir($thumbsdir)) {
-                    $this->setModVar('upgrade-1.0.0', 1);
+                    $this->mod()->setVar('upgrade-1.0.0', 1);
                     // remove all old-style derivatives
                     /* skip this - too risky depending on site config
                         $images = $adminapi->getderivatives();

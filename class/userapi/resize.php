@@ -62,7 +62,7 @@ class ResizeMethod extends MethodClass
         }
 
         if (!isset($width) && !isset($height) && !isset($setting) && !isset($params)) {
-            $msg = $this->translate(
+            $msg = $this->ml(
                 "Required parameters '#(1)', '#(2)', '#(3)' or '#(4)' for tag <xar:image> are missing. See tag documentation.",
                 'width',
                 'height',
@@ -70,9 +70,9 @@ class ResizeMethod extends MethodClass
                 'params'
             );
             throw new BadParameterException(['width', 'height', 'setting', 'params'], "Required attributes '#(1)', '#(2)', '#(3)' or '#(4)' for tag <xar:image> are missing. See tag documentation.");
-        } elseif (isset($height) && !xarVar::validate('regexp:/[0-9]+(px|%)/:', $height)) {
+        } elseif (isset($height) && !$this->var()->validate('regexp:/[0-9]+(px|%)/:', $height)) {
             throw new BadParameterException(['height'], "'#(1)' parameter is incorrectly formatted.");
-        } elseif (isset($width) && !xarVar::validate('regexp:/[0-9]+(px|%)/:', $width)) {
+        } elseif (isset($width) && !$this->var()->validate('regexp:/[0-9]+(px|%)/:', $width)) {
             throw new BadParameterException(['width'], "'#(1)' parameter is incorrectly formatted.");
         }
         $userapi = $this->getParent();
@@ -109,7 +109,7 @@ class ResizeMethod extends MethodClass
             $notSupported = true;
         }
         if ($notSupported) {
-            $errorMsg = $this->translate('Image type for file: #(1) is not supported for resizing', $src);
+            $errorMsg = $this->ml('Image type for file: #(1) is not supported for resizing', $src);
             return '<img src="" alt="' . $errorMsg . '" />';
         }
 
@@ -151,7 +151,7 @@ class ResizeMethod extends MethodClass
 
                         // or if it's an absolute URL, try to get rid of it
                     } elseif (substr($location, 0, 1) == '/' || substr($location, 1, 1) == ':') {
-                        $thumbsdir = $this->getModVar('path.derivative-store');
+                        $thumbsdir = $this->mod()->getVar('path.derivative-store');
                         $url = $thumbsdir . '/' . basename($location);
                     }
                     // if it's an absolute URL, try to get rid of it
@@ -160,7 +160,7 @@ class ResizeMethod extends MethodClass
                     }
                 } else {
                     // use the location of the processed image here
-                    $url = $this->getUrl(
+                    $url = $this->mod()->getURL(
                         'user',
                         'display',
                         ['fileId' => base64_encode($location)]
@@ -200,7 +200,7 @@ class ResizeMethod extends MethodClass
 
                     // or if it's an absolute URL, try to get rid of it
                 } elseif (substr($location, 0, 1) == '/' || substr($location, 1, 1) == ':') {
-                    $thumbsdir = $this->getModVar('path.derivative-store');
+                    $thumbsdir = $this->mod()->getVar('path.derivative-store');
                     $url = $thumbsdir . '/' . basename($location);
                 }
                 if (empty($url)) {
@@ -208,7 +208,7 @@ class ResizeMethod extends MethodClass
                 }
             } else {
                 // use the location of the processed image here
-                $url = $this->getUrl(
+                $url = $this->mod()->getURL(
                     'user',
                     'display',
                     ['fileId' => base64_encode($location)]
@@ -247,7 +247,7 @@ class ResizeMethod extends MethodClass
         $image = $userapi->loadImage($imageInfo);
 
         if (!is_object($image)) {
-            return sprintf('<img src="" alt="%s" %s />', $this->translate('File not found.'), $attribs);
+            return sprintf('<img src="" alt="%s" %s />', $this->ml('File not found.'), $attribs);
         }
 
         if (isset($width)) {
@@ -291,11 +291,11 @@ class ResizeMethod extends MethodClass
             if ($image->resize()) {
                 $location = $image->saveDerivative();
                 if (!$location) {
-                    $msg = $this->translate('Unable to save resized image !');
+                    $msg = $this->ml('Unable to save resized image !');
                     return sprintf('<img src="%s" alt="%s" %s />', '', $msg, $attribs);
                 }
             } else {
-                $msg = $this->translate("Unable to resize image '#(1)'!", $image->fileLocation);
+                $msg = $this->ml("Unable to resize image '#(1)'!", $image->fileLocation);
                 return sprintf('<img src="%s" alt="%s" %s />', '', $msg, $attribs);
             }
         }
@@ -307,7 +307,7 @@ class ResizeMethod extends MethodClass
 
                 // or if it's an absolute URL, try to get rid of it
             } elseif (substr($location, 0, 1) == '/' || substr($location, 1, 1) == ':') {
-                $thumbsdir = $this->getModVar('path.derivative-store');
+                $thumbsdir = $this->mod()->getVar('path.derivative-store');
                 $url = $thumbsdir . '/' . basename($location);
             }
             if (empty($url)) {
@@ -317,11 +317,11 @@ class ResizeMethod extends MethodClass
             // put the mime type in cache for encode_shorturl()
             $mime = $image->getMime();
             if (is_array($mime) && isset($mime['text'])) {
-                xarVar::setCached('Module.Images', 'imagemime.' . $src, $mime['text']);
+                $this->var()->setCached('Module.Images', 'imagemime.' . $src, $mime['text']);
             } else {
-                xarVar::setCached('Module.Images', 'imagemime.' . $src, $mime);
+                $this->var()->setCached('Module.Images', 'imagemime.' . $src, $mime);
             }
-            $url = $this->getUrl(
+            $url = $this->mod()->getURL(
                 'user',
                 'display',
                 ['fileId' => is_numeric($src) ? $src : base64_encode($src),

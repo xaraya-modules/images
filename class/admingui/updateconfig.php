@@ -39,30 +39,30 @@ class UpdateconfigMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Get parameters
-        if (!$this->fetch('libtype', 'list:int:1:3', $libtype, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('libtype', $libtype, 'list:int:1:3', '')) {
             return;
         }
-        if (!$this->fetch('file', 'list:str:1:', $file, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('file', $file, 'list:str:1:', '')) {
             return;
         }
-        if (!$this->fetch('path', 'list:str:1:', $path, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('path', $path, 'list:str:1:', '')) {
             return;
         }
-        if (!$this->fetch('view', 'list:str:1:', $view, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('view', $view, 'list:str:1:', '')) {
             return;
         }
-        if (!$this->fetch('shortURLs', 'checkbox', $shortURLs, true)) {
+        if (!$this->var()->get('shortURLs', $shortURLs, 'checkbox', true)) {
             return;
         }
 
         if (isset($shortURLs) && $shortURLs) {
-            $this->setModVar('SupportShortURLs', true);
+            $this->mod()->setVar('SupportShortURLs', true);
         } else {
-            $this->setModVar('SupportShortURLs', false);
+            $this->mod()->setVar('SupportShortURLs', false);
         }
 
         // Confirm authorisation code.
-        if (!$this->confirmAuthKey()) {
+        if (!$this->sec()->confirmAuthKey()) {
             return;
         }
 
@@ -70,8 +70,8 @@ class UpdateconfigMethod extends MethodClass
             foreach ($libtype as $varname => $value) {
                 // check to make sure that the value passed in is
                 // a real images module variable
-                if (null !== $this->getModVar('type.' . $varname)) {
-                    $this->setModVar('type.' . $varname, $value);
+                if (null !== $this->mod()->getVar('type.' . $varname)) {
+                    $this->mod()->setVar('type.' . $varname, $value);
                 }
             }
         }
@@ -79,8 +79,8 @@ class UpdateconfigMethod extends MethodClass
             foreach ($file as $varname => $value) {
                 // check to make sure that the value passed in is
                 // a real images module variable
-                if (null !== $this->getModVar('file.' . $varname)) {
-                    $this->setModVar('file.' . $varname, $value);
+                if (null !== $this->mod()->getVar('file.' . $varname)) {
+                    $this->mod()->setVar('file.' . $varname, $value);
                 }
             }
         }
@@ -89,15 +89,15 @@ class UpdateconfigMethod extends MethodClass
                 // check to make sure that the value passed in is
                 // a real images module variable
                 $value = trim(preg_replace('~\/$~', '', $value));
-                if (null !== $this->getModVar('path.' . $varname)) {
+                if (null !== $this->mod()->getVar('path.' . $varname)) {
                     if (!file_exists($value) || !is_dir($value)) {
-                        $msg = $this->translate('Location [#(1)] either does not exist or is not a valid directory!', $value);
+                        $msg = $this->ml('Location [#(1)] either does not exist or is not a valid directory!', $value);
                         throw new BadParameterException(null, $msg);
                     } elseif (!is_writable($value)) {
-                        $msg = $this->translate('Location [#(1)] can not be written to - please check permissions and try again!', $value);
+                        $msg = $this->ml('Location [#(1)] can not be written to - please check permissions and try again!', $value);
                         throw new BadParameterException(null, $msg);
                     } else {
-                        $this->setModVar('path.' . $varname, $value);
+                        $this->mod()->setVar('path.' . $varname, $value);
                     }
                 }
             }
@@ -110,11 +110,11 @@ class UpdateconfigMethod extends MethodClass
                 if ($varname != 'itemsperpage') {
                     continue;
                 }
-                $this->setModVar('view.' . $varname, $value);
+                $this->mod()->setVar('view.' . $varname, $value);
             }
         }
 
-        if (!$this->fetch('basedirs', 'isset', $basedirs, '', xarVar::NOT_REQUIRED)) {
+        if (!$this->var()->find('basedirs', $basedirs)) {
             return;
         }
         if (!empty($basedirs) && is_array($basedirs)) {
@@ -130,11 +130,11 @@ class UpdateconfigMethod extends MethodClass
                     'recursive' => (!empty($info['recursive']) ? true : false), ];
                 $idx++;
             }
-            $this->setModVar('basedirs', serialize($newdirs));
+            $this->mod()->setVar('basedirs', serialize($newdirs));
         }
 
         xarModHooks::call('module', 'updateconfig', 'images', ['module' => 'images']);
-        $this->redirect($this->getUrl('admin', 'modifyconfig'));
+        $this->ctl()->redirect($this->mod()->getURL('admin', 'modifyconfig'));
 
         // Return
         return true;
