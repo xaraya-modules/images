@@ -178,8 +178,8 @@ class ImportpicturesMethod extends MethodClass
         // Now check to see if any of those files are already in the system
         if (isset($FilesInDir)) {
             // Get database setup
-            $dbconn = xarDB::getConn();
-            $xartable = xarDB::getTables();
+            $dbconn = $this->db()->getConn();
+            $xartable = $this->db()->getTables();
 
             // table and column definitions
             $uploadstable = $xartable['uploads'];

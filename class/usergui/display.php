@@ -46,7 +46,7 @@ class DisplayMethod extends MethodClass
     {
         extract($args);
 
-        if (!$this->var()->get('fileId', $fileId), 'str:1:') {
+        if (!$this->var()->get('fileId', $fileId, 'str:1:')) {
             return;
         }
         if (!$this->var()->find('width', $width, 'str:1:', '')) {
