@@ -59,7 +59,8 @@ class TransformhookMethod extends MethodClass
 
     public function transform($body)
     {
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         while (preg_match('/#(image-resize):([0-9]+):([^#]*)#/i', $body, $parts)) {
             // first argument is always the complete haystack

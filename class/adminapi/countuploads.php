@@ -41,7 +41,8 @@ class CountuploadsMethod extends MethodClass
         if (empty($typeName)) {
             $typeName = 'image';
         }
-        $adminapi = $this->getParent();
+        /** @var AdminApi $adminapi */
+        $adminapi = $this->adminapi();
 
         /** @var MimeApi $mimeapi */
         $mimeapi = $adminapi->getMimeAPI();

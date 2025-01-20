@@ -57,10 +57,9 @@ class BrowseMethod extends MethodClass
         if (empty($fileId)) {
             $fileId = null;
         }
-        $admingui = $this->getParent();
 
         /** @var UserApi $userapi */
-        $userapi = $admingui->getAPI();
+        $userapi = $this->userapi();
 
         // Get the base directories configured for server images
         $basedirs = $userapi->getbasedirs();
@@ -96,7 +95,7 @@ class BrowseMethod extends MethodClass
             return;
         }
         /** @var AdminApi $adminapi */
-        $adminapi = $admingui->getModule()->getAdminAPI();
+        $adminapi = $this->adminapi();
 
         $data['startnum'] = $startnum;
         $data['numitems'] = $numitems;

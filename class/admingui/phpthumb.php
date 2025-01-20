@@ -56,12 +56,13 @@ class PhpthumbMethod extends MethodClass
         if (!empty($fileId) && is_array($fileId)) {
             $fileId = array_keys($fileId);
         }
-        $admingui = $this->getParent();
 
         /** @var UserApi $userapi */
-        $userapi = $admingui->getAPI();
+        $userapi = $this->userapi();
+
         /** @var AdminApi $adminapi */
-        $adminapi = $admingui->getModule()->getAdminAPI();
+        $adminapi = $this->adminapi();
+
         /** @var UploadsApi $uploadsapi */
         $uploadsapi = $userapi->getUploadsAPI();
 

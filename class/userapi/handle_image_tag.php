@@ -46,7 +46,8 @@ class HandleImageTagMethod extends MethodClass
         if (!isset($width) && !isset($height) && !isset($setting) && !isset($params)) {
             throw new BadParameterException(['width', 'height', 'setting', 'params'], "Required attributes '#(1)', '#(2)', '#(3)' or '#(4)' for tag <xar:image> are missing. See tag documentation.");
         }
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         $format = 'array(%s)';
         foreach ($args as $key => $value) {

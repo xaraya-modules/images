@@ -67,7 +67,8 @@ class GetimagesizeMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         }
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         if (!empty($fileLocation) && file_exists($fileLocation)) {
             return @getimagesize($fileLocation);

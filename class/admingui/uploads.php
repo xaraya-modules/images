@@ -81,12 +81,13 @@ class UploadsMethod extends MethodClass
         if (!$this->var()->check('getprev', $getprev, 'str:1:')) {
             return;
         }
-        $admingui = $this->getParent();
 
         /** @var UserApi $userapi */
-        $userapi = $admingui->getAPI();
+        $userapi = $this->userapi();
+
         /** @var AdminApi $adminapi */
-        $adminapi = $admingui->getModule()->getAdminAPI();
+        $adminapi = $this->adminapi();
+
         /** @var UploadsApi $uploadsapi */
         $uploadsapi = $userapi->getUploadsAPI();
 

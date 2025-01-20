@@ -45,7 +45,8 @@ class EncodeShorturlMethod extends MethodClass
         if (!isset($func)) {
             return;
         }
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         /** @var UploadsApi $uploadsapi */
         $uploadsapi = $userapi->getUploadsAPI();

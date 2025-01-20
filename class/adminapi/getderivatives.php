@@ -163,7 +163,8 @@ class GetderivativesMethod extends MethodClass
                     $filenames[$matches[1]] = 1;
                 }
             }
-            $adminapi = $this->getParent();
+            /** @var AdminApi $adminapi */
+            $adminapi = $this->adminapi();
 
             // CHECKME: keep track of originals for server images too ?
 

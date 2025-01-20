@@ -50,10 +50,9 @@ class ImportpicturesMethod extends MethodClass
 
         xarModVars::set('uploads', 'obfuscate_imports', 0);
 
-        $admingui = $this->getParent();
-
         /** @var UserApi $userapi */
-        $userapi = $admingui->getAPI();
+        $userapi = $this->userapi();
+
         /** @var UploadsApi $uploadsapi */
         $uploadsapi = $userapi->getUploadsAPI();
 

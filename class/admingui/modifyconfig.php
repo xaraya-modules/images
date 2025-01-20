@@ -42,10 +42,9 @@ class ModifyconfigMethod extends MethodClass
         if (!$this->sec()->checkAccess('AdminImages')) {
             return;
         }
-        $admingui = $this->getParent();
 
         /** @var UserApi $userapi */
-        $userapi = $admingui->getAPI();
+        $userapi = $this->userapi();
 
         xarMod::apiLoad('images');
         // Generate a one-time authorisation code for this operation

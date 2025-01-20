@@ -46,10 +46,9 @@ class DerivativesMethod extends MethodClass
         if (!$this->sec()->checkAccess('AdminImages')) {
             return;
         }
-        $admingui = $this->getParent();
 
         /** @var AdminApi $adminapi */
-        $adminapi = $admingui->getModule()->getAdminAPI();
+        $adminapi = $this->adminapi();
 
         $data = [];
 

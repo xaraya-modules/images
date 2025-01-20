@@ -55,10 +55,9 @@ class DisplayMethod extends MethodClass
         if (!$this->var()->find('height', $height, 'str:1:', '')) {
             return;
         }
-        $usergui = $this->getParent();
 
         /** @var UserApi $userapi */
-        $userapi = $usergui->getAPI();
+        $userapi = $this->userapi();
 
         if (is_numeric($fileId)) {
             $data = ['fileId' => $fileId];

@@ -48,10 +48,11 @@ class ProcessImageMethod extends MethodClass
     {
         extract($args);
 
-        $adminapi = $this->getParent();
+        /** @var AdminApi $adminapi */
+        $adminapi = $this->adminapi();
 
         /** @var UserApi $userapi */
-        $userapi = $adminapi->getAPI();
+        $userapi = $this->userapi();
 
         /** @var UploadsApi $uploadsapi */
         $uploadsapi = $adminapi->getUploadsAPI();

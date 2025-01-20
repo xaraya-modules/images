@@ -44,7 +44,8 @@ class ReplaceImageMethod extends MethodClass
     {
         extract($args);
 
-        $adminapi = $this->getParent();
+        /** @var AdminApi $adminapi */
+        $adminapi = $this->adminapi();
 
         /** @var UploadsApi $uploadsapi */
         $uploadsapi = $adminapi->getUploadsAPI();
@@ -72,7 +73,8 @@ class ReplaceImageMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         }
-        $adminapi = $this->getParent();
+        /** @var AdminApi $adminapi */
+        $adminapi = $this->adminapi();
 
         // TODO: replace files stored in xar_file_data too
 

@@ -75,10 +75,11 @@ class ResizeMethod extends MethodClass
         } elseif (isset($width) && !$this->var()->validate('regexp:/[0-9]+(px|%)/:', $width)) {
             throw new BadParameterException(['width'], "'#(1)' parameter is incorrectly formatted.");
         }
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         /** @var AdminApi $adminapi */
-        $adminapi = $userapi->getModule()->getAdminAPI();
+        $adminapi = $this->adminapi();
 
         if (!isset($returnpath)) {
             $returnpath = false;

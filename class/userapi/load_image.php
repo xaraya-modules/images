@@ -69,7 +69,8 @@ class LoadImageMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         }
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         // if both arguments are specified, give priority to fileId
         if (!empty($fileId) && is_numeric($fileId)) {

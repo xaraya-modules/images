@@ -87,10 +87,11 @@ class ResizeImageMethod extends MethodClass
             $msg = $this->ml("'#(1)' parameter is incorrectly formatted.", 'width');
             throw new BadParameterException(null, $msg);
         }
-        $adminapi = $this->getParent();
+        /** @var AdminApi $adminapi */
+        $adminapi = $this->adminapi();
 
         /** @var UserApi $userapi */
-        $userapi = $adminapi->getAPI();
+        $userapi = $this->userapi();
 
         /** @var UploadsApi $uploadsapi */
         $uploadsapi = $adminapi->getUploadsAPI();

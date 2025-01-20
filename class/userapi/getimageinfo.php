@@ -67,7 +67,8 @@ class GetimageinfoMethod extends MethodClass
             );
             throw new BadParameterException(null, $mesg);
         }
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         if (!empty($fileId) && is_numeric($fileId)) {
             /** @var UploadsApi $uploadsapi */

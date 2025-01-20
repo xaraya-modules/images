@@ -40,10 +40,11 @@ class DropdownlistMethod extends MethodClass
      */
     public function __invoke($args = [])
     {
-        $userapi = $this->getParent();
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         /** @var AdminApi $adminapi */
-        $adminapi = $userapi->getModule()->getAdminAPI();
+        $adminapi = $this->adminapi();
 
         // Add default arguments
         if (!isset($args['sort'])) {
