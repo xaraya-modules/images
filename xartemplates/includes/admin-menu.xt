@@ -33,14 +33,14 @@
                 <xar:mlstring>Server Images</xar:mlstring>
             </a>
         </dd>
-        <!-- 
+        <xar:comment><!-- 
         <xar:set name="tabclass">$activetab=='phpthumb'?'active':''</xar:set>
         <dd class="#$tabclass#">
             <a href="&xar-modurl-images-admin-phpthumb;" >
                 <xar:mlstring>Image Processing</xar:mlstring>
             </a>
         </dd>
-        -->
+        --></xar:comment>
 
         <xar:set name="tabclass">$activetab=='modifyconfig'?'active':''</xar:set>
         <dd class="#$tabclass#">

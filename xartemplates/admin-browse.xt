@@ -247,12 +247,12 @@
                     <a href="#xarController::URL('images','admin','browse',array('action' => 'resize', 'bid' => $baseId, 'fid' => $image['fileId']))#">
                         <xar:mlstring>Resize</xar:mlstring>
                     </a>
-                    <!--
+                    <xar:comment><!--
                     |
                     <a href="#xarController::URL('images','admin','phpthumb',array('bid' => $baseId, 'fid' => $image['fileId']))#">
                         <xar:mlstring>Process</xar:mlstring>
                     </a>
-                    -->
+                    --></xar:comment>
                     |
                     <a href="#xarController::URL('images','admin','browse',array('action' => 'delete', 'bid' => $baseId, 'fid' => $image['fileId']))#">
                         <xar:mlstring>Delete</xar:mlstring>
@@ -271,7 +271,7 @@
                 </td>
             </tr>
             <xar:if condition="empty($action)">
-            <!--
+            <xar:comment><!--
             <tr>
                 <td colspan="6" align="center" class="xar-accent">
                     <label for="setting"><xar:mlstring>Image Processing</xar:mlstring></label>
@@ -299,7 +299,7 @@
                     <input type="submit" name="processlist" value="#xarML('Process')#" />
                 </td>
             </tr>
-            -->
+            --></xar:comment>
             <tr>
                 <td colspan="6" align="center">
                     <label for="width"><xar:mlstring>Width</xar:mlstring></label> <input type="text" name="width" id="width" size="5" value="" />
@@ -333,7 +333,7 @@
                     <input type="submit" name="action" value="#xarML('Cancel')#" />
                 </td>
             </tr>
-            <!--
+            <xar:comment><!--
             <xar:elseif condition="$action eq 'processlist'"/>
             <tr>
                 <td colspan="6">
@@ -354,7 +354,7 @@
                     <input type="submit" name="action" value="#xarML('Cancel')#" />
                 </td>
             </tr>
-            -->
+            --></xar:comment>
             </xar:if>
         </table>
         </form>
