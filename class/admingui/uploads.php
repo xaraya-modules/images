@@ -144,7 +144,7 @@ class UploadsMethod extends MethodClass
             // Add pager
             if (!empty($numitems) && $countitems > $numitems) {
                 sys::import('modules.base.class.pager');
-                $data['pager'] = xarTplPager::getPager(
+                $data['pager'] = $this->tpl()->getPager(
                     $startnum,
                     $countitems,
                     $this->mod()->getURL(

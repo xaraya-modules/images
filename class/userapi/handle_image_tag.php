@@ -42,6 +42,8 @@ class HandleImageTagMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         extract($args);
+        /** @var UserApi $userapi */
+        $userapi = $this->userapi();
 
         if (!isset($width) && !isset($height) && !isset($setting) && !isset($params)) {
             throw new BadParameterException(['width', 'height', 'setting', 'params'], "Required attributes '#(1)', '#(2)', '#(3)' or '#(4)' for tag <xar:image> are missing. See tag documentation.");
@@ -61,7 +63,7 @@ class HandleImageTagMethod extends MethodClass
         $array = sprintf($format, implode(',', $items));
 
         $imgTag = sprintf("
-            \$tag = xarMod::apiFunc('images', 'user', 'resize', %s);
+            \$tag = $userapi->resize(%s);
             if (!\$tag) {
                 return;
             } else {

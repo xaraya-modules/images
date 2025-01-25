@@ -141,7 +141,7 @@ class BrowseMethod extends MethodClass
             // Add pager
             if (!empty($params['numitems']) && $countitems > $params['numitems']) {
                 sys::import('modules.base.class.pager');
-                $data['pager'] = xarTplPager::getPager(
+                $data['pager'] = $this->tpl()->getPager(
                     $startnum,
                     $countitems,
                     $this->mod()->getURL(
