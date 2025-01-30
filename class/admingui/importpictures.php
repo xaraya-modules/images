@@ -85,7 +85,7 @@ class ImportpicturesMethod extends MethodClass
         $cids = [];
 
         $pubtypeid = $Picture_Publication_Type_ID;
-        $authorid  = xarSession::getVar('uid');
+        $authorid  = $this->session()->getUserId();
         $aid       = 0;
 
         $article = ['title' => $title,
@@ -135,7 +135,7 @@ class ImportpicturesMethod extends MethodClass
 
             // Create Picture Article
             echo "Creating Article<br/>";
-            $aid = xarMod::apiFunc('articles', 'admin', 'create', $article);
+            $aid = $this->mod()->apiFunc('articles', 'admin', 'create', $article);
 
 
             echo "Article Created :: ID :: $aid<br/>";

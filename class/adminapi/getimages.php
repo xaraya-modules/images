@@ -103,7 +103,7 @@ class GetimagesMethod extends MethodClass
             }
 
             if (!isset($imagelist)) {
-                $files = xarMod::apiFunc(
+                $files = $this->mod()->apiFunc(
                     'dynamicdata',
                     'admin',
                     'browse',

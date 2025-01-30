@@ -123,7 +123,7 @@ class DisplayMethod extends MethodClass
 
         // Close the buffer, saving it's current contents for possible future use
         // then restart the buffer to store the file
-        $pageBuffer = xarMod::apiFunc('base', 'user', 'get_output_buffer');
+        $pageBuffer = $this->mod()->apiFunc('base', 'user', 'get_output_buffer');
 
         ob_start();
 
@@ -148,7 +148,7 @@ class DisplayMethod extends MethodClass
             }
 
             // FIXME: make sure the file is indeed supposed to be stored in the database :-)
-        } elseif (is_numeric($fileId) && xarMod::isAvailable('uploads')) {
+        } elseif (is_numeric($fileId) && $this->mod()->isAvailable('uploads')) {
             $fileSize = 0;
 
             /** @var UploadsApi $uploadsapi */
@@ -175,8 +175,8 @@ class DisplayMethod extends MethodClass
 
         // Make sure to check the browser / os type - IE 5.x on Mac (os9 / osX / etc) does
         // not like headers being sent for iamges - so leave them out for those particular cases
-        $osName      = xarSession::getVar('osname');
-        $browserName = xarSession::getVar('browsername');
+        $osName      = $this->session()->getVar('osname');
+        $browserName = $this->session()->getVar('browsername');
 
         if (empty($osName) || $osName != 'mac' || ($osName == 'mac' && !stristr($browserName, 'internet explorer'))) {
             header("Pragma: ");

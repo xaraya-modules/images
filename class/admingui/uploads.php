@@ -237,10 +237,10 @@ class UploadsMethod extends MethodClass
                         }
                     }
                     foreach ($modlist as $modid => $itemtypes) {
-                        $modinfo = xarMod::getInfo($modid);
+                        $modinfo = $this->mod()->getInfo($modid);
                         // Get the list of all item types for this module (if any)
                         try {
-                            $mytypes = xarMod::apiFunc($modinfo['name'], 'user', 'getitemtypes');
+                            $mytypes = $this->mod()->apiFunc($modinfo['name'], 'user', 'getitemtypes');
                         } catch (Exception $e) {
                             $mytypes = [];
                         }
@@ -263,7 +263,7 @@ class UploadsMethod extends MethodClass
                             }
                             $itemids = array_keys($items);
                             try {
-                                $itemlinks = xarMod::apiFunc(
+                                $itemlinks = $this->mod()->apiFunc(
                                     $modinfo['name'],
                                     'user',
                                     'getitemlinks',

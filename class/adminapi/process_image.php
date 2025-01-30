@@ -147,7 +147,7 @@ class ProcessImageMethod extends MethodClass
             // If the image is stored in the database (uploads module)
             // NOTE: the next line is the *only* place i could find which suppresses exceptions through the 0 parameter at the end
             // NOTE: in the 2.x branch that parameter does not exist anymore, so the next code needs to be changed.
-        } elseif (is_numeric($image['fileId']) && $this->mod()->isAvailable('uploads') && xarMod::apiLoad('uploads', 'user') &&
+        } elseif (is_numeric($image['fileId']) && $this->mod()->isAvailable('uploads') && $this->mod()->apiLoad('uploads', 'user') &&
                   defined('\Xaraya\Modules\Uploads\Defines::STORE_DB_DATA') && ($image['storeType'] & \Xaraya\Modules\Uploads\Defines::STORE_DB_DATA)) {
             $uploadsdir = xarModVars::get('uploads', 'path.uploads-directory');
             switch ($saveas) {

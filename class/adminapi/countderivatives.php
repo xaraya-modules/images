@@ -82,7 +82,7 @@ class CountderivativesMethod extends MethodClass
         if ($this->var()->isCached('Modules.Images', 'countderivatives.' . $cachekey)) {
             return $this->var()->getCached('Modules.Images', 'countderivatives.' . $cachekey);
         } else {
-            $files = xarMod::apiFunc(
+            $files = $this->mod()->apiFunc(
                 'dynamicdata',
                 'admin',
                 'browse',

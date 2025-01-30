@@ -93,7 +93,7 @@ class CountimagesMethod extends MethodClass
             if ($this->var()->isCached('Modules.Images', 'countimages.' . $cachekey)) {
                 return $this->var()->getCached('Modules.Images', 'countimages.' . $cachekey);
             } else {
-                $files = xarMod::apiFunc(
+                $files = $this->mod()->apiFunc(
                     'dynamicdata',
                     'admin',
                     'browse',

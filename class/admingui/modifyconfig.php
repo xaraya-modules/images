@@ -46,7 +46,7 @@ class ModifyconfigMethod extends MethodClass
         /** @var UserApi $userapi */
         $userapi = $this->userapi();
 
-        xarMod::apiLoad('images');
+        $this->mod()->apiLoad('images');
         // Generate a one-time authorisation code for this operation
 
         // get the current module variables for display
