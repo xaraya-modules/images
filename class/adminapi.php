@@ -52,7 +52,7 @@ class AdminApi extends AdminApiClass
     public function getMimeAPI()
     {
         /** @var MimeApi $mimeapi */
-        $mimeapi = xarMod::getAPI('mime');
+        $mimeapi = xarMod::userapi('mime');
         return $mimeapi;
     }
 
@@ -63,7 +63,7 @@ class AdminApi extends AdminApiClass
     public function getUploadsAPI()
     {
         /** @var UploadsApi $uploadsapi */
-        $uploadsapi = xarMod::getAPI('uploads');
+        $uploadsapi = xarMod::userapi('uploads');
         return $uploadsapi;
     }
 

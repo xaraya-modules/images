@@ -60,7 +60,7 @@ class Image_GD extends Image_Properties
 
         if (!file_exists($this->fileLocation) && !empty($this->_fileId)) {
             /** @var UploadsApi $uploadsapi */
-            $uploadsapi = xarMod::getAPI('uploads');
+            $uploadsapi = xarMod::userapi('uploads');
             // get the image data from the database
             $data = $uploadsapi->dbGetFileData(['fileId' => $this->_fileId]);
             if (!empty($data)) {

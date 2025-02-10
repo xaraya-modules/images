@@ -51,7 +51,7 @@ class UserApi extends UserApiClass
     public function getUploadsAPI()
     {
         /** @var UploadsApi $uploadsapi */
-        $uploadsapi = xarMod::getAPI('uploads');
+        $uploadsapi = xarMod::userapi('uploads');
         return $uploadsapi;
     }
 }

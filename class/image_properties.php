@@ -42,7 +42,7 @@ class Image_Properties
             $this->_thumbsdir = $thumbsdir;
         }
         /** @var UserApi $userapi */
-        $userapi = xarMod::getAPI('images');
+        $userapi = xarMod::userapi('images');
 
         if (is_array($fileInfo)) {
             $this->fileLocation = $fileInfo['fileLocation'];
