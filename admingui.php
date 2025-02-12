@@ -17,7 +17,7 @@ use xarMod;
 use sys;
 
 sys::import('xaraya.modules.admingui');
-sys::import('modules.images.class.adminapi');
+sys::import('modules.images.adminapi');
 
 /**
  * Handle the images admin GUI
