@@ -56,31 +56,17 @@ class UploadsMethod extends MethodClass
         }
 
         // Note: fileId is the uploads fileId here, or an array of uploads fileId's
-        if (!$this->var()->find('fileId', $fileId)) {
-            return;
-        }
+        $this->var()->find('fileId', $fileId);
         if (!empty($fileId) && is_array($fileId)) {
             $fileId = array_keys($fileId);
         }
 
-        if (!$this->var()->check('startnum', $startnum, 'int:0:')) {
-            return;
-        }
-        if (!$this->var()->check('numitems', $numitems, 'int:0:')) {
-            return;
-        }
-        if (!$this->var()->find('sort', $sort, 'enum:name:type:width:height:size:time', 'name')) {
-            return;
-        }
-        if (!$this->var()->find('action', $action, 'str:1:', '')) {
-            return;
-        }
-        if (!$this->var()->check('getnext', $getnext, 'str:1:')) {
-            return;
-        }
-        if (!$this->var()->check('getprev', $getprev, 'str:1:')) {
-            return;
-        }
+        $this->var()->check('startnum', $startnum, 'int:0:');
+        $this->var()->check('numitems', $numitems, 'int:0:');
+        $this->var()->find('sort', $sort, 'enum:name:type:width:height:size:time', 'name');
+        $this->var()->find('action', $action, 'str:1:', '');
+        $this->var()->check('getnext', $getnext, 'str:1:');
+        $this->var()->check('getprev', $getprev, 'str:1:');
 
         /** @var UserApi $userapi */
         $userapi = $this->userapi();
@@ -163,12 +149,8 @@ class UploadsMethod extends MethodClass
         $data['settings'] = $userapi->getsettings();
 
         // Check if we need to do anything special here
-        if (!$this->var()->find('processlist', $processlist, 'str:1:', '')) {
-            return;
-        }
-        if (!$this->var()->find('resizelist', $resizelist, 'str:1:', '')) {
-            return;
-        }
+        $this->var()->find('processlist', $processlist, 'str:1:', '');
+        $this->var()->find('resizelist', $resizelist, 'str:1:', '');
         if (!empty($processlist)) {
             $action = 'processlist';
         } elseif (!empty($resizelist)) {
@@ -298,18 +280,10 @@ class UploadsMethod extends MethodClass
                     return $data;
 
                 case 'resize':
-                    if (!$this->var()->find('width', $width, 'int:1:')) {
-                        return;
-                    }
-                    if (!$this->var()->find('height', $height, 'int:1:')) {
-                        return;
-                    }
-                    if (!$this->var()->find('replace', $replace, 'int:0:1', 0)) {
-                        return;
-                    }
-                    if (!$this->var()->find('confirm', $confirm, 'str:1:', '')) {
-                        return;
-                    }
+                    $this->var()->find('width', $width, 'int:1:');
+                    $this->var()->find('height', $height, 'int:1:');
+                    $this->var()->find('replace', $replace, 'int:0:1', 0);
+                    $this->var()->find('confirm', $confirm, 'str:1:', '');
                     if (!empty($confirm) && (!empty($width) || !empty($height))) {
                         if (!$this->sec()->confirmAuthKey()) {
                             return;
@@ -367,9 +341,7 @@ class UploadsMethod extends MethodClass
                     return $data;
 
                 case 'delete':
-                    if (!$this->var()->find('confirm', $confirm, 'str:1:', '')) {
-                        return;
-                    }
+                    $this->var()->find('confirm', $confirm, 'str:1:', '');
                     if (!empty($confirm)) {
                         if (!$this->sec()->confirmAuthKey()) {
                             return;
@@ -389,18 +361,10 @@ class UploadsMethod extends MethodClass
                     return $data;
 
                 case 'resizelist':
-                    if (!$this->var()->find('width', $width, 'int:1:')) {
-                        return;
-                    }
-                    if (!$this->var()->find('height', $height, 'int:1:')) {
-                        return;
-                    }
-                    if (!$this->var()->find('replace', $replace, 'int:0:1', 0)) {
-                        return;
-                    }
-                    if (!$this->var()->find('confirm', $confirm, 'str:1:', '')) {
-                        return;
-                    }
+                    $this->var()->find('width', $width, 'int:1:');
+                    $this->var()->find('height', $height, 'int:1:');
+                    $this->var()->find('replace', $replace, 'int:0:1', 0);
+                    $this->var()->find('confirm', $confirm, 'str:1:', '');
                     if (empty($confirm) || (empty($width) && empty($height))) {
                         $data['selected'] = $found;
                         if (empty($width) && empty($height)) {
@@ -464,15 +428,9 @@ class UploadsMethod extends MethodClass
                     return true;
 
                 case 'processlist':
-                    if (!$this->var()->find('saveas', $saveas, 'int:0:2', 0)) {
-                        return;
-                    }
-                    if (!$this->var()->find('setting', $setting, 'str:1:')) {
-                        return;
-                    }
-                    if (!$this->var()->find('confirm', $confirm, 'str:1:', '')) {
-                        return;
-                    }
+                    $this->var()->find('saveas', $saveas, 'int:0:2', 0);
+                    $this->var()->find('setting', $setting, 'str:1:');
+                    $this->var()->find('confirm', $confirm, 'str:1:', '');
                     if (empty($confirm) || empty($setting) || empty($data['settings'][$setting])) {
                         $data['selected'] = $found;
                         if (empty($setting) || empty($data['settings'][$setting])) {

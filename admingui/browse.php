@@ -48,9 +48,7 @@ class BrowseMethod extends MethodClass
         }
 
         // Note: fileId is a base 64 encode of the image location here, or an array of fileId's
-        if (!$this->var()->find('fid', $fileId)) {
-            return;
-        }
+        $this->var()->find('fid', $fileId);
         if (!empty($fileId) && is_array($fileId)) {
             $fileId = array_keys($fileId);
         }
@@ -64,9 +62,7 @@ class BrowseMethod extends MethodClass
         // Get the base directories configured for server images
         $basedirs = $userapi->getbasedirs();
 
-        if (!$this->var()->find('bid', $baseId)) {
-            return;
-        }
+        $this->var()->find('bid', $baseId);
         if (empty($baseId) || empty($basedirs[$baseId])) {
             $data = $basedirs[0]; // themes directory
             $baseId = null;
@@ -76,24 +72,12 @@ class BrowseMethod extends MethodClass
         $data['baseId'] = $baseId;
         $data['fileId'] = $fileId;
 
-        if (!$this->var()->check('startnum', $startnum, 'int:0:')) {
-            return;
-        }
-        if (!$this->var()->check('numitems', $numitems, 'int:0:')) {
-            return;
-        }
-        if (!$this->var()->find('sort', $sort, 'enum:name:type:width:height:size:time', 'name')) {
-            return;
-        }
-        if (!$this->var()->find('action', $action, 'str:1:', '')) {
-            return;
-        }
-        if (!$this->var()->check('getnext', $getnext, 'str:1:')) {
-            return;
-        }
-        if (!$this->var()->check('getprev', $getprev, 'str:1:')) {
-            return;
-        }
+        $this->var()->check('startnum', $startnum, 'int:0:');
+        $this->var()->check('numitems', $numitems, 'int:0:');
+        $this->var()->find('sort', $sort, 'enum:name:type:width:height:size:time', 'name');
+        $this->var()->find('action', $action, 'str:1:', '');
+        $this->var()->check('getnext', $getnext, 'str:1:');
+        $this->var()->check('getprev', $getprev, 'str:1:');
         /** @var AdminApi $adminapi */
         $adminapi = $this->adminapi();
 
@@ -115,9 +99,7 @@ class BrowseMethod extends MethodClass
                 $params['numitems'] = $this->mod()->getVar('view.itemsperpage');
             }
             // Check if we need to refresh the cache anyway
-            if (!$this->var()->check('refresh', $refresh, 'int:0:')) {
-                return;
-            }
+            $this->var()->check('refresh', $refresh, 'int:0:');
             $params['cacheRefresh'] = $refresh;
 
             $data['images'] = $adminapi->getimages($params);
@@ -163,12 +145,8 @@ class BrowseMethod extends MethodClass
         $data['settings'] = $userapi->getsettings();
 
         // Check if we need to do anything special here
-        if (!$this->var()->find('processlist', $processlist, 'str:1:', '')) {
-            return;
-        }
-        if (!$this->var()->find('resizelist', $resizelist, 'str:1:', '')) {
-            return;
-        }
+        $this->var()->find('processlist', $processlist, 'str:1:', '');
+        $this->var()->find('resizelist', $resizelist, 'str:1:', '');
         if (!empty($processlist)) {
             $action = 'processlist';
         } elseif (!empty($resizelist)) {
@@ -211,18 +189,10 @@ class BrowseMethod extends MethodClass
                     return $data;
 
                 case 'resize':
-                    if (!$this->var()->find('width', $width, 'int:1:')) {
-                        return;
-                    }
-                    if (!$this->var()->find('height', $height, 'int:1:')) {
-                        return;
-                    }
-                    if (!$this->var()->find('replace', $replace, 'int:0:1', 0)) {
-                        return;
-                    }
-                    if (!$this->var()->find('confirm', $confirm, 'str:1:', '')) {
-                        return;
-                    }
+                    $this->var()->find('width', $width, 'int:1:');
+                    $this->var()->find('height', $height, 'int:1:');
+                    $this->var()->find('replace', $replace, 'int:0:1', 0);
+                    $this->var()->find('confirm', $confirm, 'str:1:', '');
                     if (!empty($confirm) && (!empty($width) || !empty($height))) {
                         if (!$this->sec()->confirmAuthKey()) {
                             return;
@@ -281,9 +251,7 @@ class BrowseMethod extends MethodClass
                     return $data;
 
                 case 'delete':
-                    if (!$this->var()->find('confirm', $confirm, 'str:1:', '')) {
-                        return;
-                    }
+                    $this->var()->find('confirm', $confirm, 'str:1:', '');
                     if (!empty($confirm)) {
                         if (!$this->sec()->confirmAuthKey()) {
                             return;
@@ -299,18 +267,10 @@ class BrowseMethod extends MethodClass
                     return $data;
 
                 case 'resizelist':
-                    if (!$this->var()->find('width', $width, 'int:1:')) {
-                        return;
-                    }
-                    if (!$this->var()->find('height', $height, 'int:1:')) {
-                        return;
-                    }
-                    if (!$this->var()->find('replace', $replace, 'int:0:1', 0)) {
-                        return;
-                    }
-                    if (!$this->var()->find('confirm', $confirm, 'str:1:', '')) {
-                        return;
-                    }
+                    $this->var()->find('width', $width, 'int:1:');
+                    $this->var()->find('height', $height, 'int:1:');
+                    $this->var()->find('replace', $replace, 'int:0:1', 0);
+                    $this->var()->find('confirm', $confirm, 'str:1:', '');
                     if (empty($confirm) || (empty($width) && empty($height))) {
                         $data['selected'] = array_keys($found);
                         if (empty($width) && empty($height)) {
@@ -383,15 +343,9 @@ class BrowseMethod extends MethodClass
                     return true;
 
                 case 'processlist':
-                    if (!$this->var()->find('saveas', $saveas, 'int:0:2', 0)) {
-                        return;
-                    }
-                    if (!$this->var()->find('setting', $setting, 'str:1:')) {
-                        return;
-                    }
-                    if (!$this->var()->find('confirm', $confirm, 'str:1:', '')) {
-                        return;
-                    }
+                    $this->var()->find('saveas', $saveas, 'int:0:2', 0);
+                    $this->var()->find('setting', $setting, 'str:1:');
+                    $this->var()->find('confirm', $confirm, 'str:1:', '');
                     if (empty($confirm) || empty($setting) || empty($data['settings'][$setting])) {
                         $data['selected'] = array_keys($found);
                         if (empty($setting) || empty($data['settings'][$setting])) {

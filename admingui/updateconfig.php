@@ -39,21 +39,11 @@ class UpdateconfigMethod extends MethodClass
     public function __invoke(array $args = [])
     {
         // Get parameters
-        if (!$this->var()->find('libtype', $libtype, 'list:int:1:3', '')) {
-            return;
-        }
-        if (!$this->var()->find('file', $file, 'list:str:1:', '')) {
-            return;
-        }
-        if (!$this->var()->find('path', $path, 'list:str:1:', '')) {
-            return;
-        }
-        if (!$this->var()->find('view', $view, 'list:str:1:', '')) {
-            return;
-        }
-        if (!$this->var()->get('shortURLs', $shortURLs, 'checkbox', true)) {
-            return;
-        }
+        $this->var()->find('libtype', $libtype, 'list:int:1:3', '');
+        $this->var()->find('file', $file, 'list:str:1:', '');
+        $this->var()->find('path', $path, 'list:str:1:', '');
+        $this->var()->find('view', $view, 'list:str:1:', '');
+        $this->var()->get('shortURLs', $shortURLs, 'checkbox', true);
 
         if (isset($shortURLs) && $shortURLs) {
             $this->mod()->setVar('SupportShortURLs', true);
@@ -114,9 +104,7 @@ class UpdateconfigMethod extends MethodClass
             }
         }
 
-        if (!$this->var()->find('basedirs', $basedirs)) {
-            return;
-        }
+        $this->var()->find('basedirs', $basedirs);
         if (!empty($basedirs) && is_array($basedirs)) {
             $newdirs = [];
             $idx = 0;

@@ -50,9 +50,7 @@ class PhpthumbMethod extends MethodClass
 
         extract($args);
 
-        if (!$this->var()->find('fid', $fileId)) {
-            return;
-        }
+        $this->var()->find('fid', $fileId);
         if (!empty($fileId) && is_array($fileId)) {
             $fileId = array_keys($fileId);
         }
@@ -69,9 +67,7 @@ class PhpthumbMethod extends MethodClass
         // Get the base directories configured for server images
         $basedirs = $userapi->getbasedirs();
 
-        if (!$this->var()->find('bid', $baseId)) {
-            return;
-        }
+        $this->var()->find('bid', $baseId);
         if (empty($baseId) || empty($basedirs[$baseId])) {
             $data = $basedirs[0]; // themes directory
             $baseId = null;
@@ -119,12 +115,8 @@ class PhpthumbMethod extends MethodClass
         // Get the pre-defined settings for phpThumb
         $data['settings'] = $userapi->getsettings();
 
-        if (!$this->var()->check('setting', $setting, 'str:1:')) {
-            return;
-        }
-        if (!$this->var()->check('load', $load, 'str:1:')) {
-            return;
-        }
+        $this->var()->check('setting', $setting, 'str:1:');
+        $this->var()->check('load', $load, 'str:1:');
         //$data['setting'] = $setting;
         $data['setting'] = '';
         if (!empty($load) && !empty($setting)) {
@@ -137,67 +129,27 @@ class PhpthumbMethod extends MethodClass
 
         if (empty($skipinput)) {
             // URL parameters for phpThumb() - cfr. xardocs/phpthumb.readme.txt
-            if (!$this->var()->check('w', $w, 'int:1:')) {
-                return;
-            }
-            if (!$this->var()->check('h', $h, 'int:1:')) {
-                return;
-            }
-            if (!$this->var()->check('f', $f, 'enum:jpeg:png:gif')) {
-                return;
-            }
-            if (!$this->var()->check('q', $q, 'int:1:')) {
-                return;
-            }
-            if (!$this->var()->check('sx', $sx, 'float:0:')) {
-                return;
-            }
-            if (!$this->var()->check('sy', $sy, 'float:0:')) {
-                return;
-            }
-            if (!$this->var()->check('sw', $sw, 'float:0:')) {
-                return;
-            }
-            if (!$this->var()->check('sh', $sh, 'float:0:')) {
-                return;
-            }
-            if (!$this->var()->check('zc', $zc, 'checkbox')) {
-                return;
-            }
-            if (!$this->var()->check('bg', $bg, 'str:6:6')) {
-                return;
-            }
-            if (!$this->var()->check('bc', $bc, 'str:6:6')) {
-                return;
-            }
-            if (!$this->var()->check('fltr', $fltr)) {
-                return;
-            }
-            if (!$this->var()->check('xto', $xto, 'checkbox')) {
-                return;
-            }
-            if (!$this->var()->check('ra', $ra, 'int')) {
-                return;
-            }
-            if (!$this->var()->check('ar', $ar, 'enum:p:P:L:l:x')) {
-                return;
-            }
-            if (!$this->var()->check('aoe', $aoe, 'checkbox')) {
-                return;
-            }
-            if (!$this->var()->check('iar', $iar, 'checkbox')) {
-                return;
-            }
-            if (!$this->var()->check('far', $far, 'checkbox')) {
-                return;
-            }
-            if (!$this->var()->check('maxb', $maxb, 'int:1:')) {
-                return;
-            }
+            $this->var()->check('w', $w, 'int:1:');
+            $this->var()->check('h', $h, 'int:1:');
+            $this->var()->check('f', $f, 'enum:jpeg:png:gif');
+            $this->var()->check('q', $q, 'int:1:');
+            $this->var()->check('sx', $sx, 'float:0:');
+            $this->var()->check('sy', $sy, 'float:0:');
+            $this->var()->check('sw', $sw, 'float:0:');
+            $this->var()->check('sh', $sh, 'float:0:');
+            $this->var()->check('zc', $zc, 'checkbox');
+            $this->var()->check('bg', $bg, 'str:6:6');
+            $this->var()->check('bc', $bc, 'str:6:6');
+            $this->var()->check('fltr', $fltr);
+            $this->var()->check('xto', $xto, 'checkbox');
+            $this->var()->check('ra', $ra, 'int');
+            $this->var()->check('ar', $ar, 'enum:p:P:L:l:x');
+            $this->var()->check('aoe', $aoe, 'checkbox');
+            $this->var()->check('iar', $iar, 'checkbox');
+            $this->var()->check('far', $far, 'checkbox');
+            $this->var()->check('maxb', $maxb, 'int:1:');
             // Process filters via input form
-            if (!$this->var()->check('filter', $filter)) {
-                return;
-            }
+            $this->var()->check('filter', $filter);
         }
 
         // The following URL parameters are (or will be) supported here
@@ -230,9 +182,7 @@ class PhpthumbMethod extends MethodClass
             $filter['wmt'][3] = substr($filter['wmt'][3], 1);
         }
 
-        if (!$this->var()->check('save', $save, 'str:1:')) {
-            return;
-        }
+        $this->var()->check('save', $save, 'str:1:');
         if (empty($save) && !empty($data['selimage']['fileLocation'])) {
             $save = $data['selimage']['fileLocation'];
             $save = realpath($save);
@@ -242,12 +192,8 @@ class PhpthumbMethod extends MethodClass
         }
         $data['save'] = $save;
 
-        if (!$this->var()->find('preview', $preview, 'str:1:', '')) {
-            return;
-        }
-        if (!$this->var()->find('confirm', $confirm, 'str:1:', '')) {
-            return;
-        }
+        $this->var()->find('preview', $preview, 'str:1:', '');
+        $this->var()->find('confirm', $confirm, 'str:1:', '');
         if (!empty($preview) || !empty($confirm)) {
             if (!empty($confirm)) {
                 if (!$this->sec()->confirmAuthKey()) {
@@ -292,7 +238,7 @@ class PhpthumbMethod extends MethodClass
                     $phpThumb->setSourceData($src);
 
                     if (empty($save)) {
-                        $tmpdir = xarModVars::get('uploads', 'path.uploads-directory');
+                        $tmpdir = $this->mod('uploads')->getVar('path.uploads-directory');
                         if (is_dir($tmpdir) && is_writable($tmpdir)) {
                             $save = tempnam($tmpdir, 'xarimage-');
                         } else {
@@ -427,12 +373,8 @@ class PhpthumbMethod extends MethodClass
             }
         }
 
-        if (!$this->var()->check('newset', $newset, 'str:1:')) {
-            return;
-        }
-        if (!$this->var()->check('store', $store, 'str:1:')) {
-            return;
-        }
+        $this->var()->check('newset', $newset, 'str:1:');
+        $this->var()->check('store', $store, 'str:1:');
         if (!empty($store)) {
             if (!empty($newset)) {
                 // if we have both setting and newset, "rename" the old setting to the new one

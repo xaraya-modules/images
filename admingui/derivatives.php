@@ -53,20 +53,12 @@ class DerivativesMethod extends MethodClass
         $data = [];
 
         // Note: fileId is an MD5 hash of the derivative image location here
-        if (!$this->var()->find('fileId', $fileId, 'str:1:', '')) {
-            return;
-        }
+        $this->var()->find('fileId', $fileId, 'str:1:', '');
         $data['fileId'] = $fileId;
 
-        if (!$this->var()->check('startnum', $startnum, 'int:0:')) {
-            return;
-        }
-        if (!$this->var()->check('numitems', $numitems, 'int:0:')) {
-            return;
-        }
-        if (!$this->var()->find('sort', $sort, 'enum:name:width:height:size:time', 'name')) {
-            return;
-        }
+        $this->var()->check('startnum', $startnum, 'int:0:');
+        $this->var()->check('numitems', $numitems, 'int:0:');
+        $this->var()->find('sort', $sort, 'enum:name:width:height:size:time', 'name');
 
         $data['startnum'] = $startnum;
         $data['numitems'] = $numitems;
@@ -87,9 +79,7 @@ class DerivativesMethod extends MethodClass
                 $params['numitems'] = $this->mod()->getVar('view.itemsperpage');
             }
             // Check if we need to refresh the cache anyway
-            if (!$this->var()->check('refresh', $refresh, 'int:0:')) {
-                return;
-            }
+            $this->var()->check('refresh', $refresh, 'int:0:');
             $params['cacheRefresh'] = $refresh;
 
             $data['images'] = $adminapi->getderivatives($params);
@@ -116,9 +106,7 @@ class DerivativesMethod extends MethodClass
         }
 
         // Check if we need to do anything special here
-        if (!$this->var()->find('action', $action, 'str:1:', '')) {
-            return;
-        }
+        $this->var()->find('action', $action, 'str:1:', '');
 
         // Find the right derivative image
         if (!empty($action) && !empty($fileId)) {
@@ -139,9 +127,7 @@ class DerivativesMethod extends MethodClass
                     return $data;
 
                 case 'delete':
-                    if (!$this->var()->find('confirm', $confirm, 'str:1:', '')) {
-                        return;
-                    }
+                    $this->var()->find('confirm', $confirm, 'str:1:', '');
                     if (!empty($confirm)) {
                         if (!$this->sec()->confirmAuthKey()) {
                             return;

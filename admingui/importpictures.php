@@ -48,7 +48,7 @@ class ImportpicturesMethod extends MethodClass
         $image_import_dir = '/home/epicsaga/public_html/var/uploads/images';
         $Picture_Publication_Type_ID = 5;
 
-        xarModVars::set('uploads', 'obfuscate_imports', 0);
+        $this->mod('uploads')->setVar('obfuscate_imports', 0);
 
         /** @var UserApi $userapi */
         $userapi = $this->userapi();
