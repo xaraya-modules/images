@@ -85,7 +85,7 @@ class ImportpicturesMethod extends MethodClass
         $cids = [];
 
         $pubtypeid = $Picture_Publication_Type_ID;
-        $authorid  = $this->session()->getUserId();
+        $authorid  = $this->user()->getId();
         $aid       = 0;
 
         $article = ['title' => $title,
