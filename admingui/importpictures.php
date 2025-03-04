@@ -203,7 +203,7 @@ class ImportpicturesMethod extends MethodClass
                 }
 
                 // Check for no rows found, and if so, add file to pruned list
-                if ($result->EOF) {
+                if (!$result->first()) {
                     $insystem = 'No';
                     $prunedFiles[] = $filename;
                 }
