@@ -32,6 +32,6 @@ class MainMethod extends MethodClass
      */
     public function __invoke(array $args = [])
     {
-        return;
+        return $this->ctl()->notFound();
     }
 }

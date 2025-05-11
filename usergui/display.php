@@ -46,9 +46,12 @@ class DisplayMethod extends MethodClass
     {
         extract($args);
 
-        $this->var()->get('fileId', $fileId, 'str:1:');
+        $this->var()->check('fileId', $fileId, 'str:1:');
         $this->var()->find('width', $width, 'str:1:', '');
         $this->var()->find('height', $height, 'str:1:', '');
+        if (empty($fileId)) {
+            return $this->ctl()->notFound();
+        }
 
         /** @var UserApi $userapi */
         $userapi = $this->userapi();
