@@ -13,11 +13,7 @@ namespace Xaraya\Modules\Images\AdminGui;
 
 use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\MethodClass;
-use xarVar;
-use xarModVars;
-use xarSec;
 use xarModHooks;
-use xarController;
 use sys;
 use BadParameterException;
 

@@ -13,7 +13,6 @@ namespace Xaraya\Modules\Images\UserApi;
 
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
-use xarMod;
 use sys;
 use BadParameterException;
 

@@ -14,15 +14,7 @@ namespace Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\MethodClass;
-use xarSecurity;
-use xarVar;
-use xarModVars;
-use xarMod;
-use xarTplPager;
-use xarController;
-use xarSec;
 use sys;
-use BadParameterException;
 
 sys::import('xaraya.modules.method');
 

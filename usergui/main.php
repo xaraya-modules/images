@@ -14,7 +14,6 @@ namespace Xaraya\Modules\Images\UserGui;
 use Xaraya\Modules\Images\UserGui;
 use Xaraya\Modules\MethodClass;
 use sys;
-use BadParameterException;
 
 sys::import('xaraya.modules.method');
 

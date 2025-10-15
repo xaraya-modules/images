@@ -16,9 +16,6 @@ use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
-use xarVar;
-use xarMod;
-use xarModVars;
 use sys;
 use BadParameterException;
 

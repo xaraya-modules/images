@@ -15,12 +15,7 @@ use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
-use xarModVars;
-use xarMod;
-use xarSession;
-use xarDB;
 use sys;
-use BadParameterException;
 
 sys::import('xaraya.modules.method');
 

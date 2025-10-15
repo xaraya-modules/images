@@ -15,10 +15,6 @@ use Xaraya\Modules\Images\Defines;
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\MethodClass;
-use xarVar;
-use xarMod;
-use xarModVars;
-use xarController;
 use sys;
 use BadParameterException;
 

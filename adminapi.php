@@ -15,7 +15,6 @@ use Xaraya\Modules\AdminApiClass;
 use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use xarMod;
-use xarModVars;
 use sys;
 
 sys::import('xaraya.modules.adminapi');

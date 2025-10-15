@@ -13,7 +13,6 @@
 
 namespace Xaraya\Modules\Images;
 
-use Xaraya\Modules\Images\Defines;
 use Xaraya\Modules\InstallerClass;
 use xarMod;
 use xarModVars;

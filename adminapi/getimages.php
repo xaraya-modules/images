@@ -13,11 +13,7 @@ namespace Xaraya\Modules\Images\AdminApi;
 
 use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\MethodClass;
-use xarModVars;
-use xarMod;
-use xarVar;
 use sys;
-use BadParameterException;
 
 sys::import('xaraya.modules.method');
 

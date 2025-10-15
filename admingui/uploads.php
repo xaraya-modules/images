@@ -16,13 +16,6 @@ use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
-use xarSecurity;
-use xarMod;
-use xarVar;
-use xarModVars;
-use xarController;
-use xarTplPager;
-use xarSec;
 use sys;
 use Exception;
 
