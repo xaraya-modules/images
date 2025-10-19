@@ -28,7 +28,7 @@ $modversion['class']        = 'Utility';
 $modversion['category']     = 'Global';
 // this module requires the gd extension (for now)
 $modversion['extensions']   = ['gd'];
-//$modversion['namespace']      = 'Xaraya\Modules\Images';
+$modversion['namespace']      = 'Xaraya\Modules\Images';
 $modversion['twigtemplates']  = true;
 $modversion['dependencyinfo'] = [
     0 => [
