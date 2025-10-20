@@ -235,7 +235,7 @@ class PhpthumbMethod extends MethodClass
                         if (is_dir($tmpdir) && is_writable($tmpdir)) {
                             $save = tempnam($tmpdir, 'xarimage-');
                         } else {
-                            $save = tempnam(null, 'xarimage-');
+                            $save = tempnam(sys_get_temp_dir(), 'xarimage-');
                         }
                         $dbfile = 1;
                     }

@@ -157,7 +157,7 @@ class ProcessImageMethod extends MethodClass
                     if (is_dir($uploadsdir) && is_writable($uploadsdir)) {
                         $save = tempnam($uploadsdir, 'xarimage-');
                     } else {
-                        $save = tempnam(null, 'xarimage-');
+                        $save = tempnam(sys_get_temp_dir(), 'xarimage-');
                     }
                     $dbfile = 1;
                     break;
