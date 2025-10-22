@@ -15,7 +15,7 @@
  */
 error_reporting(E_ALL ^ (E_DEPRECATED | E_USER_DEPRECATED));
 if (class_exists('phpthumb')) {
-       return;
+    return;
 }
 
 if (!class_exists('phpthumb_functions', false)) {

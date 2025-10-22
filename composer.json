@@ -5,6 +5,15 @@
     "homepage": "https://github.com/xaraya-modules/images",
     "license": "GPL-2.0-or-later",
     "require": {},
+    "suggest": {
+        "james-heinrich/phpthumb": "The PHP thumbnail generator"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/JamesHeinrich/phpThumb"
+        }
+    ],
     "autoload": {
         "classmap": ["./"],
         "exclude-from-classmap": ["/vendor/"]
