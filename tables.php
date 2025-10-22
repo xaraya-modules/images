@@ -23,7 +23,7 @@ class Tables
      * The Images module does not have any tables, this function returns an empty array.
      * @return array
      */
-    public function __invoke(?string $prefix = null)
+    public function __invoke(string $prefix = 'xar')
     {
         return [];
     }
