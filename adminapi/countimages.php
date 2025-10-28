@@ -87,8 +87,8 @@ class CountimagesMethod extends MethodClass
 
             $cachekey = md5(serialize($params));
             // get the number of images from temporary cache - see getimages()
-            if ($this->var()->isCached('Modules.Images', 'countimages.' . $cachekey)) {
-                return $this->var()->getCached('Modules.Images', 'countimages.' . $cachekey);
+            if ($this->mem()->has('Modules.Images', 'countimages.' . $cachekey)) {
+                return $this->mem()->get('Modules.Images', 'countimages.' . $cachekey);
             } else {
                 $files = $this->mod()->apiFunc(
                     'dynamicdata',

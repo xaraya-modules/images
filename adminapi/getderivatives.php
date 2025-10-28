@@ -211,7 +211,7 @@ class GetderivativesMethod extends MethodClass
         }
 
         // save the number of images in temporary cache for countderivatives()
-        $this->var()->setCached('Modules.Images', 'countderivatives.' . $cachekey, count($imagelist));
+        $this->mem()->set('Modules.Images', 'countderivatives.' . $cachekey, count($imagelist));
 
         if (empty($sort)) {
             $sort = '';

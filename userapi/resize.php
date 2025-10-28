@@ -314,9 +314,9 @@ class ResizeMethod extends MethodClass
             // put the mime type in cache for encode_shorturl()
             $mime = $image->getMime();
             if (is_array($mime) && isset($mime['text'])) {
-                $this->var()->setCached('Module.Images', 'imagemime.' . $src, $mime['text']);
+                $this->mem()->set('Module.Images', 'imagemime.' . $src, $mime['text']);
             } else {
-                $this->var()->setCached('Module.Images', 'imagemime.' . $src, $mime);
+                $this->mem()->set('Module.Images', 'imagemime.' . $src, $mime);
             }
             $url = $this->mod()->getURL(
                 'user',

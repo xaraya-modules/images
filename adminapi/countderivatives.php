@@ -75,8 +75,8 @@ class CountderivativesMethod extends MethodClass
 
         $cachekey = md5(serialize($params));
         // get the number of images from temporary cache - see getderivatives()
-        if ($this->var()->isCached('Modules.Images', 'countderivatives.' . $cachekey)) {
-            return $this->var()->getCached('Modules.Images', 'countderivatives.' . $cachekey);
+        if ($this->mem()->has('Modules.Images', 'countderivatives.' . $cachekey)) {
+            return $this->mem()->get('Modules.Images', 'countderivatives.' . $cachekey);
         } else {
             $files = $this->mod()->apiFunc(
                 'dynamicdata',

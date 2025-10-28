@@ -148,7 +148,7 @@ class GetimagesMethod extends MethodClass
         }
 
         // save the number of images in temporary cache for countimages()
-        $this->var()->setCached('Modules.Images', 'countimages.' . $cachekey, count($imagelist));
+        $this->mem()->set('Modules.Images', 'countimages.' . $cachekey, count($imagelist));
 
         if (empty($sort)) {
             $sort = '';
