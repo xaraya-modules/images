@@ -80,7 +80,7 @@ class DropdownlistMethod extends MethodClass
                 continue;
             }
             // TODO: support other formatting options here depending on the field type ?
-            $list[$image['fileId']] = $this->var()->prep($image[$field]);
+            $list[$image['fileId']] = \xarVarPrep::forDisplay($image[$field]);
         }
 
         return $list;

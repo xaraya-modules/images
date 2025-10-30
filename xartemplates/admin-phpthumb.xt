@@ -96,9 +96,9 @@
                     <option value=""><xar:mlstring>[ New Settings --&#62; ]</xar:mlstring></option>
                     <xar:foreach in="$settings" key="$name">
                         <xar:if condition="!empty($setting) and $name eq $setting">
-                            <option value="#xarVar::prepForDisplay($name)#" selected="selected">#$name#</option>
+                            <option value="#xarVarPrep::forDisplay($name)#" selected="selected">#$name#</option>
                         <xar:else/>
-                            <option value="#xarVar::prepForDisplay($name)#">#$name#</option>
+                            <option value="#xarVarPrep::forDisplay($name)#">#$name#</option>
                         </xar:if>
                     </xar:foreach>
                 </select>
@@ -344,7 +344,7 @@
                 </label>
             </td>
             <td>
-                <input type="text" name="filter[wmt][0]" id="filter_wmt_0" value="#xarVar::prepForDisplay($filter['wmt'][0])#" />
+                <input type="text" name="filter[wmt][0]" id="filter_wmt_0" value="#xarVarPrep::forDisplay($filter['wmt'][0])#" />
             </td>
             <td class="xar-accent">
                 <label for="filter_wmt_5">
@@ -453,7 +453,7 @@ Perhaps we could provide a separate (javascript-based) page to fill in those fie
                 </label>
             </td>
             <td>
-                <input type="text" name="fltr[0]" id="fltr_0" value="#xarVar::prepForDisplay($fltr[0])#" />
+                <input type="text" name="fltr[0]" id="fltr_0" value="#xarVarPrep::forDisplay($fltr[0])#" />
             </td>
             <td class="xar-accent">
                 <label for="fltr_1">
@@ -461,7 +461,7 @@ Perhaps we could provide a separate (javascript-based) page to fill in those fie
                 </label>
             </td>
             <td>
-                <input type="text" name="fltr[1]" id="fltr_1" value="#xarVar::prepForDisplay($fltr[1])#" />
+                <input type="text" name="fltr[1]" id="fltr_1" value="#xarVarPrep::forDisplay($fltr[1])#" />
             </td>
         </tr>
         <tr>
@@ -471,7 +471,7 @@ Perhaps we could provide a separate (javascript-based) page to fill in those fie
                 </label>
             </td>
             <td>
-                <input type="text" name="fltr[2]" id="fltr_2" value="#xarVar::prepForDisplay($fltr[2])#" />
+                <input type="text" name="fltr[2]" id="fltr_2" value="#xarVarPrep::forDisplay($fltr[2])#" />
             </td>
             <td class="xar-accent">
                 <label for="fltr_3">
@@ -479,7 +479,7 @@ Perhaps we could provide a separate (javascript-based) page to fill in those fie
                 </label>
             </td>
             <td>
-                <input type="text" name="fltr[3]" id="fltr_3" value="#xarVar::prepForDisplay($fltr[3])#" />
+                <input type="text" name="fltr[3]" id="fltr_3" value="#xarVarPrep::forDisplay($fltr[3])#" />
             </td>
         </tr>
         <tr>
