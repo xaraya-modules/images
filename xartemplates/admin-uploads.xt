@@ -249,9 +249,9 @@
                         <option value=""> </option>
                         <xar:foreach in="$settings" key="$name">
                             <xar:if condition="!empty($setting) and $setting eq $name">
-                                <option value="#xarVarPrep::forDisplay($name)#" selected="selected">#$name#</option>
+                                <option value="#xarVarPrep::text($name)#" selected="selected">#$name#</option>
                             <xar:else/>
-                                <option value="#xarVarPrep::forDisplay($name)#">#$name#</option>
+                                <option value="#xarVarPrep::text($name)#">#$name#</option>
                             </xar:if>
                         </xar:foreach>
                     </select>
@@ -306,7 +306,7 @@
                         <xar:ml><xar:mlstring>Are you sure you want to replace the selected images using '#(1)' ?</xar:mlstring><xar:mlvar>#$setting#</xar:mlvar></xar:ml>
                     </xar:if>
                     <input type="hidden" name="authid" value="#$authid#" />
-                    <input type="hidden" name="setting" value="#xarVarPrep::forDisplay($setting)#" />
+                    <input type="hidden" name="setting" value="#xarVarPrep::text($setting)#" />
                     <input type="hidden" name="saveas" value="#$saveas#" />
                     <input type="hidden" name="action" value="processlist" />
                     <xar:if condition="empty($saveas) or $saveas lt 2">

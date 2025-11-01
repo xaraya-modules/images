@@ -127,7 +127,7 @@ class ProcessImageMethod extends MethodClass
                     // Use MD5 hash of file location here
                     $save = realpath($thumbsdir) . '/' . md5($image['fileLocation']);
                     // Add the setting to the filename
-                    $add = \xarVarPrep::forOS($setting);
+                    $add = $this->prep()->path($setting);
                     $add = strtr($add, [' ' => '']);
                     $save .= "-$add.$ext";
                     break;
@@ -172,7 +172,7 @@ class ProcessImageMethod extends MethodClass
                     // Use file id here
                     $save = realpath($thumbsdir) . '/' . $image['fileId'];
                     // Add the setting to the filename
-                    $add = \xarVarPrep::forOS($setting);
+                    $add = $this->prep()->path($setting);
                     $add = strtr($add, [' ' => '']);
                     $save .= "-$add.$ext";
                     break;

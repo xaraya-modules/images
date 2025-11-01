@@ -386,7 +386,7 @@ class PhpthumbMethod extends MethodClass
                 $adminapi->setsettings($data['settings']);
 
                 // Note: processed images are named md5(filelocation)-[setting].[ext] - see process_image() function
-                $add = \xarVarPrep::forOS($setting);
+                $add = $this->prep()->path($setting);
                 $add = strtr($add, [' ' => '']);
                 $affected = $adminapi->getderivatives([
                     'filematch' => '^\w+-' . $add,
