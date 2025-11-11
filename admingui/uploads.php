@@ -16,10 +16,7 @@ use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
-use sys;
 use Exception;
-
-sys::import('xaraya.modules.method');
 
 /**
  * images admin uploads function
@@ -122,7 +119,6 @@ class UploadsMethod extends MethodClass
 
             // Add pager
             if (!empty($numitems) && $countitems > $numitems) {
-                sys::import('modules.base.class.pager');
                 $data['pager'] = $this->tpl()->getPager(
                     $startnum,
                     $countitems,

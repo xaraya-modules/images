@@ -15,10 +15,7 @@ use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
-use sys;
 use BadParameterException;
-
-sys::import('xaraya.modules.method');
 
 /**
  * images adminapi process_image function
@@ -144,8 +141,8 @@ class ProcessImageMethod extends MethodClass
             // If the image is stored in the database (uploads module)
             // NOTE: the next line is the *only* place i could find which suppresses exceptions through the 0 parameter at the end
             // NOTE: in the 2.x branch that parameter does not exist anymore, so the next code needs to be changed.
-        } elseif (is_numeric($image['fileId']) && $this->mod()->isAvailable('uploads') && $this->mod()->apiLoad('uploads', 'user') &&
-                  defined('\Xaraya\Modules\Uploads\Defines::STORE_DB_DATA') && ($image['storeType'] & \Xaraya\Modules\Uploads\Defines::STORE_DB_DATA)) {
+        } elseif (is_numeric($image['fileId']) && $this->mod()->isAvailable('uploads') && $this->mod()->apiLoad('uploads', 'user')
+                  && defined('\Xaraya\Modules\Uploads\Defines::STORE_DB_DATA') && ($image['storeType'] & \Xaraya\Modules\Uploads\Defines::STORE_DB_DATA)) {
             $uploadsdir = $this->mod('uploads')->getVar('path.uploads-directory');
             switch ($saveas) {
                 case 1: // [image]_new.[ext] // CHECKME: not in the database ?

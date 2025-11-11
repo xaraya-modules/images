@@ -15,13 +15,9 @@ namespace Xaraya\Modules\Images;
 
 use Xaraya\Modules\InstallerClass;
 use xarMod;
-use xarModVars;
 use xarMasks;
 use xarModHooks;
-use sys;
 use BadParameterException;
-
-sys::import('xaraya.modules.installer');
 
 /**
  * Handle module installer functions
@@ -150,7 +146,7 @@ class Installer extends InstallerClass
         // Unregister the hook
         xarModHooks::unregister('item', 'transform', 'API', 'images', 'user', 'transformhook');
         // Delete module variables
-        xarModVars::delete_all('images');
+        $this->mod('images')->flushVars();
         // Deletion successful
         return true;
     }

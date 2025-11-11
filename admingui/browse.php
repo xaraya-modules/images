@@ -15,9 +15,6 @@ use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * images admin browse function
@@ -96,8 +93,8 @@ class BrowseMethod extends MethodClass
 
             $data['images'] = $adminapi->getimages($params);
 
-            if ((!empty($getnext) || !empty($getprev)) &&
-                !empty($data['images']) && count($data['images']) == 1) {
+            if ((!empty($getnext) || !empty($getprev))
+                && !empty($data['images']) && count($data['images']) == 1) {
                 $image = array_pop($data['images']);
                 $this->ctl()->redirect($this->mod()->getURL(
                     'admin',
@@ -114,7 +111,6 @@ class BrowseMethod extends MethodClass
 
             // Add pager
             if (!empty($params['numitems']) && $countitems > $params['numitems']) {
-                sys::import('modules.base.class.pager');
                 $data['pager'] = $this->tpl()->getPager(
                     $startnum,
                     $countitems,

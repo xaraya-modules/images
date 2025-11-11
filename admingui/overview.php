@@ -14,9 +14,6 @@ namespace Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\MethodClass;
 use xarTpl;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * images admin overview function

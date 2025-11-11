@@ -15,9 +15,6 @@ use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * images adminapi countuploads function

@@ -16,10 +16,7 @@ use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\Images\Image_GD;
 use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
-use sys;
 use BadParameterException;
-
-sys::import('xaraya.modules.method');
 
 /**
  * images userapi load_image function
@@ -113,24 +110,20 @@ class LoadImageMethod extends MethodClass
             $thumbsdir = $this->mod()->getVar('path.derivative-store');
         }
 
-        sys::import('modules.images.class.image_properties');
 
         switch ($this->mod()->getVar('type.graphics-library')) {
             /**
             case Defines::LIBRARY_IMAGEMAGICK:
-                sys::import('modules.images.class.image_ImageMagick');
                 $newImage = new Image_ImageMagick($location, $thumbsdir);
                 return $newImage;
                 break;
             case Defines::LIBRARY_NETPBM:
-                sys::import('modules.images.class.image_NetPBM');
                 $newImage = new Image_NetPBM($location, $thumbsdir);
                 return $newImage;
                 break;
              */
             default:
             case Defines::LIBRARY_GD:
-                sys::import('modules.images.class.image_gd');
                 $newImage = new Image_GD($location, $thumbsdir);
                 return $newImage;
         }

@@ -14,9 +14,6 @@ namespace Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * images userapi encode_shorturl function

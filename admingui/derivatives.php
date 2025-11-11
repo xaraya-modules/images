@@ -14,9 +14,6 @@ namespace Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\MethodClass;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * images admin derivatives function
@@ -81,7 +78,6 @@ class DerivativesMethod extends MethodClass
 
             // Add pager
             if (!empty($params['numitems']) && $countitems > $params['numitems']) {
-                sys::import('modules.base.class.pager');
                 $data['pager'] = $this->tpl()->getPager(
                     $startnum,
                     $countitems,

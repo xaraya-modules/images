@@ -16,9 +16,6 @@ use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
 use xarModHooks;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * images admin modifyconfig function

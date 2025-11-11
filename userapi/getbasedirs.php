@@ -13,9 +13,6 @@ namespace Xaraya\Modules\Images\UserApi;
 
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * images userapi getbasedirs function

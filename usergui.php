@@ -12,10 +12,6 @@
 namespace Xaraya\Modules\Images;
 
 use Xaraya\Modules\UserGuiClass;
-use sys;
-
-sys::import('xaraya.modules.usergui');
-sys::import('modules.images.userapi');
 
 /**
  * Handle the images user GUI

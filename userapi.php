@@ -14,9 +14,6 @@ namespace Xaraya\Modules\Images;
 use Xaraya\Modules\UserApiClass;
 use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use xarMod;
-use sys;
-
-sys::import('xaraya.modules.userapi');
 
 /**
  * Handle the images user API

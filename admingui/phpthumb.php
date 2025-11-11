@@ -16,10 +16,7 @@ use Xaraya\Modules\Images\AdminApi;
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
-use sys;
 use BadParameterException;
-
-sys::import('xaraya.modules.method');
 
 /**
  * images admin phpthumb function

@@ -14,10 +14,7 @@ namespace Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
-use sys;
 use BadParameterException;
-
-sys::import('xaraya.modules.method');
 
 /**
  * images userapi getimagesize function
@@ -89,8 +86,8 @@ class GetimagesizeMethod extends MethodClass
             }
             $string = 'width="' . $extrainfo['width'] . '" height="' . $extrainfo['height'] . '"';
             return [$extrainfo['width'],$extrainfo['height'],$type,$string];
-        } elseif (extension_loaded('gd') && $this->mod()->apiLoad('uploads', 'user') &&
-                  defined('\Xaraya\Modules\Uploads\Defines::STORE_DB_DATA') && ($storeType & \Xaraya\Modules\Uploads\Defines::STORE_DB_DATA)) {
+        } elseif (extension_loaded('gd') && $this->mod()->apiLoad('uploads', 'user')
+                  && defined('\Xaraya\Modules\Uploads\Defines::STORE_DB_DATA') && ($storeType & \Xaraya\Modules\Uploads\Defines::STORE_DB_DATA)) {
 
             /** @var UploadsApi $uploadsapi */
             $uploadsapi = $userapi->getUploadsAPI();

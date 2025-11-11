@@ -14,10 +14,7 @@ namespace Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\MethodClass;
 use xarModHooks;
-use sys;
 use BadParameterException;
-
-sys::import('xaraya.modules.method');
 
 /**
  * images admin updateconfig function

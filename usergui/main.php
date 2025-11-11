@@ -13,9 +13,6 @@ namespace Xaraya\Modules\Images\UserGui;
 
 use Xaraya\Modules\Images\UserGui;
 use Xaraya\Modules\MethodClass;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * images user main function

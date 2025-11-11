@@ -16,9 +16,6 @@ use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use Xaraya\Modules\MethodClass;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * images adminapi getuploads function
@@ -79,8 +76,8 @@ class GetuploadsMethod extends MethodClass
             }
 
             // Pass sort, startnum and numitems to db_get_file where possible (i.e. for id, name and type)
-            if (!empty($numitems) && is_numeric($numitems) &&
-                (empty($sort) || $sort == 'name' || $sort == 'type')) {
+            if (!empty($numitems) && is_numeric($numitems)
+                && (empty($sort) || $sort == 'name' || $sort == 'type')) {
                 if (empty($startnum) || !is_numeric($startnum)) {
                     $startnum = 1;
                 }

@@ -13,9 +13,6 @@ namespace Xaraya\Modules\Images\UserApi;
 
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
-use sys;
-
-sys::import('xaraya.modules.method');
 
 /**
  * images userapi transformhook function
@@ -105,7 +102,7 @@ class TransformhookMethod extends MethodClass
 
                         $args['fileId'] = $id;
 
-                        $replacement = $this->mod()->getURL( 'user', 'display', $args);
+                        $replacement = $this->mod()->getURL('user', 'display', $args);
                     }
                     break;
             }

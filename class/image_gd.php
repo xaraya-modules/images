@@ -4,9 +4,6 @@ namespace Xaraya\Modules\Images;
 
 use Xaraya\Modules\Uploads\UserApi as UploadsApi;
 use xarMod;
-use sys;
-
-sys::import('modules.images.class.image_properties');
 
 class Image_GD extends Image_Properties
 {
