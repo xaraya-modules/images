@@ -144,8 +144,6 @@ class phpUnsharpMask
                 }
             }
         }
-        imagedestroy($imgCanvas);
-        imagedestroy($imgBlur);
         return true;
     }
 }

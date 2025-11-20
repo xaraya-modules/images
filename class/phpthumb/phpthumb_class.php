@@ -499,8 +499,6 @@ class phpthumb
         );
 
         $this->DebugMessage('memory_get_usage() after copy-resize = ' . (function_exists('memory_get_usage') ? @memory_get_usage() : 'n/a'), __FILE__, __LINE__);
-        imagedestroy($this->gdimg_source);
-        $this->DebugMessage('memory_get_usage() after imagedestroy = ' . (function_exists('memory_get_usage') ? @memory_get_usage() : 'n/a'), __FILE__, __LINE__);
 
         $this->phpThumbDebug('8i');
         $this->AntiOffsiteLinking();
@@ -2727,7 +2725,6 @@ class phpthumb
                 $opacity = 50;
                 $margin  = 5;
                 $phpthumbFilters->WatermarkOverlay($this->gdimg_output, $watermark_img, '*', $opacity, $margin);
-                imagedestroy($watermark_img);
                 unset($phpthumbFilters);
 
             } else {
@@ -2813,7 +2810,6 @@ class phpthumb
                                 }
                             }
                         }
-                        imagedestroy($img_alpha_mixdown_dither);
 
                         $this->DebugMessage('AlphaChannelFlatten() set image to 255+1 colors with transparency for GIF output', __FILE__, __LINE__);
                         return true;
@@ -2847,7 +2843,6 @@ class phpthumb
             imagecolortransparent($this->gdimg_output, -1);
             imagecopy($this->gdimg_output, $gdimg_flatten_temp, 0, 0, 0, 0, $this->thumbnail_width, $this->thumbnail_height);
 
-            imagedestroy($gdimg_flatten_temp);
             return true;
 
         } else {
@@ -3013,7 +3008,6 @@ class phpthumb
                                 }
                                 $this->is_alpha = true;
                                 $phpthumbFilters->ApplyMask($gdimg_mask, $this->gdimg_output);
-                                imagedestroy($gdimg_mask);
                             } else {
                                 $this->DebugMessage('ImageCreateFromStringReplacement() failed for "' . $mask_filename . '"', __FILE__, __LINE__);
                             }
@@ -3099,7 +3093,6 @@ class phpthumb
                                         } else {
                                             $this->DebugMessage('phpthumb_functions::ImageCreateFunction(' . $resized_x . ', ' . $resized_y . ')', __FILE__, __LINE__);
                                         }
-                                        imagedestroy($img_watermark_resized);
                                     } else {
                                         $this->DebugMessage('phpthumb_functions::ImageCreateFunction(' . imagesx($this->gdimg_output) . ', ' . imagesy($this->gdimg_output) . ')', __FILE__, __LINE__);
                                     }
@@ -3111,13 +3104,11 @@ class phpthumb
                                         imagesavealpha($img_watermark_resized, true);
                                         $this->ImageResizeFunction($img_watermark_resized, $img_watermark, 0, 0, 0, 0, imagesx($img_watermark_resized), imagesy($img_watermark_resized), imagesx($img_watermark), imagesy($img_watermark));
                                         $phpthumbFilters->WatermarkOverlay($this->gdimg_output, $img_watermark_resized, 'C', $opacity, $margin);
-                                        imagedestroy($img_watermark_resized);
                                     } else {
                                         $this->DebugMessage('phpthumb_functions::ImageCreateFunction(' . $resized_x . ', ' . $resized_y . ')', __FILE__, __LINE__);
                                     }
 
                                 }
-                                imagedestroy($img_watermark);
 
                             } else {
                                 $this->DebugMessage('ImageCreateFromStringReplacement() failed for "' . $filename . '"', __FILE__, __LINE__);
@@ -3171,10 +3162,6 @@ class phpthumb
                                     $alignment = $watermark_dest_x . 'x' . $watermark_dest_y;
                                 }
                                 $phpthumbFilters->WatermarkOverlay($this->gdimg_output, $img_watermark, $alignment, $opacity, $margin['x'], $margin['y']);
-                                imagedestroy($img_watermark);
-                                if (isset($img_watermark2) && (is_resource($img_watermark2) || (is_object($img_watermark2) && $img_watermark2 instanceof \GdImage))) {
-                                    imagedestroy($img_watermark2);
-                                }
                             } else {
                                 $this->DebugMessage('ImageCreateFromFilename() failed for "' . $filename . '"', __FILE__, __LINE__);
                             }
@@ -3279,7 +3266,6 @@ class phpthumb
                                 } else {
                                     $this->DebugMessage('ImageCreateFunction(' . ($scale_x * imagesx($img_temp)) . ', ' . ($scale_y * imagesy($img_temp)) . ') failed', __FILE__, __LINE__);
                                 }
-                                imagedestroy($img_temp);
                             } else {
                                 $this->DebugMessage('ImageCreateFunction(' . imagesx($this->gdimg_output) . ', ' . imagesy($this->gdimg_output) . ') failed', __FILE__, __LINE__);
                             }
@@ -3302,7 +3288,6 @@ class phpthumb
                         if ($gdimg_mask = $phpthumbFilters->SourceTransparentColorMask($this->gdimg_output, $hexcolor, $min_limit, $max_limit)) {
                             $this->is_alpha = true;
                             $phpthumbFilters->ApplyMask($gdimg_mask, $this->gdimg_output);
-                            imagedestroy($gdimg_mask);
                         } else {
                             $this->DebugMessage('SourceTransparentColorMask() failed for "' . $hexcolor . ',' . $min_limit . ',' . $max_limit . '"', __FILE__, __LINE__);
                         }
@@ -4219,7 +4204,6 @@ class phpthumb
                     }
                     if ($cropped !== false) {                 // in case a new image resource was returned
                         $this->DebugMessage('ImageCropAuto changing source image size from ' . imagesx($this->gdimg_source) . 'x' . imagesy($this->gdimg_source) . ' to ' . imagesx($cropped) . 'x' . imagesy($cropped), __FILE__, __LINE__);
-                        imagedestroy($this->gdimg_source);    // we destroy the original image
                         $this->gdimg_source = $cropped;       // and assign the cropped image to $im
                         $this->source_width  = imagesx($this->gdimg_source);
                         $this->source_height = imagesy($this->gdimg_source);
@@ -4496,7 +4480,6 @@ class phpthumb
                     imagewbmp($gdimg_error);
                 }
             }
-            imagedestroy($gdimg_error);
 
         }
         if (!headers_sent()) {

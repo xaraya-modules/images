@@ -766,12 +766,10 @@ class phpthumb_bmp
         $im = $this->PlotPixelsGD($BMPinfo['bmp']);
         if (headers_sent()) {
             echo 'plotted ' . ($BMPinfo['resolution_x'] * $BMPinfo['resolution_y']) . ' pixels in ' . (time() - $starttime) . ' seconds<BR>';
-            imagedestroy($im);
             exit;
         }
         header('Content-Type: image/png');
         imagepng($im);
-        imagedestroy($im);
         return true;
     }
 

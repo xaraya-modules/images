@@ -101,7 +101,6 @@ class GetimagesizeMethod extends MethodClass
                 if (!empty($img)) {
                     $width  = @imagesx($img);
                     $height = @imagesy($img);
-                    @imagedestroy($img);
                     // update the file entry in the uploads module
                     if (empty($extrainfo)) {
                         $extrainfo = [];

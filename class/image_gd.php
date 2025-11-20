@@ -43,8 +43,6 @@ class Image_GD extends Image_Properties
             $newImage = imageCreateTrueColor($this->width, $this->height);
             imageCopyResampled($newImage, $origImage, 0, 0, 0, 0, $this->width, $this->height, $this->_owidth, $this->_oheight);
             imageJPEG($newImage, $this->_tmpFile);
-            imageDestroy($newImage);
-            imageDestroy($origImage);
         } else {
             return false;
         }
