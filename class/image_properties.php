@@ -15,7 +15,7 @@
 
 namespace Xaraya\Modules\Images;
 
-use xarMod;
+use Xaraya\Services\xar;
 
 /**
  * Class Image properties
@@ -42,7 +42,7 @@ class Image_Properties
             $this->_thumbsdir = $thumbsdir;
         }
         /** @var UserApi $userapi */
-        $userapi = xarMod::userapi('images');
+        $userapi = xar::mod()->userapi('images');
 
         if (is_array($fileInfo)) {
             $this->fileLocation = $fileInfo['fileLocation'];

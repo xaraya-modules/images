@@ -13,15 +13,14 @@ namespace Xaraya\Modules\Images;
 
 use Xaraya\Modules\UserApiClass;
 use Xaraya\Modules\Uploads\UserApi as UploadsApi;
-use xarMod;
 
 /**
  * Handle the images user API
  *
- * @method mixed decodeShorturl(array $args = []) extract function and arguments from short URLs for this module, and pass - them back to xarGetRequestInfo()
+ * @method mixed decodeShorturl(array $args = []) extract function and arguments from short URLs for this module, and pass - them back to xar::req()->getRequest()->getInfo()
  * @method mixed dropdownlist(array $args) get an array of images (id => field) for use in dropdown lists - Note : for additional optional parameters, see the getuploads() and getimages() functions
  *  array{bid?: mixed, field: mixed}
- * @method mixed encodeShorturl(array $args = []) return the path for a short URL to xarController::URL for this module
+ * @method mixed encodeShorturl(array $args = []) return the path for a short URL to xar::ctl()->getModuleURL for this module
  * @method mixed gdInfo(array $args = []) Images Module
  * @method mixed getbasedirs(array $args = []) Get the configured base directories for server images
  * @method mixed getimageinfo(array $args) Get information about an image (from file or database)
@@ -47,7 +46,7 @@ class UserApi extends UserApiClass
     public function getUploadsAPI()
     {
         /** @var UploadsApi $uploadsapi */
-        $uploadsapi = xarMod::userapi('uploads');
+        $uploadsapi = $this->mod()->userapi('uploads');
         return $uploadsapi;
     }
 }

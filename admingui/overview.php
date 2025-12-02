@@ -13,7 +13,6 @@ namespace Xaraya\Modules\Images\AdminGui;
 
 use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\MethodClass;
-use xarTpl;
 
 /**
  * images admin overview function
@@ -25,7 +24,7 @@ class OverviewMethod extends MethodClass
 
     /**
      * Overview displays standard Overview page
-     * @return array|string|null xarTpl::module with $data containing template data
+     * @return array|string|null $this->tpl()->module with $data containing template data
      * containing the menulinks for the overview item on the main manu
      * @since 14 Oct 2005
      * @see AdminGui::overview()

@@ -14,7 +14,6 @@
 namespace Xaraya\Modules\Images;
 
 use Xaraya\Modules\InstallerClass;
-use xarMod;
 use xarMasks;
 use xarModHooks;
 use BadParameterException;
@@ -56,7 +55,7 @@ class Installer extends InstallerClass
     public function init()
     {
         // Load any predefined constants
-        xarMod::apiLoad('images', 'user');
+        $this->mod()->apiLoad('images', 'user');
 
         // Check for the required extensions
         // GD is only needed if the user wants to use resize.

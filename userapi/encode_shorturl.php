@@ -24,9 +24,9 @@ class EncodeShorturlMethod extends MethodClass
     /** functions imported by bermuda_cleanup */
 
     /**
-     * return the path for a short URL to xarController::URL for this module
+     * return the path for a short URL to xar::ctl()->getModuleURL for this module
      * @author the Images module development team
-     * @param array<mixed> $args the function and arguments passed to xarController::URL
+     * @param array<mixed> $args the function and arguments passed to xar::ctl()->getModuleURL
      * @return string|void path to be added to index.php for a short URL, or empty if failed
      * @see UserApi::encodeShorturl()
      */

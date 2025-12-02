@@ -13,7 +13,6 @@ namespace Xaraya\Modules\Images\AdminGui;
 
 use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\MethodClass;
-use xarModHooks;
 use BadParameterException;
 
 /**
@@ -114,7 +113,7 @@ class UpdateconfigMethod extends MethodClass
             $this->mod()->setVar('basedirs', serialize($newdirs));
         }
 
-        xarModHooks::call('module', 'updateconfig', 'images', ['module' => 'images']);
+        $this->mod()->callHooks('module', 'updateconfig', 'images', ['module' => 'images']);
         $this->ctl()->redirect($this->mod()->getURL('admin', 'modifyconfig'));
 
         // Return

@@ -14,7 +14,6 @@ namespace Xaraya\Modules\Images;
 use Xaraya\Modules\AdminApiClass;
 use Xaraya\Modules\Mime\UserApi as MimeApi;
 use Xaraya\Modules\Uploads\UserApi as UploadsApi;
-use xarMod;
 use sys;
 
 /**
@@ -49,7 +48,7 @@ class AdminApi extends AdminApiClass
     public function getMimeAPI()
     {
         /** @var MimeApi $mimeapi */
-        $mimeapi = xarMod::userapi('mime');
+        $mimeapi = $this->mod()->userapi('mime');
         return $mimeapi;
     }
 
@@ -60,7 +59,7 @@ class AdminApi extends AdminApiClass
     public function getUploadsAPI()
     {
         /** @var UploadsApi $uploadsapi */
-        $uploadsapi = xarMod::userapi('uploads');
+        $uploadsapi = $this->mod()->userapi('uploads');
         return $uploadsapi;
     }
 

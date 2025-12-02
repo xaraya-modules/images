@@ -15,7 +15,6 @@ use Xaraya\Modules\Images\Defines;
 use Xaraya\Modules\Images\AdminGui;
 use Xaraya\Modules\Images\UserApi;
 use Xaraya\Modules\MethodClass;
-use xarModHooks;
 
 /**
  * images admin modifyconfig function
@@ -70,7 +69,7 @@ class ModifyconfigMethod extends MethodClass
             'filetypes' => '',
             'recursive' => false, ];
 
-        $hooks = xarModHooks::call('module', 'modifyconfig', 'images', []);
+        $hooks = $this->mod()->callHooks('module', 'modifyconfig', 'images', []);
 
         if (empty($hooks)) {
             $data['hooks'] = '';

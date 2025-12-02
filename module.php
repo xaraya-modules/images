@@ -14,7 +14,7 @@ namespace Xaraya\Modules\Images;
 use Xaraya\Modules\ModuleClass;
 
 /**
- * Get images module classes via xarMod::getModule()
+ * Get images module classes via xar::mod()->getModule()
  */
 class Module extends ModuleClass
 {

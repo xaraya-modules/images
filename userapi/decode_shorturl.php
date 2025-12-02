@@ -24,7 +24,7 @@ class DecodeShorturlMethod extends MethodClass
 
     /**
      * extract function and arguments from short URLs for this module, and pass
-     * them back to xarGetRequestInfo()
+     * them back to xar::req()->getRequest()->getInfo()
      * @author the Images module development team
      * @param array<mixed> $params array containing the different elements of the virtual path
      * @return array|void containing func the function to be called and args the query
