@@ -27,13 +27,13 @@
         <strong><xar:mlstring>Configure</xar:mlstring></strong>
         <xar:if condition="!empty($selimage['filePreview'])">
         |
-        <a href="#xarServer::getCurrentURL()##preview"><xar:mlstring>Preview Image</xar:mlstring></a>
+        <a href="#$xar->ctl()->getCurrentURL()##preview"><xar:mlstring>Preview Image</xar:mlstring></a>
         </xar:if>
         <xar:if condition="!empty($selimage['fileDownload'])">
         |
-        <a href="#xarServer::getCurrentURL()##original"><xar:mlstring>Original Image</xar:mlstring></a>
+        <a href="#$xar->ctl()->getCurrentURL()##original"><xar:mlstring>Original Image</xar:mlstring></a>
         </xar:if>
-    <form method="post" name="post" id="post" action="#xarController::URL('images', 'admin', 'phpthumb')#">
+    <form method="post" name="post" id="post" action="#$xar->ctl()->URL('images', 'admin', 'phpthumb')#">
     <table class="xar-fullwidth xar-accent">
     <xar:if condition="!empty($selimage)">
         <tr>
@@ -52,7 +52,7 @@
                 <xar:mlstring>Modified</xar:mlstring>
             </td>
             <td>
-                #xarLocale::getFormattedDate('short',$selimage['fileModified'])#
+                #$xar->mls()->getFormattedDate('short',$selimage['fileModified'])#
             </td>
         </tr>
         <tr>
@@ -91,19 +91,19 @@
         </tr>
         <tr>
             <td colspan="4">
-                <input type="submit" name="load" value="#xarML('Load')#" />
+                <input type="submit" name="load" value="#$xar->ml('Load')#" />
                 <select name="setting" id="setting">
                     <option value=""><xar:mlstring>[ New Settings --&#62; ]</xar:mlstring></option>
                     <xar:foreach in="$settings" key="$name">
                         <xar:if condition="!empty($setting) and $name eq $setting">
-                            <option value="#xarVarPrep::text($name)#" selected="selected">#$name#</option>
+                            <option value="#$xar->prep()->text($name)#" selected="selected">#$name#</option>
                         <xar:else/>
-                            <option value="#xarVarPrep::text($name)#">#$name#</option>
+                            <option value="#$xar->prep()->text($name)#">#$name#</option>
                         </xar:if>
                     </xar:foreach>
                 </select>
                 <input type="text" name="newset" id="newset" value="" />
-                <input type="submit" name="store" value="#xarML('Store')#" />
+                <input type="submit" name="store" value="#$xar->ml('Store')#" />
             </td>
         </tr>
         <tr>
@@ -192,11 +192,11 @@
             </td>
             <td>
                 <xar:set name="options">
-                array('p' => xarML('Portrait Left'),
-                      'P' => xarML('Portrait Right'),
-                      'L' => xarML('Landscape Left'),
-                      'l' => xarML('Landscape Right'),
-                      'x' => xarML('EXIF Orientation'),
+                array('p' => $xar->ml('Portrait Left'),
+                      'P' => $xar->ml('Portrait Right'),
+                      'L' => $xar->ml('Landscape Left'),
+                      'l' => $xar->ml('Landscape Right'),
+                      'x' => $xar->ml('EXIF Orientation'),
                 )
                 </xar:set>
                 <select name="ar" id="ar">
@@ -299,16 +299,16 @@
             </td>
             <td>
                 <xar:set name="options">
-                array('BR' => xarML('Bottom Right'),
-                      'BL' => xarML('Bottom Left'),
-                      'TR' => xarML('Top Right'),
-                      'TL' => xarML('Top Left'),
-                      'C'  => xarML('Center'),
-                      'R'  => xarML('Right'),
-                      'L'  => xarML('Left'),
-                      'T'  => xarML('Top'),
-                      'B'  => xarML('Bottom'),
-                      '*'  => xarML('Tile'),
+                array('BR' => $xar->ml('Bottom Right'),
+                      'BL' => $xar->ml('Bottom Left'),
+                      'TR' => $xar->ml('Top Right'),
+                      'TL' => $xar->ml('Top Left'),
+                      'C'  => $xar->ml('Center'),
+                      'R'  => $xar->ml('Right'),
+                      'L'  => $xar->ml('Left'),
+                      'T'  => $xar->ml('Top'),
+                      'B'  => $xar->ml('Bottom'),
+                      '*'  => $xar->ml('Tile'),
                 )
                 </xar:set>
                 <select name="filter[wmi][1]" id="filter_wmi_1">
@@ -344,7 +344,7 @@
                 </label>
             </td>
             <td>
-                <input type="text" name="filter[wmt][0]" id="filter_wmt_0" value="#xarVarPrep::text($filter['wmt'][0])#" />
+                <input type="text" name="filter[wmt][0]" id="filter_wmt_0" value="#$xar->prep()->text($filter['wmt'][0])#" />
             </td>
             <td class="xar-accent">
                 <label for="filter_wmt_5">
@@ -364,16 +364,16 @@
             </td>
             <td>
                 <xar:set name="options">
-                array('BR' => xarML('Bottom Right'),
-                      'BL' => xarML('Bottom Left'),
-                      'TR' => xarML('Top Right'),
-                      'TL' => xarML('Top Left'),
-                      'C'  => xarML('Center'),
-                      'R'  => xarML('Right'),
-                      'L'  => xarML('Left'),
-                      'T'  => xarML('Top'),
-                      'B'  => xarML('Bottom'),
-                      '*'  => xarML('Tile'),
+                array('BR' => $xar->ml('Bottom Right'),
+                      'BL' => $xar->ml('Bottom Left'),
+                      'TR' => $xar->ml('Top Right'),
+                      'TL' => $xar->ml('Top Left'),
+                      'C'  => $xar->ml('Center'),
+                      'R'  => $xar->ml('Right'),
+                      'L'  => $xar->ml('Left'),
+                      'T'  => $xar->ml('Top'),
+                      'B'  => $xar->ml('Bottom'),
+                      '*'  => $xar->ml('Tile'),
                 )
                 </xar:set>
                 <select name="filter[wmt][2]" id="filter_wmt_2">
@@ -453,7 +453,7 @@ Perhaps we could provide a separate (javascript-based) page to fill in those fie
                 </label>
             </td>
             <td>
-                <input type="text" name="fltr[0]" id="fltr_0" value="#xarVarPrep::text($fltr[0])#" />
+                <input type="text" name="fltr[0]" id="fltr_0" value="#$xar->prep()->text($fltr[0])#" />
             </td>
             <td class="xar-accent">
                 <label for="fltr_1">
@@ -461,7 +461,7 @@ Perhaps we could provide a separate (javascript-based) page to fill in those fie
                 </label>
             </td>
             <td>
-                <input type="text" name="fltr[1]" id="fltr_1" value="#xarVarPrep::text($fltr[1])#" />
+                <input type="text" name="fltr[1]" id="fltr_1" value="#$xar->prep()->text($fltr[1])#" />
             </td>
         </tr>
         <tr>
@@ -471,7 +471,7 @@ Perhaps we could provide a separate (javascript-based) page to fill in those fie
                 </label>
             </td>
             <td>
-                <input type="text" name="fltr[2]" id="fltr_2" value="#xarVarPrep::text($fltr[2])#" />
+                <input type="text" name="fltr[2]" id="fltr_2" value="#$xar->prep()->text($fltr[2])#" />
             </td>
             <td class="xar-accent">
                 <label for="fltr_3">
@@ -479,7 +479,7 @@ Perhaps we could provide a separate (javascript-based) page to fill in those fie
                 </label>
             </td>
             <td>
-                <input type="text" name="fltr[3]" id="fltr_3" value="#xarVarPrep::text($fltr[3])#" />
+                <input type="text" name="fltr[3]" id="fltr_3" value="#$xar->prep()->text($fltr[3])#" />
             </td>
         </tr>
         <tr>
@@ -544,8 +544,8 @@ Perhaps we could provide a separate (javascript-based) page to fill in those fie
                 <input type="hidden" name="authid" value="#$authid#"/>
                 <input type="hidden" name="bid" value="#$baseId#"/>
                 <input type="hidden" name="fid" value="#$fileId#"/>
-                <input type="submit" value="#xarML('Preview')#"/>
-                <input type="submit" name="confirm" value="#xarML('Save')#"/>
+                <input type="submit" value="#$xar->ml('Preview')#"/>
+                <input type="submit" name="confirm" value="#$xar->ml('Save')#"/>
             </td>
         </tr>
     </xar:if>
@@ -561,12 +561,12 @@ Perhaps we could provide a separate (javascript-based) page to fill in those fie
 
     <hr/>
     <p>
-        <a href="#xarServer::getCurrentURL()##config"><xar:mlstring>Configure</xar:mlstring></a>
+        <a href="#$xar->ctl()->getCurrentURL()##config"><xar:mlstring>Configure</xar:mlstring></a>
         |
         <strong><xar:mlstring>Preview Image</xar:mlstring></strong>
         <xar:if condition="!empty($selimage['fileDownload'])">
         |
-        <a href="#xarServer::getCurrentURL()##original"><xar:mlstring>Original Image</xar:mlstring></a>
+        <a href="#$xar->ctl()->getCurrentURL()##original"><xar:mlstring>Original Image</xar:mlstring></a>
         </xar:if>
     </p>
     <p><img src="#$selimage['filePreview']#" border="0" /></p>
@@ -577,10 +577,10 @@ Perhaps we could provide a separate (javascript-based) page to fill in those fie
 
     <hr/>
     <p>
-        <a href="#xarServer::getCurrentURL()##config"><xar:mlstring>Configure</xar:mlstring></a>
+        <a href="#$xar->ctl()->getCurrentURL()##config"><xar:mlstring>Configure</xar:mlstring></a>
         <xar:if condition="!empty($selimage['filePreview'])">
         |
-        <a href="#xarServer::getCurrentURL()##preview"><xar:mlstring>Preview Image</xar:mlstring></a>
+        <a href="#$xar->ctl()->getCurrentURL()##preview"><xar:mlstring>Preview Image</xar:mlstring></a>
         </xar:if>
         |
         <strong><xar:mlstring>Original Image</xar:mlstring></strong>

@@ -12,14 +12,14 @@
         <xar:mlstring>Modify Images Configuration</xar:mlstring>
     </h2>
 
-    <form method="post" id="post" action="#xarController::URL('images', 'admin', 'updateconfig')#">
+    <form method="post" id="post" action="#$xar->ctl()->URL('images', 'admin', 'updateconfig')#">
 
         <fieldset>
             <legend>
                 <xar:mlstring>Image Module Options</xar:mlstring>
             </legend>
                 <div class="xar-form-input-wrapper">
-                    <label for="path[derivative-store]" class="xar-form-label" title="#xarML('Derivatives Storage Directory')#">
+                    <label for="path[derivative-store]" class="xar-form-label" title="#$xar->ml('Derivatives Storage Directory')#">
                         <xar:mlstring>Derivatives Storage Directory</xar:mlstring>:
                     </label>
                     <input type="text" name="path[derivative-store]" value="#$path['derivative-store']#" size="70"/>
@@ -32,7 +32,7 @@
                     </p>
                 </div>
                 <div class="xar-form-input-wrapper">
-                    <label for="libtype[graphics-library]" class="xar-form-label" title="#xarML('Select Graphics Library')#">
+                    <label for="libtype[graphics-library]" class="xar-form-label" title="#$xar->ml('Select Graphics Library')#">
                         <xar:mlstring>
                             Graphics Library:
                         </xar:mlstring>
@@ -72,12 +72,12 @@
                     </p>
                 </div>
                 <div class="xar-form-input-wrapper">
-                    <label for="file[imagemagick]" class="xar-form-label" title="#xarML('ImageMagick convert program')#">
+                    <label for="file[imagemagick]" class="xar-form-label" title="#$xar->ml('ImageMagick convert program')#">
                          <xar:mlstring>
                             ImageMagick 'convert' program:
                         </xar:mlstring>
                     </label>
-                    <input type="text" name="file[imagemagick]" id="file_imagemagick" size="60" value="#xarModVars::get('images','file.imagemagick')#" />
+                    <input type="text" name="file[imagemagick]" id="file_imagemagick" size="60" value="#$xar->mod('images')->getVar('file.imagemagick')#" />
                     <p class="xar-form-input-wrapper-after">
                         <xar:mlstring>
                         <em>
@@ -94,7 +94,7 @@
                     <xar:else />
                         <input type="checkbox" id="shortURLs" name="shortURLs"  value="true"/>
                     </xar:if>
-                    <label for="shortURLs" title="#xarML('Support short urls?')#">
+                    <label for="shortURLs" title="#$xar->ml('Support short urls?')#">
                         <strong><xar:mlstring>Support Short URLs?</xar:mlstring></strong>
                     </label>
 
@@ -106,21 +106,21 @@
                 </div>
                 <br />
                 <div class="xar-form-input-wrapper">
-                    <label for="file[cache-expire]" class="xar-form-label" title="#xarML('Cache server file information?')#">
+                    <label for="file[cache-expire]" class="xar-form-label" title="#$xar->ml('Cache server file information?')#">
                         <xar:mlstring>
                             Cache server file information:
                         </xar:mlstring>
                     </label>
-                    <input type="text" name="file[cache-expire]" id="file_cache_expire" size="3" maxlength="3" value="#xarModVars::get('images','file.cache-expire')#" />
+                    <input type="text" name="file[cache-expire]" id="file_cache_expire" size="3" maxlength="3" value="#$xar->mod('images')->getVar('file.cache-expire')#" />
                     <xar:mlstring>seconds</xar:mlstring>
                 </div>
                 <div class="xar-form-input-wrapper">
-                    <label for="view_itemsperpage" class="xar-form-label" title="#xarML('Items per page in admin view')#">
+                    <label for="view_itemsperpage" class="xar-form-label" title="#$xar->ml('Items per page in admin view')#">
                         <xar:mlstring>
                             Items per page in admin view:
                         </xar:mlstring>
                     </label>
-                    <input type="text" name="view[itemsperpage]" id="view_itemsperpage" size="3" maxlength="3" value="#xarModVars::get('images','view.itemsperpage')#" />
+                    <input type="text" name="view[itemsperpage]" id="view_itemsperpage" size="3" maxlength="3" value="#$xar->mod('images')->getVar('view.itemsperpage')#" />
                 </div>
             </fieldset>
             <fieldset>
@@ -172,7 +172,7 @@
 
             <div class="xar-form-input-wrapper">
                 <input type="hidden" name="authid" value="#$authid#"/>
-                <input type="submit" name="update" value="#xarML('Update Configuration')#"/>
+                <input type="submit" name="update" value="#$xar->ml('Update Configuration')#"/>
             </div>
         </form>
 </div>

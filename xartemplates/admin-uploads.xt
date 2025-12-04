@@ -20,8 +20,8 @@
             <input type="hidden" name="authid" value="#$authid#" />
             <input type="hidden" name="action" value="delete" />
             <input type="hidden" name="fileId" value="#$selimage['fileId']#" />
-            <input type="submit" name="confirm" value="#xarML('Confirm')#" />
-            <input type="submit" name="action" value="#xarML('Cancel')#" />
+            <input type="submit" name="confirm" value="#$xar->ml('Confirm')#" />
+            <input type="submit" name="action" value="#$xar->ml('Cancel')#" />
         </form>
         <xar:elseif condition="!empty($action) and $action eq 'resize'"/>
         <form method="post" action="&xar-modurl-images-admin-uploads;">
@@ -43,9 +43,9 @@
             <input type="hidden" name="authid" value="#$authid#" />
             <input type="hidden" name="action" value="resize" />
             <input type="hidden" name="fileId" value="#$selimage['fileId']#" />
-            <input type="submit" name="preview" value="#xarML('Preview')#" />
-            <input type="submit" name="confirm" value="#xarML('Confirm')#" />
-            <input type="submit" name="action" value="#xarML('Cancel')#" />
+            <input type="submit" name="preview" value="#$xar->ml('Preview')#" />
+            <input type="submit" name="confirm" value="#$xar->ml('Confirm')#" />
+            <input type="submit" name="action" value="#$xar->ml('Cancel')#" />
         </form>
         </xar:if>
 
@@ -58,13 +58,13 @@
             </legend>
             <div class="xar-form-input-wrapper">
             <p class="xar-align-center">
-            <a href="#xarController::URL('images','admin','uploads',array('action' => $action,'getprev' => $selimage['fileName']))#">&#60;&#60;</a>&#160;&#160;&#160;
+            <a href="#$xar->ctl()->URL('images','admin','uploads',array('action' => $action,'getprev' => $selimage['fileName']))#">&#60;&#60;</a>&#160;&#160;&#160;
             <xar:if condition="!empty($width) or !empty($height)">
                 <img src="#$selimage['fileDownload']#" width="#$width#" height="#$height#" class="xar-noborder xar-valign-top" />
             <xar:else/>
                 <img src="#$selimage['fileDownload']#" class="xar-noborder xar-valign-top" alt=""/>
             </xar:if>
-            &#160;&#160;&#160;<a href="#xarController::URL('images','admin','uploads',array('action' => $action,'getnext' => $selimage['fileName']))#">&#62;&#62;</a>
+            &#160;&#160;&#160;<a href="#$xar->ctl()->URL('images','admin','uploads',array('action' => $action,'getnext' => $selimage['fileName']))#">&#62;&#62;</a>
            </p>
            </div>
         </fieldset>
@@ -94,7 +94,7 @@
                 </div>
                 <div class="xar-form-input-wrapper">
                     <label class="xar-form-label"><xar:mlstring>Modified</xar:mlstring> :</label>
-                     #xarLocale::getFormattedDate('short',$selimage['fileModified'])#
+                     #$xar->mls()->getFormattedDate('short',$selimage['fileModified'])#
                 </div>
             </fieldset>
            <fieldset>
@@ -107,9 +107,9 @@
 
                    <xar:foreach in="$selimage['derivatives']" value="$derivimage">
                     <xar:if condition="!empty($derivimage['fileSetting'])">
-                        <a href="#xarController::URL('images','admin','derivatives',array('action' => 'view', 'fileId' => $derivimage['fileId']))#">#$derivimage['fileSetting']#</a>
+                        <a href="#$xar->ctl()->URL('images','admin','derivatives',array('action' => 'view', 'fileId' => $derivimage['fileId']))#">#$derivimage['fileSetting']#</a>
                     <xar:else/>
-                        <a href="#xarController::URL('images','admin','derivatives',array('action' => 'view', 'fileId' => $derivimage['fileId']))#">#$derivimage['width']# x #$derivimage['height']#</a>
+                        <a href="#$xar->ctl()->URL('images','admin','derivatives',array('action' => 'view', 'fileId' => $derivimage['fileId']))#">#$derivimage['width']# x #$derivimage['height']#</a>
                     </xar:if>
                     </xar:foreach>
                  <xar:else/>
@@ -150,32 +150,32 @@
         <table class="xar-accent">
             <tr>
                 <th>
-                    <a href="#xarController::URL('images','admin','uploads')#">
+                    <a href="#$xar->ctl()->URL('images','admin','uploads')#">
                     <xar:mlstring>Filename</xar:mlstring>
                     </a>
                 </th>
                 <th>
-                    <a href="#xarController::URL('images','admin','uploads',array('sort' => 'type'))#">
+                    <a href="#$xar->ctl()->URL('images','admin','uploads',array('sort' => 'type'))#">
                     <xar:mlstring>Filetype</xar:mlstring>
                     </a>
                 </th>
                 <th>
-                    <a href="#xarController::URL('images','admin','uploads',array('sort' => 'width'))#">
+                    <a href="#$xar->ctl()->URL('images','admin','uploads',array('sort' => 'width'))#">
                     <xar:mlstring>Width</xar:mlstring>
                     </a>
                 </th>
                 <th>
-                    <a href="#xarController::URL('images','admin','uploads',array('sort' => 'height'))#">
+                    <a href="#$xar->ctl()->URL('images','admin','uploads',array('sort' => 'height'))#">
                     <xar:mlstring>Height</xar:mlstring>
                     </a>
                 </th>
                 <th>
-                    <a href="#xarController::URL('images','admin','uploads',array('sort' => 'size'))#">
+                    <a href="#$xar->ctl()->URL('images','admin','uploads',array('sort' => 'size'))#">
                     <xar:mlstring>Size</xar:mlstring>
                     </a>
                 </th>
                 <th>
-                    <a href="#xarController::URL('images','admin','uploads',array('sort' => 'time'))#">
+                    <a href="#$xar->ctl()->URL('images','admin','uploads',array('sort' => 'time'))#">
                     <xar:mlstring>Modified</xar:mlstring>
                     </a>
                 </th>
@@ -208,22 +208,22 @@
                     #$image['fileSize']#
                 </td>
                 <td>
-                    #xarLocale::getFormattedDate('short',$image['fileModified'])#
+                    #$xar->mls()->getFormattedDate('short',$image['fileModified'])#
                 </td>
                 <td>
-                    <a href="#xarController::URL('images','admin','uploads',array('action' => 'view', 'fileId' => $image['fileId']))#">
+                    <a href="#$xar->ctl()->URL('images','admin','uploads',array('action' => 'view', 'fileId' => $image['fileId']))#">
                         <xar:mlstring>View</xar:mlstring>
                     </a>
                     |
-                    <a href="#xarController::URL('images','admin','uploads',array('action' => 'resize', 'fileId' => $image['fileId']))#">
+                    <a href="#$xar->ctl()->URL('images','admin','uploads',array('action' => 'resize', 'fileId' => $image['fileId']))#">
                         <xar:mlstring>Resize</xar:mlstring>
                     </a>
                     |
-                    <a href="#xarController::URL('images','admin','phpthumb',array('fid' => $image['fileId']))#">
+                    <a href="#$xar->ctl()->URL('images','admin','phpthumb',array('fid' => $image['fileId']))#">
                         <xar:mlstring>Process</xar:mlstring>
                     </a>
                     |
-                    <a href="#xarController::URL('images','admin','uploads',array('action' => 'delete', 'fileId' => $image['fileId']))#">
+                    <a href="#$xar->ctl()->URL('images','admin','uploads',array('action' => 'delete', 'fileId' => $image['fileId']))#">
                         <xar:mlstring>Delete</xar:mlstring>
                     </a>
                 </td>
@@ -249,9 +249,9 @@
                         <option value=""> </option>
                         <xar:foreach in="$settings" key="$name">
                             <xar:if condition="!empty($setting) and $setting eq $name">
-                                <option value="#xarVarPrep::text($name)#" selected="selected">#$name#</option>
+                                <option value="#$xar->prep()->text($name)#" selected="selected">#$name#</option>
                             <xar:else/>
-                                <option value="#xarVarPrep::text($name)#">#$name#</option>
+                                <option value="#$xar->prep()->text($name)#">#$name#</option>
                             </xar:if>
                         </xar:foreach>
                     </select>
@@ -261,7 +261,7 @@
                         <option value="1"><xar:mlstring>[image]_new.[ext]</xar:mlstring></option>
                         <option value="2"><xar:mlstring>replace</xar:mlstring></option>
                     </select>
-                    <input type="submit" name="processlist" value="#xarML('Process')#" />
+                    <input type="submit" name="processlist" value="#$xar->ml('Process')#" />
                 </td>
             </tr>
             <tr>
@@ -273,7 +273,7 @@
                         <option value="0"><xar:mlstring>No</xar:mlstring></option>
                         <option value="1"><xar:mlstring>Yes</xar:mlstring></option>
                     </select>
-                    <input type="submit" name="resizelist" value="#xarML('Resize')#" />
+                    <input type="submit" name="resizelist" value="#$xar->ml('Resize')#" />
                 </td>
             </tr>
             <xar:elseif condition="$action eq 'resizelist'"/>
@@ -290,11 +290,11 @@
                     <input type="hidden" name="replace" value="#$replace#" />
                     <input type="hidden" name="action" value="resize" />
                     <xar:if condition="!empty($replace)">
-                        <input type="submit" name="confirm" value="#xarML('Replace')#" />
+                        <input type="submit" name="confirm" value="#$xar->ml('Replace')#" />
                     <xar:else/>
-                        <input type="submit" name="confirm" value="#xarML('Resize')#" />
+                        <input type="submit" name="confirm" value="#$xar->ml('Resize')#" />
                     </xar:if>
-                    <input type="submit" name="action" value="#xarML('Cancel')#" />
+                    <input type="submit" name="action" value="#$xar->ml('Cancel')#" />
                 </td>
             </tr>
             <xar:elseif condition="$action eq 'processlist'"/>
@@ -306,15 +306,15 @@
                         <xar:ml><xar:mlstring>Are you sure you want to replace the selected images using '#(1)' ?</xar:mlstring><xar:mlvar>#$setting#</xar:mlvar></xar:ml>
                     </xar:if>
                     <input type="hidden" name="authid" value="#$authid#" />
-                    <input type="hidden" name="setting" value="#xarVarPrep::text($setting)#" />
+                    <input type="hidden" name="setting" value="#$xar->prep()->text($setting)#" />
                     <input type="hidden" name="saveas" value="#$saveas#" />
                     <input type="hidden" name="action" value="processlist" />
                     <xar:if condition="empty($saveas) or $saveas lt 2">
-                        <input type="submit" name="confirm" value="#xarML('Process')#" />
+                        <input type="submit" name="confirm" value="#$xar->ml('Process')#" />
                     <xar:else/>
-                        <input type="submit" name="confirm" value="#xarML('Replace')#" />
+                        <input type="submit" name="confirm" value="#$xar->ml('Replace')#" />
                     </xar:if>
-                    <input type="submit" name="action" value="#xarML('Cancel')#" />
+                    <input type="submit" name="action" value="#$xar->ml('Cancel')#" />
                 </td>
             </tr>
             </xar:if>

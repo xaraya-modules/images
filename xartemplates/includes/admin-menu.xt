@@ -11,7 +11,7 @@
       <xar:mlstring>Actions:</xar:mlstring>
     </dt>
     <xar:sec mask="AdminImages" catch="false">
-        <xar:if condition="xarMod::isAvailable('uploads') and xarSecurity::check('AdminUploads',0)">
+        <xar:if condition="$xar->mod()->isAvailable('uploads') and $xar->sec()->check('AdminUploads',0)">
             <xar:set name="tabclass">$activetab=='uploads'?'active':''</xar:set>
             <dd class="#$tabclass#">
               <a href="&xar-modurl-images-admin-uploads;">
